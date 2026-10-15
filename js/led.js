@@ -34,6 +34,9 @@
       var r = ledSections[i].getBoundingClientRect();
       if (r.top <= mid && r.bottom >= mid) { name = ledSections[i].dataset.led; break; }
     }
+    /* LED 색 섹션 밖(맨 위 영상 등)에서는 표시만 남긴다 — AI 진단 버튼이 이때 주황색 */
+    if (name) delete document.documentElement.dataset.ledOff;
+    else document.documentElement.dataset.ledOff = '';
     if (name && LED[name] && name !== currentName) {
       currentName = name; target = LED[name];
       document.documentElement.dataset.ledNow = name;
