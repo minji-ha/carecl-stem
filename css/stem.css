@@ -246,11 +246,14 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 
 /* ── 05 환기용 이미지 ─────────────────────────── */
 .sys{position:relative;overflow:hidden}
-.sys__img{position:relative;height:clamp(560px,112vh,1100px);width:100%;overflow:hidden;background:#F4F3F1}
+/* 어깨·손목 아래를 잘라낸 가로로 긴 컷 — 비율 그대로 화면 폭 가득 */
+.sys__img{position:relative;width:100%;aspect-ratio:2400/951;overflow:hidden;background:#F2D9C6}
 .sys__img img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scale(1.12);will-change:transform}
-.sys{padding-top:var(--sec)}
-.sys__copy{padding-bottom:clamp(30px,3.4vw,60px)}
-.sys__title{margin:0;font-family:var(--f-title);font-weight:500;font-size:clamp(30px,4.4vw,78px);line-height:1.18;letter-spacing:-.03em;text-wrap:balance}
+/* 왼쪽 살구색 빈 공간에 한·영을 섞은 제목 */
+.sys__copy{position:absolute;left:var(--gut);top:50%;transform:translateY(-50%);z-index:2;max-width:34%}
+.sys__title{margin:0;color:var(--ink)}
+.sys__en{display:block;font-family:var(--f-ui);font-weight:200;font-style:italic;font-size:clamp(26px,3.3vw,60px);line-height:1.08;letter-spacing:-.01em}
+.sys__kr{display:block;margin-top:.3em;font-family:var(--f-title);font-weight:500;font-size:clamp(24px,2.9vw,52px);line-height:1.2;letter-spacing:-.03em}
 
 /* ── 06 콜렉션 (3D 커버플로) ─────────────────── */
 .coll{padding-top:var(--sec);padding-bottom:clamp(60px,6vw,110px)}
@@ -388,8 +391,9 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .js .anno.rv{transform:translateY(28px)!important}
   .js .anno.rv.is-in{transform:none!important}
 
-  .sys__img{height:auto;aspect-ratio:4/5}
-  .sys__img img{object-position:46% 50%}
+  .sys__img{aspect-ratio:auto}
+  .sys__img img{height:auto;aspect-ratio:4/5;object-position:50% 50%}
+  .sys__copy{position:static;transform:none;max-width:none;padding:26px var(--gut) 0}
 
 
   .steps__stage{display:none}
