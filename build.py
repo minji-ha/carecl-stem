@@ -477,7 +477,7 @@ def page_survey():
     body = """<main class="sv sv--stem" data-led="red">
   <aside class="sv__panel">
     <div class="sv__dots" data-dotfield></div>
-    <div class="led9 sv__led" data-led9><canvas></canvas></div>
+    <div class="sv__orb" data-orb aria-hidden="true"><canvas></canvas></div>
     <div class="sv__lock">
       <em>AI Skin Agent</em>
       <b>Aging Map 22</b>
@@ -490,7 +490,7 @@ def page_survey():
     return (head("노화 타입 진단 | Aging Map 22 — careCL 케어클", "2분 설문으로 나의 노화 타입과 먼저 관리할 부위를 확인하세요",
                  css=("css/bridge.css", "css/survey.css", "css/report.css"), body_cls="survey")
             + header("aging-types.html") + body + FOOTER
-            + tail(three=False, js=("js/report.js", "js/survey.js")))
+            + tail(three=False, js=("js/report.js", "js/survey.js", "js/orb.js")))
 
 
 def page_report():
