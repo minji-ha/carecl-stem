@@ -50,7 +50,7 @@ async function start() {
   const pivot = new THREE.Group();
   scene.add(pivot);
 
-  const gltf = await new GLTFLoader().loadAsync('assets/model/techfit.glb');
+  const gltf = await new GLTFLoader().loadAsync('assets/model/techfit-v2.glb');
   const model = gltf.scene;
   const box = new THREE.Box3().setFromObject(model);
   model.position.sub(box.getCenter(new THREE.Vector3()));   // 회전 중심을 가운데로
