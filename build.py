@@ -51,10 +51,8 @@ def head(title, desc):
 
 def loader():
     return f"""<div class="loader" data-loader aria-hidden="true">
-  <div class="drop" data-drop data-drop-balls="5">
-    <canvas class="drop__canvas"></canvas>
-    <span class="drop__logo">{LOGO}</span>
-  </div>
+  <div class="led9 loader__head" data-led9="red" data-led9-mode="progress"><canvas></canvas></div>
+  <span class="loader__logo">{LOGO}</span>
   <span class="loader__count" data-loader-count>00</span>
 </div>
 """
@@ -102,7 +100,7 @@ FOOTER = f"""<footer class="foot">
 
 
 def tail():
-    return f"""<script src="js/drop.js?v={VER}"></script>
+    return f"""<script src="js/led.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
 <script type="module" src="js/device3d.js?v={VER}"></script>
 </body>
@@ -117,14 +115,34 @@ WAVE = """<svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="tr
 # ═══════════════════════════════════════════════════════════
 #  메인
 # ═══════════════════════════════════════════════════════════
-PRODUCTS = [
-    ("TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html"),
-    ("Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html"),
-    ("Light Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html"),
-    ("Grid Mask Tech Fit", "그리드 마스크", "p-mask.jpg", "cosmetics.html"),
+# ── 메인 원고 (기존 사이트 메인 순서·문구 그대로) ─────────────
+SOLUTIONS = [
+    ("Device", "Device Solution", "정해진 자리에 머무르는 스탬핑 디바이스",
+     "문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.", "p-cheek.jpg", "products.html"),
+    ("Cosmetics", "Beauty Solution", "디바이스와 함께 쓰는 전용 코스메틱",
+     "그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.", "p-packs.jpg", "cosmetics.html"),
+    ("Aging Map 22", "Care Solution", "얼굴과 목 · 바디를 22개 부위로",
+     "나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.", "p-mask-face.jpg", "aging-map.html"),
 ]
 
-STEPS = [
+CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top%)
+    ("01 Read", "6가지 노화 타입", "나는 어떤 방식으로 나이 들고 있는가", "타입 보기", "aging-types.html", 13, 16),
+    ("02 Map", "22개 관리 부위", "어디를 먼저 관리해야 하는가", "부위 보기", "aging-map.html", 87, 16),
+    ("03 Tech", "5초 스탬핑", "어떻게 전달할 것인가", "기술 보기", "carecl-technology.html", 9, 62),
+    ("04 Product", "디바이스 · 코스메틱", "무엇으로 관리할 것인가", "제품 보기", "products.html", 91, 62),
+    ("05 AI Agent", "AI 피부 진단", "2분 진단으로 나의 타입과 우선 부위 확인", "진단 시작", "survey.html", 50, 100),
+]
+
+PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크)
+    ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html"),
+    ("Device", "CLB", "고주파 마사지기", "p-clb.jpg", "products.html"),
+    ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html"),
+    ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html"),
+    ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html"),
+    ("Accessory", "전용 케이스", "디바이스 보관 가죽 케이스", "p-case.jpg", "products.html"),
+]
+
+STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
     ("Cleanse", "잔여물 정리", "잔여물을 정리해 다음 단계가 제대로 전달되도록 준비합니다.", "s-hands.jpg"),
     ("Read", "오늘의 부위", "오늘 먼저 관리할 부위를 Aging Map 22 기준으로 확인합니다.", "s-mask-glass.jpg"),
     ("Activate", "집중 전달", "한 부위에 머무르며 수직으로 전달합니다.", "s-mask-device.jpg"),
@@ -132,23 +150,41 @@ STEPS = [
     ("Maintain", "반복과 기록", "주 2~3회 같은 자리를 반복해 변화를 기록합니다.", "s-device-face.jpg"),
 ]
 
+CONTACTS = [
+    ("Global Business", "해외 사업", "수출 · 해외 유통 문의<br>support@carecl.co.kr", "contact.html"),
+    ("Partnership", "유통 · 제휴", "총판 및 제휴 제안<br>support@carecl.co.kr", "partnership.html"),
+    ("Media / PR", "미디어", "취재 · 광고 · 협찬<br>support@carecl.co.kr", "press.html"),
+    ("General", "일반 문의", "제품 사용 · A/S<br>TEL +82 31-943-1028", "inquiry.html"),
+]
+
 
 def page_index():
-    cards = "\n".join(f"""      <li class="card rv" data-d="{i}">
-        <a href="{href}">
-          <div class="card__img"><img src="assets/img/{img}" alt="{name}" loading="lazy" width="1000" height="1250"></div>
-          <span class="card__name">{name}</span>
-          <span class="card__meta">{kr}</span>
-        </a>
-      </li>""" for i, (name, kr, img, href) in enumerate(PRODUCTS))
+    sol = "\n".join(f"""      <a class="sol rv" href="{href}">
+        <span class="sol__tag">{tag}</span>
+        <div class="sol__txt">
+          <b class="sol__en">{en}</b>
+          <strong class="sol__kr">{kr}</strong>
+          <p>{desc}</p>
+        </div>
+        <div class="sol__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>
+      </a>""" for tag, en, kr, desc, img, href in SOLUTIONS)
 
-    step_imgs = "\n".join(
-        f'        <img src="assets/img/{img}" alt="" data-step-img="{i}"{" class=\"is-on\"" if i == 0 else ""}>'
-        for i, (_, _, _, img) in enumerate(STEPS))
+    core = "\n".join(f"""      <div class="anno anno--core rv" data-anno style="left:{x}%;top:{y}%">
+        <em class="anno__no">{no}</em>
+        <h3 class="anno__title">{t}</h3>
+        <p class="anno__desc">{q}</p>
+        <a class="anno__link" href="{h}">{lk}</a>
+      </div>""" for no, t, q, lk, h, x, y in CORE)
+
+    cov = "\n".join(
+        f'        <li class="cov__item" data-cov-item data-tag="{tag}" data-name="{name}" data-desc="{desc}" data-href="{href}">'
+        f'<a href="{href}" tabindex="-1"><img src="assets/img/{img}" alt="{name}" loading="lazy"></a></li>'
+        for tag, name, desc, img, href in PRODUCTS)
+    t0, n0, d0, _, h0 = PRODUCTS[0]
 
     step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step>
         <div class="step__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">{i + 1}/</span>
+        <span class="step__num" aria-hidden="true">{i + 1:02d}</span>
         <div>
           <h3 class="step__title">{en}</h3>
           <span class="step__kr">{kr}</span>
@@ -156,105 +192,158 @@ def page_index():
         </div>
       </li>""" for i, (en, kr, desc, img) in enumerate(STEPS))
 
+    contacts = "\n".join(f"""      <a class="ccard rv" data-d="{i}" href="{h}">
+        <em>{en}</em><b>{kr}</b><p>{desc}</p>
+      </a>""" for i, (en, kr, desc, h) in enumerate(CONTACTS))
+
+    marquee = "".join("<span>CARECL</span>" for _ in range(8))
+
     body = f"""<main>
 
-  <!-- 01 히어로 -->
-  <section class="hero" aria-label="브랜드 필름">
-    <img class="hero__poster" src="assets/img/hero-poster.jpg" alt="">
-    <video class="hero__video" src="assets/video/brand-film.mp4" poster="assets/img/hero-poster.jpg"
+  <!-- 01 상단 배너 -->
+  <section class="hero" aria-label="메인 영상">
+    <img class="hero__poster" src="assets/img/main-film-poster.jpg?v={VER}" alt="">
+    <video class="hero__video" src="assets/video/main-film.mp4?v={VER}" poster="assets/img/main-film-poster.jpg?v={VER}"
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
     <div class="hero__copy">
-      <h1 class="hero__title">Home Aging Care</h1>
-      <p class="hero__sub">Every face ages differently.<br>Every face deserves its own care.</p>
+      <p class="hero__eyebrow">Anti-Aging Skincare</p>
+      <h1 class="hero__title">Every face ages differently.<br>Every face deserves its own care.</h1>
       <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
 
-  <!-- 02 컬렉션 -->
-  <section class="coll" aria-labelledby="coll-title">
-    <div class="coll__wave">{WAVE}</div>
+  <!-- 02 배너 설명 : careCL Solution -->
+  <section class="sols" data-led="red" aria-labelledby="sols-title">
     <div class="wrap">
-      <div class="coll__head">
-        <h2 class="label rv" id="coll-title">The Collection</h2>
-        <a class="coll__more rv" href="products.html">View All</a>
+      <div class="sec-head">
+        <h2 class="label rv">careCL Solution</h2>
+        <p class="sec-title rv" id="sols-title" data-d="1">케어클이 제안하는<br>세 가지 홈 에이징 케어</p>
       </div>
-      <ul class="coll__grid">
-{cards}
-      </ul>
+      <div class="sols__list">
+{sol}
+      </div>
     </div>
   </section>
 
   <!-- 03 철학 -->
-  <section class="phil" aria-labelledby="phil-title">
-    <div class="wrap">
-      <h2 class="big-title phil__title rv" id="phil-title">Read Precisely, Care Exactly</h2>
-      <p class="phil__sub rv" data-d="1">같은 나이라도 노화가 시작되는 자리는 저마다 다릅니다.
-      케어클은 그 차이를 먼저 읽는 것에서 안티에이징을 시작합니다.</p>
+  <section class="phil" data-led="purple" aria-labelledby="phil-title">
+    <div class="phil__dots" data-dotfield></div>
+    <div class="wrap phil__inner">
+      <h2 class="label label--center rv">Our Philosophy</h2>
+      <p class="phil__title rv" id="phil-title" data-d="1">같은 나이라도<br>노화가 시작되는 자리는 저마다 다릅니다</p>
+      <p class="phil__lead rv" data-d="2">유전, 뼈의 구조, 얼굴 근육의 발달, 피하 지방의 양에 따라 처짐이 먼저 오기도 하고 주름이 먼저 생기기도 합니다.
+      케어클은 그 차이를 먼저 읽는 것에서 안티에이징을 시작합니다. 모두에게 같은 제품을 권하지 않습니다.</p>
+      <p class="phil__en rv" data-d="3">Read precisely, care exactly.</p>
     </div>
-    <div class="phil__stage" data-phil>
-      <div class="phil__wave">{WAVE}</div>
+  </section>
+
+  <!-- 04 핵심 (가운데 9구 LED 헤드 + 주변 다섯 항목) -->
+  <section class="core" data-led="green" aria-labelledby="core-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <h2 class="label label--center rv">How careCL Works</h2>
+        <p class="sec-title rv" id="core-title" data-d="1">케어클의 다섯 가지 기준</p>
+      </div>
+    </div>
+    <div class="core__stage" data-phil>
       <svg class="phil__lines" aria-hidden="true"></svg>
-      <div class="drop" data-drop data-drop-balls="5">
-        <canvas class="drop__canvas"></canvas>
-        <span class="drop__logo">{LOGO}</span>
+      <div class="core__center">
+        <div class="led9 core__head" data-led9 data-anno-target><canvas></canvas></div>
+        <span class="core__logo">{LOGO}</span>
       </div>
-      <div class="anno anno--a rv" data-anno>
-        <h3 class="anno__title">6 Aging Types</h3>
-        <p class="anno__desc">나는 어떤 방식으로 나이 들고 있는가</p>
-      </div>
-      <div class="anno anno--b rv" data-anno data-d="1">
-        <h3 class="anno__title">22 Care Zones</h3>
-        <p class="anno__desc">어디를 먼저 관리해야 하는가</p>
-      </div>
-      <div class="anno anno--c rv" data-anno data-d="2">
-        <h3 class="anno__title">5-Sec Stamping</h3>
-        <p class="anno__desc">정해진 자리에 5초, 눌러서 전달합니다</p>
-      </div>
-      <a class="btn-line phil__cta" href="aging-types.html">Explore Aging Lab</a>
+{core}
     </div>
+    <div class="core__cta"><a class="btn-line" href="survey.html">나의 Aging Type 알아보기 →</a></div>
   </section>
 
-  <!-- 04 시스템 -->
-  <section class="sys" aria-labelledby="sys-title">
-    <div class="sys__img"><img src="assets/img/sys-model.jpg" alt="케어클 디바이스와 전용 코스메틱을 사용하는 모델" loading="lazy" width="2000" height="1333"></div>
+  <!-- 05 환기용 이미지 -->
+  <section class="sys" data-led="yellow" aria-labelledby="sys-title">
+    <div class="sys__img"><img src="assets/img/sys-model.jpg" alt="케어클 디바이스를 든 모델" loading="lazy" width="2000" height="1333"></div>
     <div class="sys__copy">
-      <h2 class="big-title sys__title rv" id="sys-title">The Home Aging Care System</h2>
-      <p class="sys__sub rv" data-d="1">디바이스 · 전용 코스메틱 · Aging Map 22<br>케어클이 제안하는 세 가지 홈 에이징 케어</p>
+      <p class="sys__title rv" id="sys-title">클리닉의 기술을, 집 안의 리추얼로</p>
     </div>
   </section>
 
-  <!-- 05 스텝 -->
-  <section class="steps" aria-labelledby="steps-title">
-    <div class="steps__wave">{WAVE}</div>
+  <!-- 06 콜렉션 (3D 커버플로) -->
+  <section class="coll" data-led="yellow" data-cov aria-labelledby="coll-title">
     <div class="wrap">
-      <div class="steps__head">
-        <span class="steps__big rv" aria-hidden="true">5</span>
-        <div>
-          <h2 class="big-title steps__title rv" id="steps-title">Essential Steps</h2>
-          <p class="steps__sub rv" data-d="1">다섯 단계로 이어지는 홈 에이징 케어</p>
+      <div class="sec-head">
+        <h2 class="label rv">Collection</h2>
+        <p class="sec-title rv" id="coll-title" data-d="1">진단 결과에 맞춰<br>조합하는 제품</p>
+      </div>
+    </div>
+    <div class="cov" data-cov-stage>
+      <ul class="cov__list">
+{cov}
+      </ul>
+    </div>
+    <div class="wrap">
+      <div class="cov__foot">
+        <button type="button" class="cov__nav" data-cov-prev aria-label="이전 제품">←</button>
+        <div class="cov__cap" aria-live="polite">
+          <em data-cov-tag>{t0}</em><b data-cov-name>{n0}</b><span data-cov-desc>{d0}</span>
+          <a class="cov__more" href="{h0}" data-cov-link>자세히 보기</a>
         </div>
+        <button type="button" class="cov__nav" data-cov-next aria-label="다음 제품">→</button>
+      </div>
+      <div class="cov__dots" data-cov-dots></div>
+    </div>
+  </section>
+
+  <!-- 07 5 STEP -->
+  <section class="steps" data-led="purple" aria-labelledby="steps-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="label rv">Daily Routine</h2>
+        <p class="sec-title rv" id="steps-title" data-d="1">다섯 단계로 이어지는<br>홈 에이징 케어</p>
+        <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
         <div class="steps__sticky">
-          <div class="drop" data-drop data-drop-balls="4">
-            <div class="drop__media">
-{step_imgs}
-            </div>
+          <div class="stage3d">
+            <span class="stage3d__glow" aria-hidden="true"></span>
+            <span class="stage3d__floor" aria-hidden="true"></span>
             <div class="device3d" data-device3d aria-hidden="true"></div>
-            <canvas class="drop__canvas"></canvas>
           </div>
         </div>
         <ol class="steps__list" data-steps>
 {step_items}
         </ol>
       </div>
-      <div class="steps__end"><a class="btn-line" href="survey.html">AI 피부 진단 시작하기</a></div>
+    </div>
+  </section>
+
+  <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
+  <section class="shop" data-shop data-led="red">
+    <div class="shop__bg"><img src="assets/img/p-mask-close.jpg" alt="" loading="lazy"></div>
+    <div class="wrap shop__inner">
+      <div>
+        <h2 class="shop__title">제품 구매는 공식몰에서</h2>
+        <p class="shop__desc">진단 결과에 맞는 구성으로 담아 보세요.</p>
+      </div>
+      <a class="btn-line btn-line--light" href="products.html">Shop 바로가기 →</a>
+    </div>
+  </section>
+
+  <!-- CARECL 롤링 -->
+  <div class="marq" aria-hidden="true"><div class="marq__track">{marquee}{marquee}</div></div>
+
+  <!-- 09 문의 -->
+  <section class="contact" data-led="green" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="label rv">Contact</h2>
+        <p class="sec-title rv" id="contact-title" data-d="1">케어클과 함께하실 분들께</p>
+      </div>
+      <div class="contact__grid">
+{contacts}
+      </div>
     </div>
   </section>
 
 </main>
 """
-    return (head("careCL 케어클 — Home Aging Care",
+    return (head("careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다",
                  "얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어")
             + loader() + header() + body + FOOTER + tail())
 

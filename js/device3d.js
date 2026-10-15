@@ -18,7 +18,7 @@ const SPIN_AXIS = new THREE.Vector3(1, 1, 0.35).normalize();   // 대각선 회�
 const TURNS = 2;                                                // 스텝 전체 동안 회전 수
 const LEAN = -0.55;                                             // 중간에 기우는 각도(rad, 약 -31°)
 const DEVICE_H = 0.24;                                          // GLB 높이
-const FILL = 0.5;                                               // 박스 높이 대비 디바이스 높이 (물방울 안에 들어오도록)
+const FILL = 0.64;                                              // 박스 높이 대비 디바이스 높이
 
 function smoother(t) { return t * t * t * (t * (t * 6 - 15) + 10); }   // 시작·끝이 부드러운 곡선
 const clamp01 = v => Math.max(0, Math.min(1, v));
@@ -75,25 +75,28 @@ async function start() {
     return clamp01((mid - a) / (b - a));
   }
 
-  const target = new THREE.Quaternion();
   const qSpin = new THREE.Quaternion();
   const qLean = new THREE.Quaternion();
   const Z = new THREE.Vector3(0, 0, 1);
   let dirty = true, visible = true;
 
-  function aim() {
-    if (reduce) { target.copy(HOME); return; }
-    const p = progress();
+  /* 진행도(숫자)를 부드럽게 따라간 뒤 그 값으로 자세를 매번 새로 계산한다.
+     자세끼리 보간하면 빠른 스크롤에서 한 바퀴 이상 건너뛸 때 가장 짧은 길(=0바퀴)을
+     택해 회전이 사라지므로, 각도는 항상 진행도에서 직접 만든다. */
+  let pNow = 0, pGoal = 0;
+  function aim() { pGoal = reduce ? 0 : progress(); }
+  function poseAt(p, out) {
     const e = smoother(p);
-    qSpin.setFromAxisAngle(SPIN_AXIS, e * Math.PI * 2 * TURNS);   // p=1에서 정확히 한 바퀴 단위 → 제자리
+    qSpin.setFromAxisAngle(SPIN_AXIS, e * Math.PI * 2 * TURNS);   // p=1에서 정확히 두 바퀴 → 제자리
     qLean.setFromAxisAngle(Z, LEAN * Math.sin(Math.PI * p));       // 처음·끝 0, 가운데서 가장 기움
-    target.copy(qLean).multiply(qSpin).multiply(HOME);
+    return out.copy(qLean).multiply(qSpin).multiply(HOME);
   }
 
   new ResizeObserver(resize).observe(mount);
   resize();
   aim();
-  pivot.quaternion.copy(target);
+  pNow = pGoal;
+  poseAt(pNow, pivot.quaternion);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { rootMargin: '100px' }).observe(mount);
@@ -106,10 +109,11 @@ async function start() {
     if (!visible) return;
     const t = clock.getElapsedTime();
 
-    /* 목표 자세를 15%씩 따라간다 — 스크롤을 멈춰도 잠깐 더 돌다 멈추는 관성 */
-    const before = pivot.quaternion.clone();
-    pivot.quaternion.slerp(target, reduce ? 1 : 0.15);
-    const moving = before.angleTo(pivot.quaternion) > 1e-5;
+    /* 진행도를 10%씩 따라간다 — 빨리 스크롤해도 밀린 회전을 빠르게 다 돌고 멈춘다 */
+    const gap = pGoal - pNow;
+    pNow = Math.abs(gap) < 1e-4 ? pGoal : pNow + gap * (reduce ? 1 : 0.1);
+    const moving = Math.abs(gap) >= 1e-4;
+    poseAt(pNow, pivot.quaternion);
 
     /* 제자리에서도 아주 천천히 떠 있는 느낌 */
     pivot.position.y = reduce ? 0 : Math.sin(t * 1.1) * 0.0035;

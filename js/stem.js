@@ -25,6 +25,7 @@
 
     document.body.classList.add('is-loading');
     var count = el.querySelector('[data-loader-count]');
+    var head = el.querySelector('[data-led9]');
     var start = performance.now(), MIN = reduce ? 0 : 1600;
     var loaded = document.readyState === 'complete';
     window.addEventListener('load', function () { loaded = true; });
@@ -33,6 +34,7 @@
       var p = Math.min(1, (now - start) / MIN);
       if (!loaded) p = Math.min(p, 0.92);
       if (count) count.textContent = String(Math.round(p * 100)).padStart(2, '0');
+      if (window.careclLED && head) window.careclLED.setProgress(head, p);
       if (p >= 1) {
         el.classList.add('is-out');
         setTimeout(done, 1150);
@@ -74,7 +76,7 @@
     var stage = document.querySelector('[data-phil]');
     if (!stage) return;
     var svg = stage.querySelector('.phil__lines');
-    var drop = stage.querySelector('.drop');
+    var drop = stage.querySelector('[data-anno-target]');
     var annos = stage.querySelectorAll('[data-anno]');
     if (!svg || !drop || !annos.length) return;
     var NS = 'http://www.w3.org/2000/svg';
@@ -86,14 +88,20 @@
       var db = drop.getBoundingClientRect();
       var cx = db.left + db.width / 2 - sb.left;
       var cy = db.top + db.height / 2 - sb.top;
-      var R = db.width * 0.37;                                 // 물방울 윤곽
+      var R = db.width * 0.5;                                  // 헤드 가장자리
 
       annos.forEach(function (a) {
         var ab = a.getBoundingClientRect();
         var t = a.querySelector('.anno__title').getBoundingClientRect();
-        var left = ab.left + ab.width / 2 < db.left + db.width / 2;   // 주석이 왼쪽인가
-        var ax = (left ? t.right + 14 : t.left - 14) - sb.left;     // 제목 옆
-        var ay = t.top + t.height / 2 - sb.top;
+        var acx = ab.left + ab.width / 2, dcx = db.left + db.width / 2;
+        var ax, ay;
+        if (ab.top > db.bottom && Math.abs(acx - dcx) < db.width) {   // 헤드 바로 아래 항목 — 위에서 들어온다
+          ax = acx - sb.left; ay = ab.top - 14 - sb.top;
+        } else {
+          var left = acx < dcx;                                        // 주석이 왼쪽인가
+          ax = (left ? ab.right + 10 : ab.left - 10) - sb.left;
+          ay = t.top + t.height / 2 - sb.top;
+        }
 
         var ang = Math.atan2(ay - cy, ax - cx);
         var ex = cx + Math.cos(ang) * R, ey = cy + Math.sin(ang) * R;
@@ -144,6 +152,97 @@
       raf = requestAnimationFrame(function () { raf = 0; update(); });
     }, { passive: true });
     window.addEventListener('resize', update);
+    update();
+  })();
+
+  /* ── 콜렉션 3D 커버플로 ─────────────────────── */
+  (function coverflow() {
+    var sec = document.querySelector('[data-cov]');
+    if (!sec) return;
+    var items = [].slice.call(sec.querySelectorAll('[data-cov-item]'));
+    var stage = sec.querySelector('[data-cov-stage]');
+    var dotsBox = sec.querySelector('[data-cov-dots]');
+    var cap = { tag: sec.querySelector('[data-cov-tag]'), name: sec.querySelector('[data-cov-name]'),
+                desc: sec.querySelector('[data-cov-desc]'), link: sec.querySelector('[data-cov-link]') };
+    var N = items.length, at = 0, dots = [];
+    if (N < 2) return;
+
+    items.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'cov__dot'; b.setAttribute('aria-label', (i + 1) + '번 제품');
+      b.addEventListener('click', function () { go(i); hold(); });
+      dotsBox.appendChild(b); dots.push(b);
+    });
+
+    function place() {
+      var w = items[0].getBoundingClientRect().width || 300, sx = w * 0.62;
+      items.forEach(function (el, i) {
+        var d = i - at;
+        if (d > N / 2) d -= N;
+        if (d < -N / 2) d += N;
+        var ad = Math.abs(d), sg = d < 0 ? -1 : 1, c = Math.min(ad, 3);
+        var x = sg * (Math.min(c, 1) * sx + Math.max(0, c - 1) * sx * 0.5);
+        el.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,0,' + (-c * 300).toFixed(0) +
+          'px) rotateY(' + (-sg * Math.min(c * 50, 68)).toFixed(1) + 'deg)';
+        el.style.opacity = ad > 2.6 ? '0' : '1';
+        el.style.zIndex = String(100 - Math.round(ad * 10));
+        el.classList.toggle('is-active', ad === 0);
+      });
+      dots.forEach(function (b, i) { b.classList.toggle('is-on', i === at); });
+      var cur = items[at];
+      cap.tag.textContent = cur.dataset.tag; cap.name.textContent = cur.dataset.name;
+      cap.desc.textContent = cur.dataset.desc; cap.link.setAttribute('href', cur.dataset.href);
+    }
+    function go(i) { at = ((i % N) + N) % N; place(); }
+
+    items.forEach(function (el, i) {
+      el.addEventListener('click', function (e) { if (i !== at) { e.preventDefault(); go(i); hold(); } });
+    });
+    sec.querySelector('[data-cov-prev]').addEventListener('click', function () { go(at - 1); hold(); });
+    sec.querySelector('[data-cov-next]').addEventListener('click', function () { go(at + 1); hold(); });
+
+    var x0 = null;
+    stage.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+    addEventListener('pointerup', function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { go(at + (dx < 0 ? 1 : -1)); hold(); }
+    });
+
+    /* 4.5초마다 자동으로 넘기되, 마우스가 올라가 있거나 방금 조작했으면 쉰다 */
+    var paused = false, heldUntil = 0;
+    function hold() { heldUntil = Date.now() + 6000; }
+    sec.addEventListener('mouseenter', function () { paused = true; });
+    sec.addEventListener('mouseleave', function () { paused = false; });
+    if (!reduce) setInterval(function () {
+      if (paused || Date.now() < heldUntil || document.hidden) return;
+      var r = sec.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      go(at + 1);
+    }, 4500);
+
+    addEventListener('resize', place);
+    place();
+  })();
+
+  /* ── 공식몰 — 300px 띠에서 시작해 스크롤하면 화면 높이까지 자란다 ── */
+  (function shop() {
+    var el = document.querySelector('[data-shop]');
+    if (!el) return;
+    var img = el.querySelector('.shop__bg img');
+    var BASE = 300;
+    function update() {
+      var vh = innerHeight, base = Math.min(BASE, vh * 0.5);
+      var r = el.getBoundingClientRect();
+      var p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (vh * 0.75)));
+      if (reduce) p = 1;
+      p = p * p * (3 - 2 * p);
+      el.style.height = (base + (vh - base) * p) + 'px';
+      if (img) img.style.transform = 'scale(' + (1.16 - p * 0.16).toFixed(3) + ')';
+    }
+    var raf = 0;
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
+    addEventListener('resize', update);
     update();
   })();
 })();

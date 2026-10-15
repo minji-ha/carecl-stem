@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>careCL 케어클 — Home Aging Care</title>
+<title>careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다</title>
 <meta name="description" content="얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어">
 <link rel="icon" href="assets/img/carecl-logo.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261016024554">
+<link rel="stylesheet" href="css/stem.css?v=261016025726">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
 <div class="loader" data-loader aria-hidden="true">
-  <div class="drop" data-drop data-drop-balls="5">
-    <canvas class="drop__canvas"></canvas>
-    <span class="drop__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+  <div class="led9 loader__head" data-led9="red" data-led9-mode="progress"><canvas></canvas></div>
+  <span class="loader__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
 <path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
 <path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
 <path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
@@ -24,7 +23,6 @@
 <path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
 <path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
 </svg></span>
-  </div>
   <span class="loader__count" data-loader-count>00</span>
 </div>
 <header class="header">
@@ -43,72 +41,82 @@
 <nav class="mnav" aria-label="모바일 메뉴"><a href="about.html">Company<small>회사 소개</small></a><a href="aging-types.html">Aging Lab<small>6가지 노화 타입 · 22개 관리 부위</small></a><a href="carecl-technology.html">Technology<small>케어클 기술</small></a><a href="products.html">Products<small>디바이스 · 코스메틱</small></a><a href="contact.html">Contact<small>문의</small></a><a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
 <main>
 
-  <!-- 01 히어로 -->
-  <section class="hero" aria-label="브랜드 필름">
-    <img class="hero__poster" src="assets/img/hero-poster.jpg" alt="">
-    <video class="hero__video" src="assets/video/brand-film.mp4" poster="assets/img/hero-poster.jpg"
+  <!-- 01 상단 배너 -->
+  <section class="hero" aria-label="메인 영상">
+    <img class="hero__poster" src="assets/img/main-film-poster.jpg?v=261016025726" alt="">
+    <video class="hero__video" src="assets/video/main-film.mp4?v=261016025726" poster="assets/img/main-film-poster.jpg?v=261016025726"
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
     <div class="hero__copy">
-      <h1 class="hero__title">Home Aging Care</h1>
-      <p class="hero__sub">Every face ages differently.<br>Every face deserves its own care.</p>
+      <p class="hero__eyebrow">Anti-Aging Skincare</p>
+      <h1 class="hero__title">Every face ages differently.<br>Every face deserves its own care.</h1>
       <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
 
-  <!-- 02 컬렉션 -->
-  <section class="coll" aria-labelledby="coll-title">
-    <div class="coll__wave"><svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 210C210 120 380 60 640 92c260 32 330 170 560 182 170 9 300-60 400-120v520c-190 90-360 140-620 110-250-29-330-150-560-150C230 834 90 880 0 900Z"/></svg></div>
+  <!-- 02 배너 설명 : careCL Solution -->
+  <section class="sols" data-led="red" aria-labelledby="sols-title">
     <div class="wrap">
-      <div class="coll__head">
-        <h2 class="label rv" id="coll-title">The Collection</h2>
-        <a class="coll__more rv" href="products.html">View All</a>
+      <div class="sec-head">
+        <h2 class="label rv">careCL Solution</h2>
+        <p class="sec-title rv" id="sols-title" data-d="1">케어클이 제안하는<br>세 가지 홈 에이징 케어</p>
       </div>
-      <ul class="coll__grid">
-      <li class="card rv" data-d="0">
-        <a href="products.html">
-          <div class="card__img"><img src="assets/img/p-techfit.jpg" alt="TechFit" loading="lazy" width="1000" height="1250"></div>
-          <span class="card__name">TechFit</span>
-          <span class="card__meta">5초 스탬핑 고주파 디바이스</span>
-        </a>
-      </li>
-      <li class="card rv" data-d="1">
-        <a href="cosmetics.html">
-          <div class="card__img"><img src="assets/img/p-gel.jpg" alt="Collagen Booster Gel" loading="lazy" width="1000" height="1250"></div>
-          <span class="card__name">Collagen Booster Gel</span>
-          <span class="card__meta">콜라겐 부스터 젤</span>
-        </a>
-      </li>
-      <li class="card rv" data-d="2">
-        <a href="cosmetics.html">
-          <div class="card__img"><img src="assets/img/p-serum.jpg" alt="Light Toning Serum" loading="lazy" width="1000" height="1250"></div>
-          <span class="card__name">Light Toning Serum</span>
-          <span class="card__meta">라이트 토닝 세럼</span>
-        </a>
-      </li>
-      <li class="card rv" data-d="3">
-        <a href="cosmetics.html">
-          <div class="card__img"><img src="assets/img/p-mask.jpg" alt="Grid Mask Tech Fit" loading="lazy" width="1000" height="1250"></div>
-          <span class="card__name">Grid Mask Tech Fit</span>
-          <span class="card__meta">그리드 마스크</span>
-        </a>
-      </li>
-      </ul>
+      <div class="sols__list">
+      <a class="sol rv" href="products.html">
+        <span class="sol__tag">Device</span>
+        <div class="sol__txt">
+          <b class="sol__en">Device Solution</b>
+          <strong class="sol__kr">정해진 자리에 머무르는 스탬핑 디바이스</strong>
+          <p>문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.</p>
+        </div>
+        <div class="sol__img"><img src="assets/img/p-cheek.jpg" alt="" loading="lazy"></div>
+      </a>
+      <a class="sol rv" href="cosmetics.html">
+        <span class="sol__tag">Cosmetics</span>
+        <div class="sol__txt">
+          <b class="sol__en">Beauty Solution</b>
+          <strong class="sol__kr">디바이스와 함께 쓰는 전용 코스메틱</strong>
+          <p>그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.</p>
+        </div>
+        <div class="sol__img"><img src="assets/img/p-packs.jpg" alt="" loading="lazy"></div>
+      </a>
+      <a class="sol rv" href="aging-map.html">
+        <span class="sol__tag">Aging Map 22</span>
+        <div class="sol__txt">
+          <b class="sol__en">Care Solution</b>
+          <strong class="sol__kr">얼굴과 목 · 바디를 22개 부위로</strong>
+          <p>나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.</p>
+        </div>
+        <div class="sol__img"><img src="assets/img/p-mask-face.jpg" alt="" loading="lazy"></div>
+      </a>
+      </div>
     </div>
   </section>
 
   <!-- 03 철학 -->
-  <section class="phil" aria-labelledby="phil-title">
-    <div class="wrap">
-      <h2 class="big-title phil__title rv" id="phil-title">Read Precisely, Care Exactly</h2>
-      <p class="phil__sub rv" data-d="1">같은 나이라도 노화가 시작되는 자리는 저마다 다릅니다.
-      케어클은 그 차이를 먼저 읽는 것에서 안티에이징을 시작합니다.</p>
+  <section class="phil" data-led="purple" aria-labelledby="phil-title">
+    <div class="phil__dots" data-dotfield></div>
+    <div class="wrap phil__inner">
+      <h2 class="label label--center rv">Our Philosophy</h2>
+      <p class="phil__title rv" id="phil-title" data-d="1">같은 나이라도<br>노화가 시작되는 자리는 저마다 다릅니다</p>
+      <p class="phil__lead rv" data-d="2">유전, 뼈의 구조, 얼굴 근육의 발달, 피하 지방의 양에 따라 처짐이 먼저 오기도 하고 주름이 먼저 생기기도 합니다.
+      케어클은 그 차이를 먼저 읽는 것에서 안티에이징을 시작합니다. 모두에게 같은 제품을 권하지 않습니다.</p>
+      <p class="phil__en rv" data-d="3">Read precisely, care exactly.</p>
     </div>
-    <div class="phil__stage" data-phil>
-      <div class="phil__wave"><svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 210C210 120 380 60 640 92c260 32 330 170 560 182 170 9 300-60 400-120v520c-190 90-360 140-620 110-250-29-330-150-560-150C230 834 90 880 0 900Z"/></svg></div>
+  </section>
+
+  <!-- 04 핵심 (가운데 9구 LED 헤드 + 주변 다섯 항목) -->
+  <section class="core" data-led="green" aria-labelledby="core-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <h2 class="label label--center rv">How careCL Works</h2>
+        <p class="sec-title rv" id="core-title" data-d="1">케어클의 다섯 가지 기준</p>
+      </div>
+    </div>
+    <div class="core__stage" data-phil>
       <svg class="phil__lines" aria-hidden="true"></svg>
-      <div class="drop" data-drop data-drop-balls="5">
-        <canvas class="drop__canvas"></canvas>
-        <span class="drop__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+      <div class="core__center">
+        <div class="led9 core__head" data-led9 data-anno-target><canvas></canvas></div>
+        <span class="core__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
 <path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
 <path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
 <path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
@@ -117,60 +125,99 @@
 <path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
 </svg></span>
       </div>
-      <div class="anno anno--a rv" data-anno>
-        <h3 class="anno__title">6 Aging Types</h3>
+      <div class="anno anno--core rv" data-anno style="left:13%;top:16%">
+        <em class="anno__no">01 Read</em>
+        <h3 class="anno__title">6가지 노화 타입</h3>
         <p class="anno__desc">나는 어떤 방식으로 나이 들고 있는가</p>
+        <a class="anno__link" href="aging-types.html">타입 보기</a>
       </div>
-      <div class="anno anno--b rv" data-anno data-d="1">
-        <h3 class="anno__title">22 Care Zones</h3>
+      <div class="anno anno--core rv" data-anno style="left:87%;top:16%">
+        <em class="anno__no">02 Map</em>
+        <h3 class="anno__title">22개 관리 부위</h3>
         <p class="anno__desc">어디를 먼저 관리해야 하는가</p>
+        <a class="anno__link" href="aging-map.html">부위 보기</a>
       </div>
-      <div class="anno anno--c rv" data-anno data-d="2">
-        <h3 class="anno__title">5-Sec Stamping</h3>
-        <p class="anno__desc">정해진 자리에 5초, 눌러서 전달합니다</p>
+      <div class="anno anno--core rv" data-anno style="left:9%;top:62%">
+        <em class="anno__no">03 Tech</em>
+        <h3 class="anno__title">5초 스탬핑</h3>
+        <p class="anno__desc">어떻게 전달할 것인가</p>
+        <a class="anno__link" href="carecl-technology.html">기술 보기</a>
       </div>
-      <a class="btn-line phil__cta" href="aging-types.html">Explore Aging Lab</a>
+      <div class="anno anno--core rv" data-anno style="left:91%;top:62%">
+        <em class="anno__no">04 Product</em>
+        <h3 class="anno__title">디바이스 · 코스메틱</h3>
+        <p class="anno__desc">무엇으로 관리할 것인가</p>
+        <a class="anno__link" href="products.html">제품 보기</a>
+      </div>
+      <div class="anno anno--core rv" data-anno style="left:50%;top:100%">
+        <em class="anno__no">05 AI Agent</em>
+        <h3 class="anno__title">AI 피부 진단</h3>
+        <p class="anno__desc">2분 진단으로 나의 타입과 우선 부위 확인</p>
+        <a class="anno__link" href="survey.html">진단 시작</a>
+      </div>
     </div>
+    <div class="core__cta"><a class="btn-line" href="survey.html">나의 Aging Type 알아보기 →</a></div>
   </section>
 
-  <!-- 04 시스템 -->
-  <section class="sys" aria-labelledby="sys-title">
-    <div class="sys__img"><img src="assets/img/sys-model.jpg" alt="케어클 디바이스와 전용 코스메틱을 사용하는 모델" loading="lazy" width="2000" height="1333"></div>
+  <!-- 05 환기용 이미지 -->
+  <section class="sys" data-led="yellow" aria-labelledby="sys-title">
+    <div class="sys__img"><img src="assets/img/sys-model.jpg" alt="케어클 디바이스를 든 모델" loading="lazy" width="2000" height="1333"></div>
     <div class="sys__copy">
-      <h2 class="big-title sys__title rv" id="sys-title">The Home Aging Care System</h2>
-      <p class="sys__sub rv" data-d="1">디바이스 · 전용 코스메틱 · Aging Map 22<br>케어클이 제안하는 세 가지 홈 에이징 케어</p>
+      <p class="sys__title rv" id="sys-title">클리닉의 기술을, 집 안의 리추얼로</p>
     </div>
   </section>
 
-  <!-- 05 스텝 -->
-  <section class="steps" aria-labelledby="steps-title">
-    <div class="steps__wave"><svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 210C210 120 380 60 640 92c260 32 330 170 560 182 170 9 300-60 400-120v520c-190 90-360 140-620 110-250-29-330-150-560-150C230 834 90 880 0 900Z"/></svg></div>
+  <!-- 06 콜렉션 (3D 커버플로) -->
+  <section class="coll" data-led="yellow" data-cov aria-labelledby="coll-title">
     <div class="wrap">
-      <div class="steps__head">
-        <span class="steps__big rv" aria-hidden="true">5</span>
-        <div>
-          <h2 class="big-title steps__title rv" id="steps-title">Essential Steps</h2>
-          <p class="steps__sub rv" data-d="1">다섯 단계로 이어지는 홈 에이징 케어</p>
+      <div class="sec-head">
+        <h2 class="label rv">Collection</h2>
+        <p class="sec-title rv" id="coll-title" data-d="1">진단 결과에 맞춰<br>조합하는 제품</p>
+      </div>
+    </div>
+    <div class="cov" data-cov-stage>
+      <ul class="cov__list">
+        <li class="cov__item" data-cov-item data-tag="Device" data-name="TechFit" data-desc="5초 스탬핑 고주파 디바이스" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-techfit.jpg" alt="TechFit" loading="lazy"></a></li>
+        <li class="cov__item" data-cov-item data-tag="Device" data-name="CLB" data-desc="고주파 마사지기" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-clb.jpg" alt="CLB" loading="lazy"></a></li>
+        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Collagen Booster Gel" data-desc="콜라겐 부스터 젤" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-gel.jpg" alt="Collagen Booster Gel" loading="lazy"></a></li>
+        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Grid Mask" data-desc="그리드 마스크" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-mask.jpg" alt="Grid Mask" loading="lazy"></a></li>
+        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Toning Serum" data-desc="라이트 토닝 세럼" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-serum.jpg" alt="Toning Serum" loading="lazy"></a></li>
+        <li class="cov__item" data-cov-item data-tag="Accessory" data-name="전용 케이스" data-desc="디바이스 보관 가죽 케이스" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-case.jpg" alt="전용 케이스" loading="lazy"></a></li>
+      </ul>
+    </div>
+    <div class="wrap">
+      <div class="cov__foot">
+        <button type="button" class="cov__nav" data-cov-prev aria-label="이전 제품">←</button>
+        <div class="cov__cap" aria-live="polite">
+          <em data-cov-tag>Device</em><b data-cov-name>TechFit</b><span data-cov-desc>5초 스탬핑 고주파 디바이스</span>
+          <a class="cov__more" href="products.html" data-cov-link>자세히 보기</a>
         </div>
+        <button type="button" class="cov__nav" data-cov-next aria-label="다음 제품">→</button>
+      </div>
+      <div class="cov__dots" data-cov-dots></div>
+    </div>
+  </section>
+
+  <!-- 07 5 STEP -->
+  <section class="steps" data-led="purple" aria-labelledby="steps-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="label rv">Daily Routine</h2>
+        <p class="sec-title rv" id="steps-title" data-d="1">다섯 단계로 이어지는<br>홈 에이징 케어</p>
+        <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
         <div class="steps__sticky">
-          <div class="drop" data-drop data-drop-balls="4">
-            <div class="drop__media">
-        <img src="assets/img/s-hands.jpg" alt="" data-step-img="0" class="is-on">
-        <img src="assets/img/s-mask-glass.jpg" alt="" data-step-img="1">
-        <img src="assets/img/s-mask-device.jpg" alt="" data-step-img="2">
-        <img src="assets/img/p-gel.jpg" alt="" data-step-img="3">
-        <img src="assets/img/s-device-face.jpg" alt="" data-step-img="4">
-            </div>
+          <div class="stage3d">
+            <span class="stage3d__glow" aria-hidden="true"></span>
+            <span class="stage3d__floor" aria-hidden="true"></span>
             <div class="device3d" data-device3d aria-hidden="true"></div>
-            <canvas class="drop__canvas"></canvas>
           </div>
         </div>
         <ol class="steps__list" data-steps>
       <li class="step is-on" data-step>
         <div class="step__img"><img src="assets/img/s-hands.jpg" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">1/</span>
+        <span class="step__num" aria-hidden="true">01</span>
         <div>
           <h3 class="step__title">Cleanse</h3>
           <span class="step__kr">잔여물 정리</span>
@@ -179,7 +226,7 @@
       </li>
       <li class="step" data-step>
         <div class="step__img"><img src="assets/img/s-mask-glass.jpg" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">2/</span>
+        <span class="step__num" aria-hidden="true">02</span>
         <div>
           <h3 class="step__title">Read</h3>
           <span class="step__kr">오늘의 부위</span>
@@ -188,7 +235,7 @@
       </li>
       <li class="step" data-step>
         <div class="step__img"><img src="assets/img/s-mask-device.jpg" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">3/</span>
+        <span class="step__num" aria-hidden="true">03</span>
         <div>
           <h3 class="step__title">Activate</h3>
           <span class="step__kr">집중 전달</span>
@@ -197,7 +244,7 @@
       </li>
       <li class="step" data-step>
         <div class="step__img"><img src="assets/img/p-gel.jpg" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">4/</span>
+        <span class="step__num" aria-hidden="true">04</span>
         <div>
           <h3 class="step__title">Recovery</h3>
           <span class="step__kr">진정과 보습</span>
@@ -206,7 +253,7 @@
       </li>
       <li class="step" data-step>
         <div class="step__img"><img src="assets/img/s-device-face.jpg" alt="" loading="lazy"></div>
-        <span class="step__num" aria-hidden="true">5/</span>
+        <span class="step__num" aria-hidden="true">05</span>
         <div>
           <h3 class="step__title">Maintain</h3>
           <span class="step__kr">반복과 기록</span>
@@ -215,7 +262,45 @@
       </li>
         </ol>
       </div>
-      <div class="steps__end"><a class="btn-line" href="survey.html">AI 피부 진단 시작하기</a></div>
+    </div>
+  </section>
+
+  <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
+  <section class="shop" data-shop data-led="red">
+    <div class="shop__bg"><img src="assets/img/p-mask-close.jpg" alt="" loading="lazy"></div>
+    <div class="wrap shop__inner">
+      <div>
+        <h2 class="shop__title">제품 구매는 공식몰에서</h2>
+        <p class="shop__desc">진단 결과에 맞는 구성으로 담아 보세요.</p>
+      </div>
+      <a class="btn-line btn-line--light" href="products.html">Shop 바로가기 →</a>
+    </div>
+  </section>
+
+  <!-- CARECL 롤링 -->
+  <div class="marq" aria-hidden="true"><div class="marq__track"><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span></div></div>
+
+  <!-- 09 문의 -->
+  <section class="contact" data-led="green" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="label rv">Contact</h2>
+        <p class="sec-title rv" id="contact-title" data-d="1">케어클과 함께하실 분들께</p>
+      </div>
+      <div class="contact__grid">
+      <a class="ccard rv" data-d="0" href="contact.html">
+        <em>Global Business</em><b>해외 사업</b><p>수출 · 해외 유통 문의<br>support@carecl.co.kr</p>
+      </a>
+      <a class="ccard rv" data-d="1" href="partnership.html">
+        <em>Partnership</em><b>유통 · 제휴</b><p>총판 및 제휴 제안<br>support@carecl.co.kr</p>
+      </a>
+      <a class="ccard rv" data-d="2" href="press.html">
+        <em>Media / PR</em><b>미디어</b><p>취재 · 광고 · 협찬<br>support@carecl.co.kr</p>
+      </a>
+      <a class="ccard rv" data-d="3" href="inquiry.html">
+        <em>General</em><b>일반 문의</b><p>제품 사용 · A/S<br>TEL +82 31-943-1028</p>
+      </a>
+      </div>
     </div>
   </section>
 
@@ -250,8 +335,8 @@
     <span>© 2026 CARECL. All rights reserved.</span>
   </div>
 </footer>
-<script src="js/drop.js?v=261016024554"></script>
-<script src="js/stem.js?v=261016024554"></script>
-<script type="module" src="js/device3d.js?v=261016024554"></script>
+<script src="js/led.js?v=261016025726"></script>
+<script src="js/stem.js?v=261016025726"></script>
+<script type="module" src="js/device3d.js?v=261016025726"></script>
 </body>
 </html>
