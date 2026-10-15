@@ -258,7 +258,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 /* ── 05 환기용 이미지 ─────────────────────────── */
 .sys{position:relative;overflow:hidden}
 /* 어깨·손목 아래를 잘라낸 가로로 긴 컷 — 비율 그대로 화면 폭 가득 */
-.sys__img{position:relative;width:100%;aspect-ratio:2400/1116;overflow:hidden;background:#F2D9C6}
+.sys__img{position:relative;width:100%;aspect-ratio:2400/1405;overflow:hidden;background:#F2D9C6}
 .sys__img img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scale(1.05);will-change:transform}
 /* 왼쪽 살구색 빈 공간에 한·영을 섞은 제목 */
 .sys__copy{position:absolute;left:var(--gut);top:50%;transform:translateY(-50%);z-index:2;max-width:34%}
