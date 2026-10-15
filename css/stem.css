@@ -241,7 +241,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 /* ── 05 환기용 이미지 ─────────────────────────── */
 .sys{position:relative;padding-right:clamp(0px,9.4vw,180px)}
 .sys__img{position:relative;aspect-ratio:3/2;max-height:100svh;width:100%;overflow:hidden}
-.sys__img img{width:100%;height:100%;object-fit:cover;object-position:30% 40%}
+.sys__img img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
 .sys__copy{position:absolute;right:calc(clamp(0px,9.4vw,180px) + var(--gut));top:clamp(40px,7vw,120px)}
 .sys__title{margin:0;font-family:var(--f-title);font-weight:500;font-size:clamp(20px,2.2vw,40px);line-height:1.3;letter-spacing:-.02em;white-space:nowrap}
 
@@ -383,7 +383,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .js .anno.rv.is-in{transform:none!important}
 
   .sys__img{aspect-ratio:4/5}
-  .sys__img img{object-position:28% 50%}
+  .sys__img img{object-position:40% 60%}
   .sys__copy{position:static;padding:26px var(--gut) 0}
   .sys__title{white-space:normal}
 

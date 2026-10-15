@@ -118,11 +118,11 @@ WAVE = """<svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="tr
 # ── 메인 원고 (기존 사이트 메인 순서·문구 그대로) ─────────────
 SOLUTIONS = [
     ("Device", "Device Solution", "정해진 자리에 머무르는 스탬핑 디바이스",
-     "문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.", "p-cheek.jpg", "products.html"),
+     "문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.", "n-techfit-stand.jpg", "products.html"),
     ("Cosmetics", "Beauty Solution", "디바이스와 함께 쓰는 전용 코스메틱",
      "그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.", "p-packs.jpg", "cosmetics.html"),
     ("Aging Map 22", "Care Solution", "얼굴과 목 · 바디를 22개 부위로",
-     "나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.", "p-mask-face.jpg", "aging-map.html"),
+     "나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.", "n-mask-glass-wide.jpg", "aging-map.html"),
 ]
 
 CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top%)
@@ -139,15 +139,15 @@ PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크)
     ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html"),
     ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html"),
     ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html"),
-    ("Accessory", "전용 케이스", "디바이스 보관 가죽 케이스", "p-case.jpg", "products.html"),
+    ("Accessory", "Firenze Bag", "케어클 피렌체 백 · 디바이스 전용 가죽 케이스", "p-case.jpg", "products.html"),
 ]
 
 STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
-    ("Cleanse", "잔여물 정리", "잔여물을 정리해 다음 단계가 제대로 전달되도록 준비합니다.", "s-hands.jpg"),
+    ("Cleanse", "잔여물 정리", "잔여물을 정리해 다음 단계가 제대로 전달되도록 준비합니다.", "p-gel.jpg"),
     ("Read", "오늘의 부위", "오늘 먼저 관리할 부위를 Aging Map 22 기준으로 확인합니다.", "s-mask-glass.jpg"),
-    ("Activate", "집중 전달", "한 부위에 머무르며 수직으로 전달합니다.", "s-mask-device.jpg"),
-    ("Recovery", "진정과 보습", "전용 코스메틱으로 전달 직후의 피부를 안정시킵니다.", "p-gel.jpg"),
-    ("Maintain", "반복과 기록", "주 2~3회 같은 자리를 반복해 변화를 기록합니다.", "s-device-face.jpg"),
+    ("Activate", "집중 전달", "한 부위에 머무르며 수직으로 전달합니다.", "p-techfit.jpg"),
+    ("Recovery", "진정과 보습", "전용 코스메틱으로 전달 직후의 피부를 안정시킵니다.", "p-serum.jpg"),
+    ("Maintain", "반복과 기록", "주 2~3회 같은 자리를 반복해 변화를 기록합니다.", "n-lineup-sq.jpg"),
 ]
 
 CONTACTS = [
@@ -258,7 +258,7 @@ def page_index():
 
   <!-- 05 환기용 이미지 -->
   <section class="sys" data-led="yellow" aria-labelledby="sys-title">
-    <div class="sys__img"><img src="assets/img/sys-model.jpg" alt="케어클 디바이스를 든 모델" loading="lazy" width="2000" height="1333"></div>
+    <div class="sys__img"><img src="assets/img/n-lineup-wide.jpg" alt="TechFit 디바이스와 콜라겐 젤, 그리드 마스크" loading="lazy" width="2000" height="1333"></div>
     <div class="sys__copy">
       <p class="sys__title rv" id="sys-title">클리닉의 기술을, 집 안의 리추얼로</p>
     </div>
@@ -315,7 +315,7 @@ def page_index():
 
   <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
   <section class="shop" data-shop data-led="red">
-    <div class="shop__bg"><img src="assets/img/p-mask-close.jpg" alt="" loading="lazy"></div>
+    <div class="shop__bg"><img src="assets/img/n-mask-light.jpg" alt="" loading="lazy"></div>
     <div class="wrap shop__inner">
       <div>
         <h2 class="shop__title">제품 구매는 공식몰에서</h2>
