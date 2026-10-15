@@ -95,6 +95,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* ── LED : 마우스 빛 번짐 ───────────────────────── */
 .led-glow{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:150;mix-blend-mode:multiply}
+.led-dot{
+  position:fixed;left:0;top:0;z-index:160;width:10px;height:10px;border-radius:50%;pointer-events:none;
+  background:var(--led);box-shadow:0 0 0 2px color-mix(in srgb,var(--led) 25%,transparent),0 0 10px var(--led);
+  opacity:0;transition:opacity .25s ease;will-change:transform;
+}
+.led-dot.is-on{opacity:1}
 
 /* ── LED : 9구 헤드 / 점 격자 ───────────────────── */
 .led9{position:relative;aspect-ratio:1/1}

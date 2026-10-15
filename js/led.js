@@ -50,6 +50,11 @@
     glow.setAttribute('aria-hidden', 'true');
     document.body.appendChild(glow);
     gctx = glow.getContext('2d');
+    /* 화살표 끝에 붙는 10px 점 — 퍼진 빛 속에서 시선이 머무는 자리 */
+    var dot = document.createElement('span');
+    dot.className = 'led-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(dot);
     var sizeGlow = function () {
       glow.width = Math.ceil(innerWidth * SCALE);
       glow.height = Math.ceil(innerHeight * SCALE);
@@ -58,13 +63,16 @@
     addEventListener('resize', sizeGlow);
     addEventListener('pointermove', function (e) {
       pointer = { x: e.clientX, y: e.clientY };
+      dot.style.transform = 'translate3d(' + (e.clientX - 5) + 'px,' + (e.clientY - 5) + 'px,0)';
+      dot.classList.add('is-on');
       var now = performance.now();
       if (!trail.length || now - trail[trail.length - 1].t > 28) trail.push({ x: e.clientX, y: e.clientY, t: now });
       if (trail.length > 40) trail.shift();
       lastMove = now;
       wake();
     }, { passive: true });
-    document.addEventListener('pointerleave', function () { pointer = null; wake(); });
+    document.addEventListener('pointerleave', function () { pointer = null; dot.classList.remove('is-on'); wake(); });
+    document.documentElement.addEventListener('mouseleave', function () { pointer = null; dot.classList.remove('is-on'); wake(); });
   }
 
   function drawGlow(now) {
@@ -75,8 +83,8 @@
     trail = trail.filter(function (p) { return now - p.t < LIFE; });
     for (var i = 0; i < trail.length; i++) {
       var p = trail[i], age = (now - p.t) / LIFE;
-      var a = 0.16 * (1 - age) * (1 - age);
-      var r = (90 + age * 140) * SCALE;
+      var a = 0.15 * (1 - age) * (1 - age);
+      var r = (50 + age * 80) * SCALE;
       var g = gctx.createRadialGradient(p.x * SCALE, p.y * SCALE, 0, p.x * SCALE, p.y * SCALE, r);
       g.addColorStop(0, rgb(current, a));
       g.addColorStop(1, rgb(current, 0));
@@ -85,7 +93,7 @@
       alive = true;
     }
     if (pointer) {
-      var R = 230 * SCALE, x = pointer.x * SCALE, y = pointer.y * SCALE;
+      var R = 140 * SCALE, x = pointer.x * SCALE, y = pointer.y * SCALE;
       var g2 = gctx.createRadialGradient(x, y, 0, x, y, R);
       g2.addColorStop(0, rgb(current, 0.30));
       g2.addColorStop(0.45, rgb(current, 0.12));
