@@ -300,12 +300,10 @@ def page_index():
         <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
-        <div class="steps__sticky">
-          <div class="stage3d">
-            <span class="stage3d__glow" aria-hidden="true"></span>
-            <span class="stage3d__floor" aria-hidden="true"></span>
-            <div class="device3d" data-device3d aria-hidden="true"></div>
-          </div>
+        <div class="steps__stage" aria-hidden="true">
+          <span class="stage3d__glow"></span>
+          <span class="stage3d__floor"></span>
+          <div class="device3d" data-device3d></div>
         </div>
         <ol class="steps__list" data-steps>
 {step_items}

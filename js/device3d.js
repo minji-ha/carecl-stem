@@ -1,7 +1,9 @@
 /* =========================================================
-   careCL 3D 디바이스 — Essential Steps 왼쪽
-   · 스크롤하면 대각선 축으로 두 바퀴 돌고, 중간에는 비스듬히 기울었다가
-     마지막 단계에서 정면·수직(제자리)으로 돌아온다.
+   careCL 3D 디바이스 — Daily Routine 지그재그
+   · 단계마다 좌우를 바꿔 내려온다: 01 오른쪽 → 02 왼쪽 → 03 오른쪽 …
+     (글은 반대쪽에 놓인다)
+   · 그동안 대각선 축으로 두 바퀴 돌고, 가운데서 기울고 커졌다가
+     마지막 단계에서 정면·수직·원래 크기로 돌아온다.
    · 회전은 목표값을 바로 따라가지 않고 조금씩 따라가 관성이 느껴진다.
    ========================================================= */
 import * as THREE from 'three';
@@ -19,7 +21,8 @@ const TURNS = 2;                                                // 스텝 전체
 const SWELL = 0.24;                                             // 회전 중 커지는 정도
 const LEAN = -0.55;                                             // 중간에 기우는 각도(rad, 약 -31°)
 const DEVICE_H = 0.24;                                          // GLB 높이
-const FILL = 0.64;                                              // 박스 높이 대비 디바이스 높이
+const FILL = 0.56;                                              // 무대 높이 대비 디바이스 높이
+const SIDE = 0.25;                                              // 좌우로 비켜서는 거리(무대 폭 대비)
 
 function smoother(t) { return t * t * t * (t * (t * 6 - 15) + 10); }   // 시작·끝이 부드러운 곡선
 const clamp01 = v => Math.max(0, Math.min(1, v));
@@ -63,6 +66,9 @@ async function start() {
     const vFov = THREE.MathUtils.degToRad(camera.fov);
     camera.position.set(0, 0, (DEVICE_H / FILL) / (2 * Math.tan(vFov / 2)));
     camera.updateProjectionMatrix();
+    /* 화면 좌표 ↔ 3D 좌표 비율 (디바이스가 있는 깊이 기준) */
+    viewW = 2 * Math.tan(vFov / 2) * camera.position.z * camera.aspect;
+    pxPerUnit = w / viewW;
     dirty = true;
   }
 
@@ -79,7 +85,9 @@ async function start() {
   const qSpin = new THREE.Quaternion();
   const qLean = new THREE.Quaternion();
   const Z = new THREE.Vector3(0, 0, 1);
-  let dirty = true, visible = true;
+  let dirty = true, visible = true, viewW = 1, pxPerUnit = 1;
+  const N = steps.length;
+  const stage = mount.parentNode;
 
   /* 진행도(숫자)를 부드럽게 따라간 뒤 그 값으로 자세를 매번 새로 계산한다.
      자세끼리 보간하면 빠른 스크롤에서 한 바퀴 이상 건너뛸 때 가장 짧은 길(=0바퀴)을
@@ -91,6 +99,14 @@ async function start() {
     qSpin.setFromAxisAngle(SPIN_AXIS, e * Math.PI * 2 * TURNS);   // p=1에서 정확히 두 바퀴 → 제자리
     qLean.setFromAxisAngle(Z, LEAN * Math.sin(Math.PI * p));       // 처음·끝 0, 가운데서 가장 기움
     return out.copy(qLean).multiply(qSpin).multiply(HOME);
+  }
+  /* 좌우 위치: 단계 i의 가운데에서 짝수 단계(01·03·05)는 오른쪽, 홀수는 왼쪽.
+     단계 사이에서는 반대편으로 부드럽게 건너간다. */
+  function sideAt(p) {
+    const f = p * (N - 1), i = Math.min(N - 2, Math.floor(f)), t = f - i;
+    const s = k => (k % 2 === 0 ? 1 : -1);
+    const e = t * t * (3 - 2 * t);
+    return s(i) + (s(i + 1) - s(i)) * e;
   }
   /* 크기: 시작·끝은 1, 회전 한가운데서 가장 크게 (최대 1.24배) */
   function scaleAt(p) { return 1 + SWELL * Math.sin(Math.PI * smoother(p)); }
@@ -118,6 +134,9 @@ async function start() {
     const moving = Math.abs(gap) >= 1e-4;
     poseAt(pNow, pivot.quaternion);
     pivot.scale.setScalar(scaleAt(pNow));
+    const x = (reduce ? 1 : sideAt(pNow)) * SIDE * viewW;
+    pivot.position.x = x;
+    stage.style.setProperty('--dx', (x * pxPerUnit).toFixed(1) + 'px');
 
     /* 제자리에서도 아주 천천히 떠 있는 느낌 */
     pivot.position.y = reduce ? 0 : Math.sin(t * 1.1) * 0.0035;

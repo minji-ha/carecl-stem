@@ -279,26 +279,27 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 
 /* ── 07 데일리 루틴 (3D 디바이스) ─────────────── */
 .steps{position:relative;padding-top:var(--sec)}
-.steps__body{
-  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
-  column-gap:clamp(20px,4vw,80px);margin-top:clamp(20px,3vw,50px);max-width:1280px;margin-inline:auto;
-}
-.steps__sticky{position:sticky;top:calc(var(--head) + 4vh);height:calc(100svh - var(--head) - 8vh);display:grid;place-items:center}
-.stage3d{position:relative;width:min(42vw,640px,calc(100svh - var(--head) - 10vh));aspect-ratio:1/1}
+.steps__body{position:relative;margin-top:clamp(20px,3vw,50px);max-width:1280px;margin-inline:auto}
+/* 무대는 화면에 붙어 있고, 단계 글이 그 위로 지나간다 */
+.steps__stage{position:sticky;top:var(--head);height:calc(100svh - var(--head));z-index:0;pointer-events:none;--dx:0px}
+.steps__stage .device3d{position:absolute;inset:0}
 .stage3d__glow{
-  position:absolute;inset:14%;border-radius:50%;z-index:0;filter:blur(18px);
+  position:absolute;left:50%;top:50%;width:min(40vw,600px);aspect-ratio:1/1;border-radius:50%;z-index:0;filter:blur(18px);
+  transform:translate(calc(-50% + var(--dx)),-50%);
   background:radial-gradient(circle,color-mix(in srgb,var(--led) 34%,transparent) 0%,color-mix(in srgb,var(--led) 10%,transparent) 42%,transparent 70%);
 }
-.stage3d__floor{position:absolute;left:30%;right:30%;bottom:9%;height:5%;border-radius:50%;z-index:0;
+.stage3d__floor{position:absolute;left:50%;bottom:12%;width:min(14vw,200px);height:22px;border-radius:50%;z-index:0;
+  transform:translateX(calc(-50% + var(--dx)));
   background:radial-gradient(ellipse at center,rgba(51,27,15,.22),rgba(51,27,15,0) 70%);filter:blur(4px)}
-.device3d{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .9s ease}
+.device3d{z-index:1;opacity:0;transition:opacity .9s ease}
 .device3d canvas{display:block;width:100%!important;height:100%!important}
 .device3d.is-ready{opacity:1}
-.steps__list{list-style:none;margin:0;padding:0}
+.steps__list{list-style:none;margin:calc(-100svh + var(--head)) 0 0;padding:0;position:relative;z-index:1}
 .step{
-  min-height:68svh;display:grid;grid-template-columns:auto 1fr;column-gap:clamp(14px,1.6vw,28px);
+  width:min(44%,540px);min-height:calc(100svh - var(--head));display:grid;grid-template-columns:auto 1fr;column-gap:clamp(14px,1.6vw,28px);
   align-content:center;opacity:.3;transition:opacity .6s ease;
 }
+.step:nth-child(even){margin-left:auto}
 .step.is-on{opacity:1}
 .step__num{font-family:var(--f-ui);font-weight:200;font-style:italic;color:var(--pale);font-size:clamp(52px,5.6vw,108px);line-height:.85}
 .step.is-on .step__num{color:color-mix(in srgb,var(--led) 55%,var(--pale))}
@@ -306,7 +307,6 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 .step__kr{display:block;margin-top:.45em;font-weight:600;font-size:clamp(13px,1vw,16px);letter-spacing:-.01em}
 .step__desc{margin:1em 0 0;font-size:clamp(14px,1.05vw,17px);line-height:1.85;color:var(--ink-2);max-width:34ch}
 .step__img{display:none}
-.steps__list .step:last-child{min-height:56svh}
 
 /* ── 08 공식몰 (높이가 자라는 띠) ─────────────── */
 .shop{position:relative;height:300px;display:flex;align-items:center;overflow:hidden;background:#1C1916;color:#fff;margin-top:clamp(40px,5vw,90px)}
@@ -391,8 +391,9 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .sys__img img{object-position:46% 50%}
 
 
-  .steps__body{grid-template-columns:1fr}
-  .steps__sticky{display:none}
+  .steps__stage{display:none}
+  .steps__list{margin-top:0}
+  .step,.step:nth-child(even){width:auto;margin-left:0}
   .step{min-height:0;opacity:1;padding-block:30px;border-top:1px solid var(--hair)}
   .steps__list .step:last-child{min-height:0}
   .step__img{display:block;grid-column:1/-1;width:min(60vw,260px);aspect-ratio:1/1;border-radius:50%;overflow:hidden;margin:0 auto 20px}
