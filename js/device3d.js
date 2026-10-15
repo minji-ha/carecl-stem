@@ -9,7 +9,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from '../libs/three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from '../libs/three/addons/environments/RoomEnvironment.js';
-import { cleanDeviceMaterial } from './device-material.js?v=1';
+import { cleanDeviceMaterial } from './device-material.js?v=2';
 
 const mount = document.querySelector('[data-device3d]');
 const list = document.querySelector('[data-steps]');
