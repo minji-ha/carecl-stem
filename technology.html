@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>홈뷰티 디바이스 기술 | careCL 케어클</title>
+<meta name="description" content="careCL 홈뷰티 디바이스 기술">
+<link rel="icon" href="assets/img/carecl-logo.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="css/stem.css?v=261016031714">
+<link rel="stylesheet" href="css/sub.css?v=261016031714">
+<script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
+</head>
+<body>
+<header class="header">
+  <nav class="header__nav" aria-label="주 메뉴 왼쪽"><a href="about.html">Company</a><a href="aging-types.html">Aging Lab</a><a href="carecl-technology.html" aria-current="page">Technology</a></nav>
+  <a class="header__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+<path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
+<path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
+<path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
+<path fill="currentColor" fill-rule="nonzero" d="M319.14 59.26 C312.84 54.41 305.52 51.99 297.18 51.99 C287.12 51.99 278.50 55.56 271.35 62.69 C264.19 69.82 260.61 78.45 260.61 88.57 C260.61 96.91 263.03 104.23 267.87 110.52 L319.14 59.26 M272.80 115.85 C279.63 122.10 287.76 125.22 297.18 125.22 C307.30 125.22 315.94 121.64 323.10 114.48 C324.01 113.57 324.87 112.62 325.68 111.66 L333.35 114.40 C331.95 116.34 330.36 118.19 328.59 119.97 C319.92 128.64 309.45 132.97 297.18 132.97 C284.96 132.97 274.52 128.64 265.86 119.97 C257.19 111.31 252.86 100.84 252.86 88.57 C252.86 76.35 257.19 65.91 265.86 57.24 C274.52 48.58 284.96 44.24 297.18 44.24 C307.68 44.24 316.85 47.39 324.71 53.69 C326.00 54.77 327.30 55.95 328.59 57.24 C329.07 57.72 329.53 58.21 329.96 58.69 L324.47 64.18 L272.80 115.85"/>
+<path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
+<path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
+</svg></a>
+  <nav class="header__nav header__nav--right" aria-label="주 메뉴 오른쪽"><a href="products.html">Products</a><a href="contact.html">Contact</a></nav>
+  <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
+</header>
+<nav class="mnav" aria-label="모바일 메뉴"><a href="about.html">Company<small>회사 소개</small></a><a href="aging-types.html">Aging Lab<small>6가지 노화 타입 · 22개 관리 부위</small></a><a href="carecl-technology.html">Technology<small>케어클 기술</small></a><a href="products.html">Products<small>디바이스 · 코스메틱</small></a><a href="contact.html">Contact<small>문의</small></a><a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
+<main class="sub">
+  <section class="subhead" data-led="red">
+    <div class="wrap">
+      <p class="label">Technology</p>
+      <h1 class="subhead__title">Beauty Device Technology</h1>
+      <p class="subhead__kr">홈뷰티 디바이스 기술</p>
+    </div>
+    <nav class="subtabs" aria-label="Technology 하위 메뉴"><div class="wrap subtabs__in"><a href="technology.html" aria-current="page">Beauty Device Technology</a><a href="carecl-technology.html">careCL Technology</a></div></nav>
+  </section>
+  <div class="sub-body">
+<section data-led="red" class="sec" id="basic">
+  <div class="wrap">
+    <div class="seclabel"><i></i><span>BEAUTY DEVICE TECHNOLOGY</span></div>
+    <h2>홈뷰티 디바이스 기술 바로 알기</h2>
+    <div class="techrows"><div class="techrow" id="rf"><div class="techrow__head"><span class="techrow__no">01</span><span class="techrow__en">RADIO FREQUENCY</strong></span><span class="techrow__kr"><strong>고주파</span></div><div class="techrow__body"><p class="techblock__sub"><strong>피부 속에서 열에너지를 만들어 탄력을 관리하는 고주파 기술</strong></p><p>고주파는 고주파 전류를 피부에 전달하는 기술입니다.</p><p>단순히 기기 표면을 뜨겁게 만들어 피부를 데우는 방식과는 다릅니다. 고주파 에너지가 피부 조직을 통과할 때 조직의 전기적 저항에 의해 열이 발생하는 원리를 이용합니다.</p><p>이렇게 형성된 열에너지는 홈뷰티 디바이스에서 주로 피부 탄력과 피부결을 관리하기 위한 기술로 활용됩니다.</p><p>하지만 모든 고주파 기기가 같은 방식으로 작동하는 것은 아닙니다. 사용하는 주파수뿐 아니라 전극의 구조, 에너지를 전달하는 시간, 피부와 접촉하는 방식에 따라 실제 에너지 전달 방식과 사용 경험이 달라질 수 있습니다.</p><p>그래서 고주파에서는 단순히 “몇 MHz인가”보다도</p><ul class="ulist"><li>어디에 에너지를 전달하는지,</li><li>얼마 동안 전달하는지,</li><li>사용 중 에너지를 얼마나 일정하게 관리할 수 있는지</li></ul><p>가 중요합니다.</p><p>careCL이 고주파 기술에서 특히 위치와 시간에 주목한 이유도 여기에 있습니다.</p></div></div><div class="techrow" id="us"><div class="techrow__head"><span class="techrow__no">02</span><span class="techrow__en">초음파</strong></span><span class="techrow__kr"><strong>ULTRASOUND</span></div><div class="techrow__body"><p class="techblock__sub">소리의 진동 에너지를 이용해 원하는 부위를 관리하는 기술</p><p>초음파는 사람이 들을 수 있는 범위를 넘어선 높은 주파수의 음파, 즉 기계적인 진동 에너지를 이용하는 기술입니다.</p><p>RF가 전기 에너지를 이용해 조직에서 열을 형성하는 기술이라면, 초음파는 음파의 진동을 피부와 조직으로 전달하는 기술이라는 점에서 원리 자체가 다릅니다.</p><p>초음파 기술은 사용하는 주파수와 출력, 그리고 에너지를 전달하는 방식에 따라 목적이 크게 달라집니다.</p><p>넓은 범위에 초음파를 전달하는 방식도 있고, 에너지를 특정 지점에 모아 전달하는 집속 초음파(Focused Ultrasound) 방식도 있습니다.</p><p>특히 HIFU라고 알려진 High-Intensity Focused Ultrasound는 초음파 에너지를 특정 초점에 집중시키는 기술입니다. 따라서 모든 초음파 디바이스를 HIFU와 같은 기술로 이해해서는 안 됩니다.</p><p>즉, 초음파에서는 단순히 “초음파가 들어갔다”보다</p><ul class="ulist"><li>어떤 주파수의 초음파인지,</li><li>에너지가 넓게 전달되는지 특정 지점에 집중되는지,</li><li>어떤 부위를 관리하도록 설계되었는지를 함께 보는 것이 중요합니다.</li></ul></div></div><div class="techrow" id="ems"><div class="techrow__head"><span class="techrow__no">03</span><span class="techrow__en">ELECTRICAL MUSCLE STIMULATION</strong></span><span class="techrow__kr"><strong>EMS</span></div><div class="techrow__body"><p class="techblock__sub">전기 자극으로 근육의 움직임을 유도하는 기술</p><p>EMS는 전기 신호를 이용해 근육에 자극을 전달하는 기술입니다.</p><p>얼굴용 홈뷰티 디바이스에서는 주로 얼굴이나 목의 근육을 자극해 윤곽 및 탄력 관리 루틴에 활용됩니다.</p><p>기기마다 사용하는 주파수와 파형, 출력 설계가 다르기 때문에 자극의 느낌과 근육 반응 방식도 달라질 수 있습니다.</p></div></div><div class="techrow" id="micro"><div class="techrow__head"><span class="techrow__no">04</span><span class="techrow__en">미세전류</strong></span><span class="techrow__kr"><strong>MICROCURRENT</span></div><div class="techrow__body"><p class="techblock__sub">매우 낮은 세기의 전류를 활용하는 피부 관리 기술</p><p>미세전류는 이름 그대로 매우 낮은 세기의 전류를 피부에 전달하는 기술입니다.</p><p>EMS가 근육 자극을 목적으로 비교적 뚜렷한 전기 자극을 사용하는 기술이라면, 미세전류는 훨씬 낮은 전류를 사용하기 때문에 사용 중 근육의 움직임이 크지 않은 경우가 많습니다.</p><p>홈뷰티에서는 피부 컨디션과 스킨케어를 보조하는 기술로 활용됩니다.</p><p>즉,</p><ul class="ulist"><li>EMS = 근육 자극 중심</li><li>Microcurrent = 낮은 전류를 이용한 피부 관리 중심으로 이해하면 쉽습니다.</li></ul></div></div><div class="techrow" id="ep"><div class="techrow__head"><span class="techrow__no">05</span><span class="techrow__en">EP</strong></span><span class="techrow__kr"><strong>ELECTROPORATION</span></div><div class="techrow__body"><p class="techblock__sub">스킨케어 성분 전달을 돕는 기술</p><p>Electroporation은 피부에 짧은 전기 펄스를 전달해, 스킨케어 성분이 피부에 보다 효과적으로 전달될 수 있도록 돕는 기술입니다.</p><p>홈뷰티에서는 세럼이나 에센스 같은 화장품과 함께 사용하며, 피부 표면에 머무는 스킨케어 성분의 전달을 보조해 흡수 케어와 피부결·광채 관리에 활용됩니다.</p><p>사용하는 전압과 펄스 방식, 함께 사용하는 화장품의 제형과 성분에 따라 사용감과 관리 방식은 달라질 수 있습니다.</p></div></div></div>
+  </div>
+</section>
+
+<section data-led="red" class="sec" id="compare">
+  <div class="wrap">
+    <div class="seclabel"><i></i><span>RF vs ULTRASOUND</span></div>
+    <h2><strong>고주파와 초음파는 무엇이 다른가요?</strong></h2>
+    <div class="ctable"><table><tr><th></th><th>고주파</th><th>초음파</th></tr><tr><th>사용하는 에너지</th><td>고주파 전기 에너지</td><td>고주파 음파 에너지</td></tr><tr><th>기본 원리</th><td>조직의 저항을 이용해 열에너지 형성</td><td>음파의 기계적 진동을 전달</td></tr><tr><th>주요 설계 요소</th><td>주파수, 전극 구조, 출력, 접촉 시간</td><td>주파수, 출력, 초점 및 전달 방식</td></tr><tr><th>홈뷰티 활용</th><td>주로 피부 탄력·피부결 관리</td><td>목적에 따라 피부 관리부터 집속 에너지 관리까지 다양</td></tr><tr><th>핵심</th><td>어디에 얼마나 일정하게 전달하는가</td><td>어디에 어떤 방식으로 음파를 전달하는가</td></tr></table></div>
+  </div>
+</section>
+<section data-led="red" class="sec"><div class="wrap"><div class="splitfig"><div class="splitfig__img"><img src="assets/img/n-techfit-side.jpg" alt=""></div><div class="splitfig__copy"><h3>에너지를 어디에, 얼마나 일정하게</h3><p>같은 기술이라도 전달하는 위치와 시간, 접촉 방식에 따라 결과는 달라집니다. 케어클은 그 조건을 고정했습니다.</p></div></div></div></section>
+
+  </div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <span class="foot__tag">Home Aging Care</span>
+        <a class="foot__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+<path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
+<path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
+<path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
+<path fill="currentColor" fill-rule="nonzero" d="M319.14 59.26 C312.84 54.41 305.52 51.99 297.18 51.99 C287.12 51.99 278.50 55.56 271.35 62.69 C264.19 69.82 260.61 78.45 260.61 88.57 C260.61 96.91 263.03 104.23 267.87 110.52 L319.14 59.26 M272.80 115.85 C279.63 122.10 287.76 125.22 297.18 125.22 C307.30 125.22 315.94 121.64 323.10 114.48 C324.01 113.57 324.87 112.62 325.68 111.66 L333.35 114.40 C331.95 116.34 330.36 118.19 328.59 119.97 C319.92 128.64 309.45 132.97 297.18 132.97 C284.96 132.97 274.52 128.64 265.86 119.97 C257.19 111.31 252.86 100.84 252.86 88.57 C252.86 76.35 257.19 65.91 265.86 57.24 C274.52 48.58 284.96 44.24 297.18 44.24 C307.68 44.24 316.85 47.39 324.71 53.69 C326.00 54.77 327.30 55.95 328.59 57.24 C329.07 57.72 329.53 58.21 329.96 58.69 L324.47 64.18 L272.80 115.85"/>
+<path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
+<path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
+</svg></a>
+      </div>
+      <div class="foot__side">
+        <h2>AI Skin Test</h2>
+        <p>2분 설문으로 나의 노화 타입과<br>먼저 관리할 부위를 확인하세요.</p>
+        <a class="btn-line" href="survey.html">진단 시작하기</a>
+      </div>
+    </div>
+    <nav class="foot__nav" aria-label="푸터 메뉴">
+      <a href="about.html">Company</a><a href="aging-types.html">Aging Lab</a><a href="carecl-technology.html">Technology</a><a href="products.html">Products</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+  <div class="foot__bar">
+    <span>CARECL CO.,Ltd. · CEO Hyungkyu Choi · 사업자등록번호 591-88-03097 · 통신판매업 제2025-고양일산동-0585호</span>
+    <span>TEL +82 31-943-1028 · support@carecl.co.kr</span>
+    <span>© 2026 CARECL. All rights reserved.</span>
+  </div>
+</footer>
+<script src="js/led.js?v=261016031714"></script>
+<script src="js/stem.js?v=261016031714"></script>
+</body>
+</html>

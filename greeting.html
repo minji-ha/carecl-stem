@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>브랜드 스토리 | careCL 케어클</title>
+<meta name="description" content="careCL 브랜드 스토리">
+<link rel="icon" href="assets/img/carecl-logo.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="css/stem.css?v=261016031714">
+<link rel="stylesheet" href="css/sub.css?v=261016031714">
+<script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
+</head>
+<body>
+<header class="header">
+  <nav class="header__nav" aria-label="주 메뉴 왼쪽"><a href="about.html" aria-current="page">Company</a><a href="aging-types.html">Aging Lab</a><a href="carecl-technology.html">Technology</a></nav>
+  <a class="header__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+<path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
+<path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
+<path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
+<path fill="currentColor" fill-rule="nonzero" d="M319.14 59.26 C312.84 54.41 305.52 51.99 297.18 51.99 C287.12 51.99 278.50 55.56 271.35 62.69 C264.19 69.82 260.61 78.45 260.61 88.57 C260.61 96.91 263.03 104.23 267.87 110.52 L319.14 59.26 M272.80 115.85 C279.63 122.10 287.76 125.22 297.18 125.22 C307.30 125.22 315.94 121.64 323.10 114.48 C324.01 113.57 324.87 112.62 325.68 111.66 L333.35 114.40 C331.95 116.34 330.36 118.19 328.59 119.97 C319.92 128.64 309.45 132.97 297.18 132.97 C284.96 132.97 274.52 128.64 265.86 119.97 C257.19 111.31 252.86 100.84 252.86 88.57 C252.86 76.35 257.19 65.91 265.86 57.24 C274.52 48.58 284.96 44.24 297.18 44.24 C307.68 44.24 316.85 47.39 324.71 53.69 C326.00 54.77 327.30 55.95 328.59 57.24 C329.07 57.72 329.53 58.21 329.96 58.69 L324.47 64.18 L272.80 115.85"/>
+<path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
+<path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
+</svg></a>
+  <nav class="header__nav header__nav--right" aria-label="주 메뉴 오른쪽"><a href="products.html">Products</a><a href="contact.html">Contact</a></nav>
+  <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
+</header>
+<nav class="mnav" aria-label="모바일 메뉴"><a href="about.html">Company<small>회사 소개</small></a><a href="aging-types.html">Aging Lab<small>6가지 노화 타입 · 22개 관리 부위</small></a><a href="carecl-technology.html">Technology<small>케어클 기술</small></a><a href="products.html">Products<small>디바이스 · 코스메틱</small></a><a href="contact.html">Contact<small>문의</small></a><a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
+<main class="sub">
+  <section class="subhead" data-led="purple">
+    <div class="wrap">
+      <p class="label">Company</p>
+      <h1 class="subhead__title">Our Story</h1>
+      <p class="subhead__kr">브랜드 스토리</p>
+    </div>
+    <nav class="subtabs" aria-label="Company 하위 메뉴"><div class="wrap subtabs__in"><a href="about.html">About careCL</a><a href="greeting.html" aria-current="page">Our Story</a><a href="rnd.html">R&D / Patent</a><a href="certification.html">Awards & Certification</a></div></nav>
+  </section>
+  <div class="sub-body">
+<section data-led="purple" class="sec" id="born">
+  <div class="wrap">
+    <div class="seclabel"><i></i><span>OUR STORY</span></div>
+    <div class="ceo">
+      <div class="ceo__visual ceo__visual--img"><img src="assets/img/c-beam.jpg" alt="careCL"></div>
+      <div class="ceo__text">
+        <h2><strong>BORN FROM BOTOX &amp; THERMAGE</strong></h2>
+        <div class="story__body">
+          <p><strong>좋은 결과는 좋은 제품만으로 만들어지지 않습니다.</strong></p><p>careCL의 시작에는 하나의 질문이 있었습니다.</p>
+          <p><strong>같은 Botox를 사용하고, 같은 Thermage 장비를 사용하는데</strong> <strong>왜 결과는 사람마다, 또 전문가마다 달라질까?</strong></p>
+          <p>글로벌 메디컬 에스테틱 현장에서 오랜 시간 다양한 고객과 시술 사례를 경험하며 발견한 차이는 제품이나 장비만이 아니었습니다.</p><p>좋은 결과를 만드는 전문가들은 먼저 <strong>사람을 이해했습니다.</strong></p>
+          <p>이 사람이 무엇을 고민하는지,<br>얼굴의 어느 부분에서 변화가 시작되고 있는지,<br>어디를 먼저 관리해야 하는지를 살펴보고<br>그 사람에게 맞는 관리 방법을 설계했습니다.</p>
+          <p>careCL은 홈뷰티에서도 같은 원칙이 필요하다고 생각했습니다.</p><p>집에서도 좋은 뷰티 디바이스를 사용할 수 있게 되었지만, 대부분은 얼굴 전체를 비슷한 방법으로 관리합니다. 내가 <strong>어떤 방식으로 나이 들고 있는지</strong>, <strong>어디가 먼저 변하고 있는지</strong>, 그리고 <strong>어디를 먼저 관리해야 하는지</strong> 알기 어렵기 때문입니다.</p><p>그래서 careCL은 제품을 만드는 것에서 한 걸음 더 나아가기로 했습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-led="purple" class="sec sec--grey" id="understand">
+  <div class="wrap">
+    <div class="seclabel"><i></i><span>UNDERSTAND FIRST</span></div>
+    <h2>사람을 먼저 이해합니다</h2>
+    <div class="story__body">
+      <p><strong>UNDERSTAND FIRST.</strong></p><p>사람마다 나이 드는 모습은 다릅니다.</p><p>누군가는 눈가의 변화가 먼저 나타나고, 누군가는 앞광대와 볼, 입가 또는 턱선의 변화를 먼저 느낍니다. 얼굴뿐 아니라 목과 바디에서도 각기 다른 변화가 나타납니다.</p><p>careCL은 이러한 차이를 <strong>6가지 노화 유형</strong>으로 이해하고, 관리가 필요한 Face, Neck &amp; Body를 <strong>22개의 좌표</strong>로 나누었습니다.</p><p>우리가 모르는 길을 갈 때 좌표와 지도가 있으면 목적지를 더 정확하게 찾을 수 있듯, 얼굴과 몸의 노화 관리에도 <strong>기준이 되는 좌표</strong>가 필요하다고 생각했습니다.</p><p>그렇게 만들어진 것이 <strong>AGING MAP 22</strong>입니다.</p>
+      <p><strong>나는 어떤 방식으로 나이 들고 있는가.</strong><br><strong>지금 나에게 먼저 관리가 필요한 곳은 어디인가.</strong><br><strong>그리고 그곳을 어떻게 관리해야 하는가.</strong></p>
+      <p>AGING MAP 22는 이 세 가지 질문에서 시작합니다.</p><p>그리고 이 생각은 careCL의 기술에도 그대로 이어집니다. 피부에 대고 계속 문지르는 방식이 아니라, <strong>관리할 위치를 정하고 그 자리에 일정 시간 머무르는 5초 스탬핑 RF 기술</strong> 역시 필요한 곳을 보다 체계적으로 관리하기 위한 careCL의 방법입니다.</p>
+    </div>
+  </div>
+</section>
+
+<section data-led="purple" class="sec"><div class="wrap"><div class="splitfig splitfig--rev"><div class="splitfig__img"><img src="assets/img/c-techfit-case.jpg" alt=""></div><div class="splitfig__copy"><h3>집에서, 매일, 같은 방식으로</h3><p>클리닉에서 쌓인 기준을 매일의 루틴으로 옮겼습니다. 같은 자리에 같은 시간, 반복할 수 있는 관리가 변화를 만듭니다.</p></div></div></div></section>
+<section data-led="purple" class="sec" id="home">
+  <div class="wrap">
+    <div class="story__body">
+      <p>좋은 제품을 만드는 것에서 한 걸음 더 나아가,<br><strong>사람을 이해하고, 관리할 위치를 찾고,</strong><br><strong>그 제품을 제대로 사용할 수 있는 기준까지 만드는 것.</strong></p>
+      <p>이것이 careCL이 지향하는 <strong>care Clinical Level</strong>입니다.</p>
+    </div>
+    <div class="story__cta"><a href="aging-types.html" class="btn btn--primary">6가지 노화 타입 보기 <span>→</span></a></div>
+  </div>
+</section>
+
+  </div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <span class="foot__tag">Home Aging Care</span>
+        <a class="foot__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+<path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
+<path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
+<path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
+<path fill="currentColor" fill-rule="nonzero" d="M319.14 59.26 C312.84 54.41 305.52 51.99 297.18 51.99 C287.12 51.99 278.50 55.56 271.35 62.69 C264.19 69.82 260.61 78.45 260.61 88.57 C260.61 96.91 263.03 104.23 267.87 110.52 L319.14 59.26 M272.80 115.85 C279.63 122.10 287.76 125.22 297.18 125.22 C307.30 125.22 315.94 121.64 323.10 114.48 C324.01 113.57 324.87 112.62 325.68 111.66 L333.35 114.40 C331.95 116.34 330.36 118.19 328.59 119.97 C319.92 128.64 309.45 132.97 297.18 132.97 C284.96 132.97 274.52 128.64 265.86 119.97 C257.19 111.31 252.86 100.84 252.86 88.57 C252.86 76.35 257.19 65.91 265.86 57.24 C274.52 48.58 284.96 44.24 297.18 44.24 C307.68 44.24 316.85 47.39 324.71 53.69 C326.00 54.77 327.30 55.95 328.59 57.24 C329.07 57.72 329.53 58.21 329.96 58.69 L324.47 64.18 L272.80 115.85"/>
+<path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
+<path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
+</svg></a>
+      </div>
+      <div class="foot__side">
+        <h2>AI Skin Test</h2>
+        <p>2분 설문으로 나의 노화 타입과<br>먼저 관리할 부위를 확인하세요.</p>
+        <a class="btn-line" href="survey.html">진단 시작하기</a>
+      </div>
+    </div>
+    <nav class="foot__nav" aria-label="푸터 메뉴">
+      <a href="about.html">Company</a><a href="aging-types.html">Aging Lab</a><a href="carecl-technology.html">Technology</a><a href="products.html">Products</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+  <div class="foot__bar">
+    <span>CARECL CO.,Ltd. · CEO Hyungkyu Choi · 사업자등록번호 591-88-03097 · 통신판매업 제2025-고양일산동-0585호</span>
+    <span>TEL +82 31-943-1028 · support@carecl.co.kr</span>
+    <span>© 2026 CARECL. All rights reserved.</span>
+  </div>
+</footer>
+<script src="js/led.js?v=261016031714"></script>
+<script src="js/stem.js?v=261016031714"></script>
+</body>
+</html>

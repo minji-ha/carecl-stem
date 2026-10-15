@@ -1,0 +1,32 @@
+/* =========================================================
+   진단 설문 · 결과 리포트 연결용
+   survey.css / report.css는 기존 사이트에서 그대로 가져왔다.
+   그 파일들이 쓰는 예전 변수 이름을 새 디자인 값으로 이어 준다.
+   ========================================================= */
+:root{
+  --announce-h:0px;
+  --header-h:var(--head);
+  --en:var(--f-ui);
+  --display:var(--f-title);
+  --n-100:#F4F2EF; --n-200:#E6E1DB; --n-300:#CFC7BE; --n-400:#A79E96;
+  --n-500:#7D746B; --n-600:#6B635B; --n-900:#1F1A16;
+  /* 예전 하늘색 자리 → 케어클 오렌지 계열 */
+  --sky-50:#FBF1EA; --sky-100:#F5DFD0; --sky-400:#E08A52;
+  --sky-500:#C46A3A; --sky-600:#A8521F; --sky-700:#8C4419;
+  --orange:#C46A3A; --orange-600:#A8521F;
+  --sage:#9C948B; --stone:#ECE7E0; --porcelain:#FDFCFA;
+  --hud:#E08A52; --hud-h:0px;
+}
+
+/* ── 설문 왼쪽 패널 — 얼굴 사진 대신 9구 LED 헤드 ── */
+.sv--stem .sv__panel{background:#1C1916;overflow:hidden}
+.sv--stem .sv__panel::after{display:none}
+.sv__dots{position:absolute;left:0;right:0;top:0;height:100vh;z-index:0;opacity:.9;
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 60%,#000 25%,transparent 100%);
+          mask-image:radial-gradient(ellipse 80% 70% at 50% 60%,#000 25%,transparent 100%)}
+.sv__led{position:absolute;left:50%;top:min(52vh,560px);transform:translate(-50%,-50%);width:min(58%,300px);z-index:1}
+.sv--stem .sv__lock em{font-family:var(--f-ui);color:color-mix(in srgb,var(--led) 70%,#fff)}
+.sv--stem .sv__lock b{font-family:var(--f-title);font-weight:500}
+
+/* 설문 페이지는 푸터 위 여백을 줄인다 */
+body.survey .foot{margin-top:0}

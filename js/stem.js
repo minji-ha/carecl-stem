@@ -8,6 +8,18 @@
    ========================================================= */
 (function () {
   document.documentElement.classList.add('js');
+
+  /* 서브 페이지 본문은 원고 HTML 그대로라 등장 효과 대상을 여기서 붙인다.
+     카드 묶음은 묶음 대신 카드 하나하나가 차례로 올라오게 한다. */
+  var GRIDS = '.typecards,.pillars,.docgrid,.points,.flow,.techrows,.trio';
+  document.querySelectorAll('.subhead .wrap > *, .sub-body .sec .wrap > *').forEach(function (el) {
+    if (!el.matches(GRIDS)) el.classList.add('rv');
+  });
+  document.querySelectorAll('.typecard,.pillar,.doccard,.point,.flow__step,.techrow,.trio > figure').forEach(function (el) {
+    el.classList.add('rv');
+    var i = [].indexOf.call(el.parentNode.children, el) % 4;
+    if (i) el.dataset.d = String(i);
+  });
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── 로딩 물방울 ─────────────────────────── */
@@ -175,16 +187,17 @@
     });
 
     function place() {
-      var w = items[0].getBoundingClientRect().width || 300, sx = w * 0.62;
+      var w = items[0].offsetWidth || 300, sx = w * 0.86;
       items.forEach(function (el, i) {
         var d = i - at;
         if (d > N / 2) d -= N;
         if (d < -N / 2) d += N;
         var ad = Math.abs(d), sg = d < 0 ? -1 : 1, c = Math.min(ad, 3);
-        var x = sg * (Math.min(c, 1) * sx + Math.max(0, c - 1) * sx * 0.5);
-        el.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,0,' + (-c * 300).toFixed(0) +
-          'px) rotateY(' + (-sg * Math.min(c * 50, 68)).toFixed(1) + 'deg)';
-        el.style.opacity = ad > 2.6 ? '0' : '1';
+        /* 옆 카드도 얼굴이 보이도록 회전은 얕게, 간격은 넓게 */
+        var x = sg * (Math.min(c, 1) * sx + Math.max(0, c - 1) * sx * 0.62);
+        el.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,0,' + (-c * 170).toFixed(0) +
+          'px) rotateY(' + (-sg * Math.min(c * 26, 40)).toFixed(1) + 'deg)';
+        el.style.opacity = ad > 2.4 ? '0' : (ad > 1.5 ? '.55' : '1');
         el.style.zIndex = String(100 - Math.round(ad * 10));
         el.classList.toggle('is-active', ad === 0);
       });
@@ -245,4 +258,23 @@
     addEventListener('resize', update);
     update();
   })();
+
+  /* ── 큰 사진 — 스크롤하는 동안 1.12배에서 제 크기로 천천히 ── */
+  (function zoom() {
+    var els = [].slice.call(document.querySelectorAll('[data-zoom]'));
+    if (!els.length || reduce) return;
+    function update() {
+      var vh = innerHeight;
+      els.forEach(function (el) {
+        var r = el.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+        el.style.transform = 'scale(' + (1.12 - p * 0.12).toFixed(4) + ')';
+      });
+    }
+    var raf = 0;
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
+    update();
+  })();
 })();
+

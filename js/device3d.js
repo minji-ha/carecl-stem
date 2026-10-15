@@ -16,6 +16,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HOME = new THREE.Quaternion();
 const SPIN_AXIS = new THREE.Vector3(1, 1, 0.35).normalize();   // 대각선 회전축
 const TURNS = 2;                                                // 스텝 전체 동안 회전 수
+const SWELL = 0.24;                                             // 회전 중 커지는 정도
 const LEAN = -0.55;                                             // 중간에 기우는 각도(rad, 약 -31°)
 const DEVICE_H = 0.24;                                          // GLB 높이
 const FILL = 0.64;                                              // 박스 높이 대비 디바이스 높이
@@ -91,6 +92,8 @@ async function start() {
     qLean.setFromAxisAngle(Z, LEAN * Math.sin(Math.PI * p));       // 처음·끝 0, 가운데서 가장 기움
     return out.copy(qLean).multiply(qSpin).multiply(HOME);
   }
+  /* 크기: 시작·끝은 1, 회전 한가운데서 가장 크게 (최대 1.24배) */
+  function scaleAt(p) { return 1 + SWELL * Math.sin(Math.PI * smoother(p)); }
 
   new ResizeObserver(resize).observe(mount);
   resize();
@@ -114,6 +117,7 @@ async function start() {
     pNow = Math.abs(gap) < 1e-4 ? pGoal : pNow + gap * (reduce ? 1 : 0.1);
     const moving = Math.abs(gap) >= 1e-4;
     poseAt(pNow, pivot.quaternion);
+    pivot.scale.setScalar(scaleAt(pNow));
 
     /* 제자리에서도 아주 천천히 떠 있는 느낌 */
     pivot.position.y = reduce ? 0 : Math.sin(t * 1.1) * 0.0035;

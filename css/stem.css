@@ -245,15 +245,16 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 .core__cta{display:flex;justify-content:center;padding-block:clamp(50px,6vw,100px) var(--sec)}
 
 /* ── 05 환기용 이미지 ─────────────────────────── */
-.sys{position:relative;padding-right:clamp(0px,9.4vw,180px)}
-.sys__img{position:relative;aspect-ratio:3/2;max-height:100svh;width:100%;overflow:hidden}
-.sys__img img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
-.sys__copy{position:absolute;right:calc(clamp(0px,9.4vw,180px) + var(--gut));top:clamp(40px,7vw,120px)}
-.sys__title{margin:0;font-family:var(--f-title);font-weight:500;font-size:clamp(20px,2.2vw,40px);line-height:1.3;letter-spacing:-.02em;white-space:nowrap}
+.sys{position:relative;overflow:hidden}
+.sys__img{position:relative;height:clamp(560px,112vh,1100px);width:100%;overflow:hidden;background:#F4F3F1}
+.sys__img img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scale(1.12);will-change:transform}
+.sys{padding-top:var(--sec)}
+.sys__copy{padding-bottom:clamp(30px,3.4vw,60px)}
+.sys__title{margin:0;font-family:var(--f-title);font-weight:500;font-size:clamp(30px,4.4vw,78px);line-height:1.18;letter-spacing:-.03em;text-wrap:balance}
 
 /* ── 06 콜렉션 (3D 커버플로) ─────────────────── */
 .coll{padding-top:var(--sec);padding-bottom:clamp(60px,6vw,110px)}
-.cov{position:relative;height:clamp(340px,36vw,560px);margin-top:clamp(34px,4vw,70px);perspective:1200px;overflow:hidden}
+.cov{position:relative;height:clamp(360px,36vw,560px);margin-top:clamp(34px,4vw,70px);perspective:1600px;overflow:hidden;touch-action:pan-y;user-select:none}
 .cov__list{list-style:none;margin:0;padding:0;position:absolute;inset:0;transform-style:preserve-3d}
 .cov__item{
   position:absolute;left:50%;top:50%;width:clamp(230px,24vw,380px);aspect-ratio:4/5;
@@ -261,7 +262,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 }
 .cov__item a{display:block;width:100%;height:100%;overflow:hidden;background:#EEEDEF}
 .cov__item img{width:100%;height:100%;object-fit:cover}
-.cov__item::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.38);opacity:1;transition:opacity .8s ease;pointer-events:none}
+.cov__item::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.16);opacity:1;transition:opacity .8s ease;pointer-events:none}
 .cov__item.is-active::after{opacity:0}
 .cov__item.is-active{cursor:default}
 .cov__foot{display:flex;align-items:center;justify-content:center;gap:clamp(20px,4vw,70px);margin-top:clamp(26px,3vw,46px)}
@@ -309,7 +310,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 
 /* ── 08 공식몰 (높이가 자라는 띠) ─────────────── */
 .shop{position:relative;height:300px;display:flex;align-items:center;overflow:hidden;background:#1C1916;color:#fff;margin-top:clamp(40px,5vw,90px)}
-.shop__bg{position:absolute;inset:0;opacity:.42}
+.shop__bg{position:absolute;inset:0;opacity:.78}
 .shop__bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.16)}
 .shop__inner{position:relative;width:100%;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
 .shop__title{margin:0;font-family:var(--f-title);font-weight:500;font-size:clamp(26px,3.2vw,54px);letter-spacing:-.02em}
@@ -367,8 +368,6 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 
 /* ── 반응형 ───────────────────────────────────── */
 @media (max-width:1024px){
-  .sys{padding-right:0}
-  .sys__copy{right:var(--gut)}
   .contact__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:860px){
@@ -388,10 +387,9 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .js .anno.rv{transform:translateY(28px)!important}
   .js .anno.rv.is-in{transform:none!important}
 
-  .sys__img{aspect-ratio:4/5}
-  .sys__img img{object-position:40% 60%}
-  .sys__copy{position:static;padding:26px var(--gut) 0}
-  .sys__title{white-space:normal}
+  .sys__img{height:auto;aspect-ratio:4/5}
+  .sys__img img{object-position:46% 50%}
+
 
   .steps__body{grid-template-columns:1fr}
   .steps__sticky{display:none}
