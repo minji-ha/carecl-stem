@@ -418,7 +418,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   /* 좁은 화면 — 글을 위에, 사진은 아래에 통째로 */
   .shop{height:auto!important;flex-direction:column}
   .shop__inner{padding-block:40px 28px}
-  .shop__bg{position:relative;inset:auto;width:100%;aspect-ratio:16/9}
+  .shop__bg{position:relative;inset:auto;width:100%;aspect-ratio:2400/1490}
   .shop__bg img{transform:none!important;object-position:50% 50%}
   .foot__top{grid-template-columns:1fr}
 }
@@ -431,3 +431,26 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .js .rv{opacity:1;transform:none}
   .marq__track{animation:none}
 }
+
+/* ── AI 피부 진단 플로팅 버튼 (예전 사이트와 같은 모양) ── */
+.aifab{
+  position:fixed;right:clamp(18px,2.4vw,38px);bottom:clamp(18px,2.4vw,38px);z-index:95;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 22px 14px 14px;border-radius:100px;
+  background:#C46A3A;color:#fff;text-decoration:none;
+  box-shadow:0 8px 18px -8px rgba(196,106,58,.55);
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, background .3s ease;
+  animation:aifabFloat 4.5s ease-in-out infinite;
+}
+.aifab:hover{transform:translateY(-3px);background:#A8521F;box-shadow:0 12px 22px -10px rgba(168,82,31,.6)}
+.aifab__ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.26);color:#fff}
+.aifab__ico svg{width:18px;height:18px;animation:aiSpin 7s linear infinite}
+.aifab__txt{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+@keyframes aifabFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+@media (max-width:620px){
+  .aifab{padding:12px 18px 12px 12px}
+  .aifab__ico{width:30px;height:30px}
+  .aifab__txt{font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.aifab,.aifab__ico svg{animation:none}}

@@ -100,9 +100,15 @@ FOOTER = f"""<footer class="foot">
 """
 
 
+AIFAB = ('<a class="aifab" href="survey.html" aria-label="AI 피부 진단 시작하기"><span class="aifab__ico">'
+         '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/>'
+         '<circle cx="19.4" cy="4.2" r="1.7" fill="currentColor" opacity=".9"/><circle cx="4.8" cy="18.4" r="1.2" fill="currentColor" opacity=".7"/></svg></span>'
+         '<span class="aifab__txt">AI 피부 진단</span></a>\n')
+
+
 def tail(three=True, js=()):
     mod = f'<script type="module" src="js/device3d.js?v={VER}"></script>\n' if three else ""
-    return f"""<script src="js/led.js?v={VER}"></script>
+    return AIFAB + f"""<script src="js/led.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
 {"".join(f'<script src="{j}?v={VER}"></script>' + chr(10) for j in js)}{mod}</body>
 </html>

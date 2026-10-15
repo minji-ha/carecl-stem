@@ -251,12 +251,16 @@
       var p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (vh * 0.75)));
       if (reduce) p = 1;
       p = p * p * (3 - 2 * p);
-      el.style.height = (base + (vh - base) * p) + 'px';
+      /* 끝 높이 — 화면 높이와 사진 전체 높이 중 큰 쪽 (넓은 화면에서 아래 제품이 잘리지 않게) */
+      var full = img && img.naturalWidth ? el.clientWidth * img.naturalHeight / img.naturalWidth : vh;
+      var end = Math.max(vh, full);
+      el.style.height = (base + (end - base) * p) + 'px';
       if (img) img.style.transform = 'scale(' + (1.16 - p * 0.16).toFixed(3) + ')';
     }
     var raf = 0;
     addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
     addEventListener('resize', update);
+    if (img) img.addEventListener('load', update);
     update();
   })();
 
