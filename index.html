@@ -9,7 +9,8 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261016022643">
+<link rel="stylesheet" href="css/stem.css?v=261016024332">
+<script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
 <div class="loader" data-loader aria-hidden="true">
@@ -49,7 +50,8 @@
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
     <div class="hero__copy">
       <h1 class="hero__title">Home Aging Care</h1>
-      <p class="hero__sub">노화는 저마다 다릅니다<br>그래서 관리도 달라야 합니다</p>
+      <p class="hero__sub">Every face ages differently.<br>Every face deserves its own care.</p>
+      <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
 
@@ -161,6 +163,7 @@
         <img src="assets/img/p-gel.jpg" alt="" data-step-img="3">
         <img src="assets/img/s-device-face.jpg" alt="" data-step-img="4">
             </div>
+            <div class="device3d" data-device3d aria-hidden="true"></div>
             <canvas class="drop__canvas"></canvas>
           </div>
         </div>
@@ -247,7 +250,8 @@
     <span>© 2026 CARECL. All rights reserved.</span>
   </div>
 </footer>
-<script src="js/drop.js?v=261016022643"></script>
-<script src="js/stem.js?v=261016022643"></script>
+<script src="js/drop.js?v=261016024332"></script>
+<script src="js/stem.js?v=261016024332"></script>
+<script type="module" src="js/device3d.js?v=261016024332"></script>
 </body>
 </html>

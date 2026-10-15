@@ -43,6 +43,7 @@ def head(title, desc):
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="css/stem.css?v={VER}">
+<script type="importmap">{{"imports":{{"three":"./libs/three/three.module.min.js"}}}}</script>
 </head>
 <body>
 """
@@ -103,6 +104,7 @@ FOOTER = f"""<footer class="foot">
 def tail():
     return f"""<script src="js/drop.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
+<script type="module" src="js/device3d.js?v={VER}"></script>
 </body>
 </html>
 """
@@ -163,7 +165,8 @@ def page_index():
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
     <div class="hero__copy">
       <h1 class="hero__title">Home Aging Care</h1>
-      <p class="hero__sub">노화는 저마다 다릅니다<br>그래서 관리도 달라야 합니다</p>
+      <p class="hero__sub">Every face ages differently.<br>Every face deserves its own care.</p>
+      <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
 
@@ -237,6 +240,7 @@ def page_index():
             <div class="drop__media">
 {step_imgs}
             </div>
+            <div class="device3d" data-device3d aria-hidden="true"></div>
             <canvas class="drop__canvas"></canvas>
           </div>
         </div>
