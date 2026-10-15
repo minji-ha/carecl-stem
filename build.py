@@ -514,8 +514,30 @@ def page_report():
 PAGES["survey.html"] = page_survey
 PAGES["report.html"] = page_report
 
+# ── AI 피부 진단 공개 여부 ──────────────────────────────
+# False: 진단(survey.html) · 리포트(report.html)로 가는 링크를 모든 페이지에서 뗀다.
+#        두 페이지 파일은 그대로 만들되 검색에 안 잡히게 한다(주소를 아는 사람만 열 수 있음).
+# True : 작업이 끝나면 이 값만 바꾸면 버튼 · 메뉴 · 푸터 · 본문 링크가 모두 다시 붙는다.
+AI_TEST_PUBLIC = False
+
+
+def hide_ai_test(html):
+    html = re.sub(r'<a class="aifab".*?</a>\n?', '', html, flags=re.S)                       # 오른쪽 아래 버튼
+    html = re.sub(r'<div class="foot__side">.*?</div>\s*(?=</div>\s*<nav class="foot__nav")', '', html, flags=re.S)  # 푸터 진단 안내
+    html = re.sub(r'<div class="core__cta">.*?</div>', '', html, flags=re.S)                   # 메인 '나의 Aging Type 알아보기'
+    html = re.sub(r'<a[^>]*href="(?:survey|report)\.html[^"]*"[^>]*>.*?</a>', '', html, flags=re.S)  # 나머지 링크
+    html = re.sub(r'<p>\s*</p>', '', html)
+    return html
+
+
 if __name__ == "__main__":
     for name, fn in PAGES.items():
-        io.open(os.path.join(ROOT, name), "w", encoding="utf-8").write(fn())
+        out = fn()
+        if not AI_TEST_PUBLIC:
+            if name in ("survey.html", "report.html"):
+                out = out.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex, nofollow">', 1)
+            else:
+                out = hide_ai_test(out)
+        io.open(os.path.join(ROOT, name), "w", encoding="utf-8").write(out)
         print("built", name)
     print("v=" + VER)
