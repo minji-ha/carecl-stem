@@ -432,18 +432,18 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
   .marq__track{animation:none}
 }
 
-/* ── AI 피부 진단 플로팅 버튼 (예전 사이트와 같은 모양) ── */
+/* ── AI 피부 진단 플로팅 버튼 (예전 사이트와 같은 모양, 색은 스크롤 중인 섹션의 LED 색을 따른다) ── */
 .aifab{
   position:fixed;right:clamp(18px,2.4vw,38px);bottom:clamp(18px,2.4vw,38px);z-index:95;
   display:inline-flex;align-items:center;gap:10px;
   padding:14px 22px 14px 14px;border-radius:100px;
-  background:#C46A3A;color:#fff;text-decoration:none;
-  box-shadow:0 8px 18px -8px rgba(196,106,58,.55);
+  background:var(--led);color:#1F1A16;text-decoration:none;
+  box-shadow:0 8px 18px -8px color-mix(in srgb,var(--led) 70%,transparent),0 0 16px -4px color-mix(in srgb,var(--led) 55%,transparent);
   transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, background .3s ease;
   animation:aifabFloat 4.5s ease-in-out infinite;
 }
-.aifab:hover{transform:translateY(-3px);background:#A8521F;box-shadow:0 12px 22px -10px rgba(168,82,31,.6)}
-.aifab__ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.26);color:#fff}
+.aifab:hover{transform:translateY(-3px);background:color-mix(in srgb,var(--led) 86%,#1F1A16);box-shadow:0 12px 22px -10px color-mix(in srgb,var(--led) 75%,transparent),0 0 22px -4px color-mix(in srgb,var(--led) 65%,transparent)}
+.aifab__ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.4);color:#1F1A16}
 .aifab__ico svg{width:18px;height:18px;animation:aiSpin 7s linear infinite}
 .aifab__txt{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
 @keyframes aifabFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
