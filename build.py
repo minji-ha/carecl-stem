@@ -378,10 +378,11 @@ MENU = [
                           ("General Inquiry", "inquiry.html", "일반 문의")]),
 ]
 # 머리말 제목 줄바꿈 (탭 이름은 그대로 한 줄)
-TITLE_BREAK = {"careCL Technology": "careCL<br>Technology"}
+TITLE_BREAK = {"careCL Technology": "careCL<br>Technology", "Awards & Certification": "Awards &amp;<br>Certification"}
 
-# 메뉴별 머리말 오른쪽 이미지 (회사 소개 · 문의는 없음)
-HEAD_VISUAL = {"Products": ("h-package.jpg", "photo photo--pkg"),
+# 메뉴별 머리말 오른쪽 이미지 (회사 소개는 오렌지 C, 문의는 없음)
+HEAD_VISUAL = {"Company": ("C", "letter"),
+               "Products": ("h-package.jpg", "photo photo--pkg"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
                "Aging Lab": ("h-model.jpg", "photo")}
 GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "carecl-technology.html",
@@ -434,8 +435,14 @@ def sub_page(group, led, items, idx):
     tabs = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if h == slug else ""}>{t}</a>' for t, h, _ in items)
     vis = HEAD_VISUAL.get(group)
-    vis_html = (f'<div class="subhead__vis subhead__vis--{vis[1]}" aria-hidden="true">'
-                f'<img src="assets/img/{vis[0]}?v={VER}" alt="" decoding="async"></div>') if vis else ""
+    if vis and vis[0] == "C":
+        # 회사 소개 — 화면 오른쪽에 잘려 보이는 크고 두꺼운 오렌지 C
+        vis_html = ('<div class="subhead__vis subhead__vis--letter" aria-hidden="true">'
+                    '<svg viewBox="0 0 1000 1000"><path d="M 806 243 A 400 400 0 1 0 806 757" '
+                    'fill="none" stroke="currentColor" stroke-width="210" stroke-linecap="butt"/></svg></div>')
+    else:
+        vis_html = (f'<div class="subhead__vis subhead__vis--{vis[1]}" aria-hidden="true">'
+                    f'<img src="assets/img/{vis[0]}?v={VER}" alt="" decoding="async"></div>') if vis else ""
     head_html = f"""<main class="sub">
   <section class="subhead{' subhead--vis' if vis else ''}" data-led="{led}">
     <div class="subhead__top">
