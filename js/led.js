@@ -15,6 +15,8 @@
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  /* 설문 페이지는 답을 고르는 데 집중하도록 마우스 빛·점을 띄우지 않는다 */
+  var cursorFx = fine && !document.body.classList.contains('survey');
 
   var LED = {
     red:    [255, 70, 72],
@@ -47,7 +49,7 @@
   /* ── 1) 빛 번짐 ─────────────────────────────── */
   var glow = null, gctx = null, trail = [], pointer = null, awake = false, lastMove = 0;
   var SCALE = 0.5;                       // 절반 해상도로 그려 가볍게 (흐린 빛이라 티가 안 난다)
-  if (fine && !reduce) {
+  if (cursorFx && !reduce) {
     glow = document.createElement('canvas');
     glow.className = 'led-glow';
     glow.setAttribute('aria-hidden', 'true');

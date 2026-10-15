@@ -57,60 +57,107 @@ var REPORT = {
     sag: '변형 · 처짐형', muscle: '근육형', mixed: '혼합형'
   };
 
-  /* counts : { 타입키: 점수 } — 없으면 분포를 그리지 않는다
+  var ORDER = ['early', 'tired', 'fine', 'sag', 'muscle', 'mixed'];
+  var EN = { early: 'Early Aging', tired: 'Tired', fine: 'Fine-Wrinkled',
+             sag: 'Deformational', muscle: 'Muscular', mixed: 'Mixed' };
+
+  /* 미리보기(설문 없이 report.html)에서 쓰는 예시 분포 — 결과 유형이 가장 높게 */
+  function sample(key) {
+    var base = [9, 14, 7, 11, 6, 5], c = {}, i = 0;
+    ORDER.forEach(function (k) { c[k] = base[i++ % base.length]; });
+    c[key] = 48;
+    return c;
+  }
+
+  /* 리포트 번호 — 유형과 날짜로 만든 짧은 번호 (기록처럼 보이게) */
+  function reportNo(key, d) {
+    var n = (ORDER.indexOf(key) + 1) * 1000 + d.getDate() * 31 + d.getMonth() * 7;
+    return 'CL-' + String(n).padStart(4, '0');
+  }
+
+  /* counts : { 타입키: 점수 } — 없으면 예시 분포를 쓰고 '예시'라고 표시한다
      parts  : '이마 · 눈가' 처럼 이어 붙인 집중 관리 부위 문자열      */
   function html(key, opts) {
     opts = opts || {};
-    var R = REPORT[key] || REPORT.early;
-    var counts = opts.counts || null;
+    var k = REPORT[key] ? key : 'early';
+    var R = REPORT[k];
+    var isSample = !opts.counts;
+    var counts = opts.counts || sample(k);
     var parts = opts.parts || '';
+    var d = new Date();
+    var date = d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
 
-    var scale = '';
-    if (counts) {
-      var order = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
-      var total = order.reduce(function (n, k) { return n + counts[k]; }, 0);
-      if (total > 0) {
-        scale = '<div class="cku-result-scale"><em>응답 분포</em>' +
-          order.map(function (k, i) {
-            var pct = Math.round(counts[k] / total * 100);
-            return '<div class="cku-scale-row' + (i === 0 ? ' is-top' : '') + '">' +
-              '<b>' + esc(NAMES[k] || k) + '</b>' +
-              '<span class="cku-bar"><i data-w="' + pct + '"></i></span>' +
-              '<span>' + pct + '%</span></div>';
-          }).join('') + '</div>';
-      }
-    }
+    var total = ORDER.reduce(function (n, t) { return n + (counts[t] || 0); }, 0) || 1;
+    var rows = ORDER.slice().sort(function (a, b) { return (counts[b] || 0) - (counts[a] || 0); });
+    var prob = rows.map(function (t) {
+      var pct = Math.round((counts[t] || 0) / total * 100);
+      return '<li class="rpt-prob__row' + (t === k ? ' is-top' : '') + '">' +
+        '<span class="rpt-prob__name"><b>' + esc(NAMES[t]) + '</b><em>' + EN[t] + '</em></span>' +
+        '<span class="cku-bar rpt-prob__bar"><i data-w="' + pct + '"></i></span>' +
+        '<span class="rpt-prob__pct" data-n="' + pct + '">0%</span></li>';
+    }).join('');
 
-    return '<main class="cku-main"><div class="cku-result">' +
-      '<div class="cku-result-head"><div>' +
-      '<p class="cku-result-eyebrow">진단 결과</p>' +
-      '<h2 class="cku-result-title"><span class="cku-code">' + R.code + '</span>' + esc(R.name) + '</h2>' +
-      '<p class="cku-result-tagline">' + esc(R.tagline) + '</p>' +
-      '</div><figure class="cku-result-visual"><img src="assets/img/report/type-' + (REPORT[key] ? key : 'early') +
-        '.svg" alt="' + esc(R.name) + ' — 먼저 변화가 나타나는 부위"></figure></div>' +
-      '<p class="cku-result-desc">' + esc(R.desc) + '</p>' +
-      '<ul class="cku-result-traits">' +
-        R.traits.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') +
-      '</ul>' +
-      '<p class="cku-result-concern">' + esc(R.concern) + '</p>' +
-      (parts ? '<p class="cku-result-parts">' + esc(parts) + '</p>' : '') +
-      scale +
-      '<div class="cku-result-actions">' +
+    var dots = '';
+    for (var i = 0; i < 22; i++) dots += '<i style="--i:' + i + '"></i>';
+
+    return '<div class="cku-main rpt" data-rpt>' +
+      '<section class="rpt-scan">' +
+        '<p class="rpt-meta"><span>AI SKIN REPORT</span><span>No. ' + reportNo(k, d) + '</span><span>' + date + '</span><span>AGING MAP 22</span></p>' +
+        '<div class="rpt-head">' +
+          '<div class="rpt-head__copy">' +
+            '<p class="rpt-eyebrow">진단 결과</p>' +
+            '<p class="rpt-code">' + R.code + '</p>' +
+            '<h2 class="rpt-name">' + esc(R.name) + '</h2>' +
+            '<p class="rpt-tagline">' + esc(R.tagline) + '</p>' +
+          '</div>' +
+          '<figure class="rpt-visual"><span class="rpt-grid" aria-hidden="true">' + dots + '</span>' +
+            '<img src="assets/img/report/type-' + k + '.svg" alt="' + esc(R.name) + ' — 먼저 변화가 나타나는 부위"></figure>' +
+        '</div>' +
+        '<i class="rpt-scanline" aria-hidden="true"></i>' +
+      '</section>' +
+      '<section class="rpt-prob">' +
+        '<div class="rpt-sec-head"><p class="rpt-label">AI Analysis</p><h3>유형별 일치도</h3>' +
+          (isSample ? '<span class="rpt-sample">예시 분포</span>' : '') + '</div>' +
+        '<ol class="rpt-prob__list">' + prob + '</ol>' +
+      '</section>' +
+      '<section class="rpt-detail">' +
+        '<div class="rpt-detail__desc"><p class="rpt-label">Summary</p><p class="rpt-desc">' + esc(R.desc) + '</p></div>' +
+        '<div class="rpt-detail__side">' +
+          '<p class="rpt-label">Characteristics</p>' +
+          '<ol class="rpt-traits">' + R.traits.map(function (t, i) {
+            return '<li><em>' + String(i + 1).padStart(2, '0') + '</em>' + esc(t) + '</li>'; }).join('') + '</ol>' +
+          '<div class="rpt-concern"><p class="rpt-label">대표 고민</p><p>' + esc(R.concern) + '</p></div>' +
+          (parts ? '<div class="rpt-concern"><p class="rpt-label">집중 관리 부위</p><p>' + esc(parts) + '</p></div>' : '') +
+        '</div>' +
+      '</section>' +
+      '<div class="rpt-actions">' +
         (opts.restart
-          ? '<button type="button" class="cku-btn cku-btn-primary" data-restart>AI 피부 진단 다시하기 <span>→</span></button>'
-          : '<a class="cku-btn cku-btn-primary" href="survey.html">AI 피부 진단 다시하기 <span>→</span></a>') +
+          ? '<button type="button" class="btn-line" data-restart>AI 피부 진단 다시하기 →</button>'
+          : '<a class="btn-line" href="survey.html">AI 피부 진단 다시하기 →</a>') +
+        '<a class="btn-line" href="aging-map.html">AGING MAP 22 보기 →</a>' +
       '</div>' +
-      '<p class="cku-result-note">본 결과는 설문 응답을 바탕으로 한 참고용 분석이며 의학적 진단이 아닙니다. ' +
+      '<p class="rpt-note">본 결과는 설문 응답을 바탕으로 한 참고용 분석이며 의학적 진단이 아닙니다. ' +
       '로그인 후 참여하면 구매 이력과 사용 주기를 반영한 상세 리포트를 받아볼 수 있습니다.</p>' +
-      '</div></main>';
+    '</div>';
   }
 
-  /* 분포 막대는 그려진 뒤에 채운다 */
+  /* 분포 막대 · 숫자는 그려진 뒤에 채운다 (스캔 선이 지나간 다음) */
   function fillBars(root) {
+    root = root || document;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     setTimeout(function () {
-      var bars = (root || document).querySelectorAll('.cku-bar i');
-      Array.prototype.forEach.call(bars, function (b) { b.style.width = b.dataset.w + '%'; });
-    }, 60);
+      Array.prototype.forEach.call(root.querySelectorAll('.cku-bar i'), function (b) { b.style.width = b.dataset.w + '%'; });
+      Array.prototype.forEach.call(root.querySelectorAll('.rpt-prob__pct'), function (el) {
+        var n = +el.dataset.n, t0 = null;
+        if (reduce) { el.textContent = n + '%'; return; }
+        (function step(t) {
+          if (!t0) t0 = t;
+          var p = Math.min(1, (t - t0) / 1100);
+          el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))) + '%';
+          if (p < 1) requestAnimationFrame(step);
+        })(performance.now());
+      });
+    }, reduce ? 0 : 1500);
   }
 
   window.ckuReport = { data: REPORT, names: NAMES, html: html, fillBars: fillBars };
