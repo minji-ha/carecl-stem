@@ -9,6 +9,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from '../libs/three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from '../libs/three/addons/environments/RoomEnvironment.js';
+import { cleanDeviceMaterial } from './device-material.js?v=1';
 
 const mount = document.querySelector('[data-device3d]');
 const list = document.querySelector('[data-steps]');
@@ -52,6 +53,7 @@ async function start() {
 
   const gltf = await new GLTFLoader().loadAsync('assets/model/techfit-v2.glb');
   const model = gltf.scene;
+  cleanDeviceMaterial(model, THREE);                        // 텍스처 얼룩 대신 위치별 깨끗한 재질
   const box = new THREE.Box3().setFromObject(model);
   model.position.sub(box.getCenter(new THREE.Vector3()));   // 회전 중심을 가운데로
   pivot.add(model);

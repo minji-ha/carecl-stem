@@ -266,7 +266,7 @@ def page_index():
   <!-- 05 환기용 이미지 -->
   <section class="sys" data-led="yellow" aria-labelledby="sys-title">
     <div class="sys__img">
-      <img src="assets/img/m-model.jpg" alt="양손으로 얼굴을 감싼 케어클 모델" loading="lazy" width="2400" height="1116" data-zoom>
+      <img src="assets/img/m-model.jpg?v={VER}" alt="고개를 돌려 미소 짓는 케어클 모델" loading="lazy" width="2400" height="1116" data-zoom>
       <div class="sys__copy">
         <p class="sys__title rv" id="sys-title"><span class="sys__en">Clinic-level care,</span><span class="sys__kr">집 안의 리추얼로</span></p>
       </div>
@@ -322,7 +322,7 @@ def page_index():
 
   <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
   <section class="shop" data-shop data-led="red">
-    <div class="shop__bg"><img src="assets/img/m-model-set.jpg" alt="TechFit 풀세트와 디바이스를 든 모델" loading="lazy"></div>
+    <div class="shop__bg"><img src="assets/img/m-model-set.jpg?v={VER}" alt="TechFit 풀세트와 디바이스를 든 모델" loading="lazy"></div>
     <div class="wrap shop__inner">
       <div>
         <h2 class="shop__title">Shop the Official Store</h2>
