@@ -260,7 +260,7 @@
     update();
   })();
 
-  /* ── 큰 사진 — 스크롤하는 동안 1.12배에서 제 크기로 천천히 ── */
+  /* ── 큰 사진 — 스크롤하는 동안 1.05배에서 제 크기로 천천히 ── */
   (function zoom() {
     var els = [].slice.call(document.querySelectorAll('[data-zoom]'));
     if (!els.length || reduce) return;
@@ -270,7 +270,7 @@
         var r = el.parentNode.getBoundingClientRect();
         if (r.bottom < 0 || r.top > vh) return;
         var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
-        el.style.transform = 'scale(' + (1.12 - p * 0.12).toFixed(4) + ')';
+        el.style.transform = 'scale(' + (1.05 - p * 0.05).toFixed(4) + ')';
       });
     }
     var raf = 0;
