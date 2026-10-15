@@ -262,7 +262,7 @@ def page_index():
     <div class="wrap sys__copy">
       <p class="sys__title rv" id="sys-title">클리닉의 기술을,<br>집 안의 리추얼로</p>
     </div>
-    <div class="sys__img"><img src="assets/img/c-ritual-wide.jpg" alt="TechFit 풀세트 — 가죽 케이스 속 디바이스와 콜라겐 젤, 파우치" loading="lazy" width="2400" height="1349" data-zoom></div>
+    <div class="sys__img"><img src="assets/img/m-model.jpg" alt="양손으로 얼굴을 감싼 케어클 모델" loading="lazy" width="2400" height="1340" data-zoom></div>
   </section>
 
   <!-- 06 콜렉션 (3D 커버플로) -->
@@ -314,13 +314,13 @@ def page_index():
 
   <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
   <section class="shop" data-shop data-led="red">
-    <div class="shop__bg"><img src="assets/img/c-beam.jpg" alt="" loading="lazy"></div>
+    <div class="shop__bg"><img src="assets/img/m-model-set.jpg" alt="TechFit 풀세트와 디바이스를 든 모델" loading="lazy"></div>
     <div class="wrap shop__inner">
       <div>
         <h2 class="shop__title">제품 구매는 공식몰에서</h2>
         <p class="shop__desc">진단 결과에 맞는 구성으로 담아 보세요.</p>
       </div>
-      <a class="btn-line btn-line--light" href="products.html">Shop 바로가기 →</a>
+      <a class="btn-line" href="products.html">Shop 바로가기 →</a>
     </div>
   </section>
 

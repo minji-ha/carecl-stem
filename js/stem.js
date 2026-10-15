@@ -245,6 +245,7 @@
     var img = el.querySelector('.shop__bg img');
     var BASE = 300;
     function update() {
+      if (innerWidth <= 860) { el.style.height = ''; return; }   /* 좁은 화면은 CSS가 맡는다 */
       var vh = innerHeight, base = Math.min(BASE, vh * 0.5);
       var r = el.getBoundingClientRect();
       var p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (vh * 0.75)));
