@@ -377,6 +377,9 @@ MENU = [
                           ("Media / PR", "press.html", "미디어 문의"),
                           ("General Inquiry", "inquiry.html", "일반 문의")]),
 ]
+# 머리말 제목 줄바꿈 (탭 이름은 그대로 한 줄)
+TITLE_BREAK = {"careCL Technology": "careCL<br>Technology"}
+
 # 메뉴별 머리말 오른쪽 이미지 (회사 소개 · 문의는 없음)
 HEAD_VISUAL = {"Products": ("h-package.webp", "cut"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
@@ -439,7 +442,7 @@ def sub_page(group, led, items, idx):
       {vis_html}
       <div class="wrap">
         <p class="label">{group}</p>
-        <h1 class="subhead__title">{title_en}</h1>
+        <h1 class="subhead__title">{TITLE_BREAK.get(title_en, title_en)}</h1>
         <p class="subhead__kr">{title_kr}</p>
       </div>
     </div>
