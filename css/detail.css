@@ -253,3 +253,7 @@
   .subhead__vis.cut--tall{width:100%;right:auto;top:auto}
   .subhead__vis--cut img{object-position:center bottom}
 }
+/* Products — 원본 패키지 사진을 오른쪽에 꽉 차게, 왼쪽은 흰색으로 사라지게 */
+.subhead__vis.photo--pkg{width:min(48%,900px)}
+.subhead__vis.photo--pkg img{object-position:60% 45%}
+.subhead__vis.photo--pkg{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 14%,#000 34%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 14%,#000 34%)}

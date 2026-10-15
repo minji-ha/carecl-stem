@@ -381,7 +381,7 @@ MENU = [
 TITLE_BREAK = {"careCL Technology": "careCL<br>Technology"}
 
 # 메뉴별 머리말 오른쪽 이미지 (회사 소개 · 문의는 없음)
-HEAD_VISUAL = {"Products": ("h-package.webp", "cut"),
+HEAD_VISUAL = {"Products": ("h-package.jpg", "photo photo--pkg"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
                "Aging Lab": ("h-model.jpg", "photo")}
 GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "carecl-technology.html",
