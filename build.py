@@ -438,8 +438,8 @@ def sub_page(group, led, items, idx):
     if vis and vis[0] == "C":
         # 회사 소개 — 화면 오른쪽에 잘려 보이는 크고 두꺼운 오렌지 C
         vis_html = ('<div class="subhead__vis subhead__vis--letter" aria-hidden="true">'
-                    '<svg viewBox="0 0 1000 1000"><path d="M 806 243 A 400 400 0 1 0 806 757" '
-                    'fill="none" stroke="currentColor" stroke-width="210" stroke-linecap="butt"/></svg></div>')
+                    '<svg viewBox="0 0 1000 1000"><path d="M 768 259 A 360 360 0 1 0 768 741" '
+                    'fill="none" stroke="currentColor" stroke-width="200" stroke-linecap="round"/></svg></div>')
     else:
         vis_html = (f'<div class="subhead__vis subhead__vis--{vis[1]}" aria-hidden="true">'
                     f'<img src="assets/img/{vis[0]}?v={VER}" alt="" decoding="async"></div>') if vis else ""
