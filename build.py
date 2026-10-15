@@ -377,6 +377,10 @@ MENU = [
                           ("Media / PR", "press.html", "미디어 문의"),
                           ("General Inquiry", "inquiry.html", "일반 문의")]),
 ]
+# 메뉴별 머리말 오른쪽 이미지 (회사 소개 · 문의는 없음)
+HEAD_VISUAL = {"Products": ("h-package.webp", "cut"),
+               "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
+               "Aging Lab": ("h-model.jpg", "photo")}
 GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "carecl-technology.html",
               "Products": "products.html", "Contact": "contact.html"}
 
@@ -426,12 +430,18 @@ def sub_page(group, led, items, idx):
 
     tabs = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if h == slug else ""}>{t}</a>' for t, h, _ in items)
+    vis = HEAD_VISUAL.get(group)
+    vis_html = (f'<div class="subhead__vis subhead__vis--{vis[1]}" aria-hidden="true">'
+                f'<img src="assets/img/{vis[0]}?v={VER}" alt="" decoding="async"></div>') if vis else ""
     head_html = f"""<main class="sub">
-  <section class="subhead" data-led="{led}">
-    <div class="wrap">
-      <p class="label">{group}</p>
-      <h1 class="subhead__title">{title_en}</h1>
-      <p class="subhead__kr">{title_kr}</p>
+  <section class="subhead{' subhead--vis' if vis else ''}" data-led="{led}">
+    <div class="subhead__top">
+      {vis_html}
+      <div class="wrap">
+        <p class="label">{group}</p>
+        <h1 class="subhead__title">{title_en}</h1>
+        <p class="subhead__kr">{title_kr}</p>
+      </div>
     </div>
     <nav class="subtabs" aria-label="{group} 하위 메뉴"><div class="wrap subtabs__in">{tabs}</div></nav>
   </section>
