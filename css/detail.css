@@ -1,0 +1,151 @@
+/* =========================================================
+   careCL 상세(서브) 페이지 — STEM 톤 와이드 레이아웃
+   sub.css 위에 얹는다. 본문은 content/*.html의 .dp 블록.
+     · 넓은 폭(최대 1680px) · 큰 제목 · 넉넉한 자간·행간
+     · 사진과 글은 충분히 띄워서 나란히, 섹션마다 큰 사진으로 쉼표
+   ========================================================= */
+
+/* ── 머리말: 제목을 더 크게, 자간은 넓게 ───────── */
+.subhead{padding-top:clamp(80px,9vw,170px)}
+.subhead__title{font-size:clamp(40px,7vw,132px);line-height:1;letter-spacing:.005em}
+.subhead__kr{font-size:clamp(16px,1.35vw,21px);letter-spacing:.06em}
+.sub .subhead .wrap,.sub .subtabs .wrap{max-width:1680px;margin-inline:auto;box-sizing:content-box}
+
+/* ── 섹션 틀 ───────────────────────────────────── */
+.dp{padding-block:clamp(90px,10vw,200px)}
+.dp + .dp{padding-top:0}
+.dp--tint{background:var(--soft);padding-top:clamp(90px,10vw,200px)!important}
+.dp--tint + .dp{padding-top:clamp(90px,10vw,200px)}
+.dp__in{max-width:1680px;margin-inline:auto;padding-inline:var(--gut);box-sizing:content-box}
+
+/* 작은 라벨 — LED 점 + 대문자 */
+.dp-label{display:flex;align-items:center;gap:.8em;margin:0;
+  font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:clamp(12px,.9vw,14px);letter-spacing:.2em;color:var(--ink-2)}
+.dp-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--led);flex:none;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--led) 22%,transparent)}
+
+/* 큰 제목 · 중간 제목 */
+.dp-title{margin:clamp(20px,2vw,34px) 0 0;font-family:var(--f-title);font-weight:500;
+  font-size:clamp(34px,5.2vw,96px);line-height:1.18;letter-spacing:.01em;text-wrap:balance}
+.dp-title em{font-family:var(--f-ui);font-weight:200;font-style:italic;letter-spacing:0}
+.dp-h3{margin:clamp(18px,1.6vw,26px) 0 0;font-family:var(--f-title);font-weight:500;
+  font-size:clamp(26px,3vw,54px);line-height:1.3;letter-spacing:.015em;text-wrap:balance}
+
+/* 본문 — 넓은 행간·자간 */
+.dp-body{margin-top:clamp(24px,2.4vw,40px)}
+.dp-body p{margin:0 0 1.3em;font-size:clamp(15.5px,1.12vw,18.5px);line-height:2;letter-spacing:.025em;color:var(--ink-2);word-break:keep-all}
+.dp-body p:last-child{margin-bottom:0}
+.dp-body strong{color:var(--ink);font-weight:600}
+.dp-lead{margin:0;font-size:clamp(17px,1.4vw,24px);line-height:1.9;letter-spacing:.02em;color:var(--ink);word-break:keep-all}
+.dp-ul{margin:0 0 1.3em;padding:0;list-style:none}
+.dp-ul li{position:relative;padding-left:1.2em;font-size:clamp(15.5px,1.12vw,18.5px);line-height:2;letter-spacing:.025em;color:var(--ink)}
+.dp-ul li::before{content:"";position:absolute;left:0;top:.95em;width:6px;height:1px;background:var(--ink)}
+
+/* 머리 — 왼쪽 제목, 오른쪽 리드 */
+.dp-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(40px,7vw,140px);align-items:end}
+.dp-head .dp-body{margin-top:0}
+.dp-head--stack{display:block;max-width:1120px}
+
+/* ── 사진 ──────────────────────────────────────── */
+.dp-full{position:relative;margin-top:clamp(60px,6vw,120px);overflow:hidden;background:#EEEDEB}
+.dp-full img{display:block;width:100%;aspect-ratio:21/9;object-fit:cover}
+.dp-full--tall img{aspect-ratio:16/8}
+.dp-full figcaption{position:absolute;left:var(--gut);bottom:clamp(20px,2.6vw,44px);
+  font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12px;letter-spacing:.22em;color:#fff;
+  text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.dp-full--dark figcaption{color:#fff}
+.dp-full--light figcaption{color:var(--ink);text-shadow:none}
+.dp > .dp-full:first-child{margin-top:0}
+
+/* 사진 + 글 나란히 (사진 쪽이 조금 넓게) */
+.dp-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(48px,8vw,170px);align-items:center}
+.dp-row + .dp-row{margin-top:clamp(90px,9vw,180px)}
+.dp-row--rev .dp-row__img{order:2}
+.dp-row__img{margin:0;overflow:hidden;background:#EEEDEB;aspect-ratio:4/3}
+.dp-row__img--v{aspect-ratio:4/5}
+.dp-row__img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.dp-row:hover .dp-row__img img{transform:scale(1.03)}
+.dp-row__copy{max-width:620px}
+
+/* 큰 문장 */
+.dp-quote{margin:0;max-width:1240px;font-family:var(--f-title);font-weight:500;
+  font-size:clamp(26px,3.4vw,62px);line-height:1.4;letter-spacing:.015em;text-wrap:balance;word-break:keep-all}
+.dp-quote small{display:block;margin-top:clamp(22px,2vw,34px);font-family:var(--f-kr);font-weight:400;
+  font-size:clamp(15.5px,1.12vw,18.5px);line-height:2;letter-spacing:.025em;color:var(--ink-2)}
+.dp-quote--center{margin-inline:auto;text-align:center}
+
+/* 번호가 붙은 항목 (2~3열) */
+.dp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(40px,4.4vw,90px) clamp(28px,3.6vw,70px);margin-top:clamp(56px,5.4vw,100px)}
+.dp-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dp-item{border-top:1px solid var(--ink);padding-top:clamp(22px,2vw,34px)}
+.dp-item__no{display:block;font-family:var(--f-ui);font-weight:200;font-style:italic;font-size:clamp(44px,4.4vw,80px);line-height:.9;color:var(--pale)}
+.dp-item h4{margin:clamp(18px,1.6vw,26px) 0 0;font-family:var(--f-title);font-weight:500;font-size:clamp(19px,1.55vw,26px);line-height:1.4;letter-spacing:.015em}
+.dp-item h4 small{display:block;margin-top:6px;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12px;letter-spacing:.18em;color:var(--ink-2)}
+.dp-item p{margin:14px 0 0;font-size:clamp(15px,1.05vw,17px);line-height:1.95;letter-spacing:.02em;color:var(--ink-2);word-break:keep-all}
+.dp-item .dp-quoteline{color:var(--ink);font-weight:500}
+.dp-item .dp-tags{margin-top:18px;padding-top:14px;border-top:1px solid var(--hair);font-size:14px;letter-spacing:.02em;color:var(--ink)}
+.dp-item .dp-tags b{display:block;margin-bottom:4px;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:11.5px;letter-spacing:.18em;color:var(--ink-2)}
+
+/* 기술 목록 — 번호 | 이름 | 설명 */
+.dp-list{margin-top:clamp(56px,5.4vw,100px);border-top:1px solid var(--ink)}
+.dp-li{display:grid;grid-template-columns:minmax(0,.35fr) minmax(0,1fr) minmax(0,1.35fr);gap:clamp(24px,4vw,80px);
+  padding-block:clamp(40px,4.4vw,80px);border-bottom:1px solid var(--hair)}
+.dp-li__no{font-family:var(--f-ui);font-weight:200;font-style:italic;font-size:clamp(44px,4.4vw,80px);line-height:.9;color:var(--pale)}
+.dp-li__name b{display:block;font-family:var(--f-title);font-weight:500;text-transform:uppercase;font-size:clamp(22px,2.2vw,38px);line-height:1.15;letter-spacing:.02em}
+.dp-li__name span{display:block;margin-top:12px;font-size:clamp(15px,1.1vw,18px);letter-spacing:.08em;color:var(--ink-2)}
+.dp-li__body .dp-sub{margin:0 0 1em;font-family:var(--f-title);font-weight:500;font-size:clamp(17px,1.4vw,23px);line-height:1.55;letter-spacing:.015em;color:var(--ink)}
+
+/* 3단 흐름 */
+.dp-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(56px,5.4vw,100px);border-top:1px solid var(--ink)}
+.dp-flow > div{padding:clamp(28px,2.6vw,46px) clamp(16px,2vw,36px) 0 0}
+.dp-flow > div + div{padding-left:clamp(16px,2vw,36px);border-left:1px solid var(--hair)}
+.dp-flow em{display:block;font-family:var(--f-ui);font-weight:200;font-style:italic;font-size:clamp(40px,3.6vw,64px);line-height:.9;color:var(--pale)}
+.dp-flow b{display:block;margin-top:18px;font-family:var(--f-ui);font-weight:500;letter-spacing:.2em;font-size:13px}
+.dp-flow p{margin:10px 0 0;font-family:var(--f-title);font-weight:500;font-size:clamp(18px,1.6vw,27px);line-height:1.45;letter-spacing:.015em}
+
+/* 비교표 */
+.dp-table{margin-top:clamp(50px,5vw,90px);overflow-x:auto}
+.dp-table table{width:100%;min-width:640px;border-collapse:collapse}
+.dp-table th,.dp-table td{padding:clamp(18px,1.6vw,28px) clamp(10px,1.4vw,24px);text-align:left;vertical-align:top;border-bottom:1px solid var(--hair);
+  font-size:clamp(15px,1.1vw,18px);line-height:1.8;letter-spacing:.02em}
+.dp-table thead th{font-family:var(--f-title);font-weight:500;font-size:clamp(18px,1.6vw,26px);border-bottom:1px solid var(--ink)}
+.dp-table tbody th{width:22%;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12.5px;letter-spacing:.14em;color:var(--ink-2)}
+
+/* 연락처 — 큰 글씨 */
+.dp-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,60px);margin:clamp(56px,5.4vw,100px) 0 0;border-top:1px solid var(--ink)}
+.dp-facts > div{padding-top:clamp(22px,2vw,34px)}
+.dp-facts dt{font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12px;letter-spacing:.2em;color:var(--ink-2)}
+.dp-facts dd{margin:12px 0 0;font-family:var(--f-title);font-weight:500;font-size:clamp(19px,1.7vw,30px);line-height:1.45;letter-spacing:.02em;word-break:keep-all}
+.dp-facts dd a{border-bottom:1px solid var(--hair)}
+.dp-facts dd a:hover{border-color:var(--ink)}
+
+/* 증빙 두 칸 */
+.dp-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,3.6vw,70px);margin-top:clamp(56px,5.4vw,100px)}
+.dp-proof > div{border-top:1px solid var(--ink);padding-top:clamp(22px,2vw,34px)}
+.dp-proof .dp-h3{font-size:clamp(20px,1.9vw,32px)}
+.dp-proof p{margin:14px 0 0;font-size:clamp(15px,1.1vw,18px);line-height:1.9;letter-spacing:.02em;color:var(--ink-2)}
+.dp-proof .dp-tagrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.dp-proof .dp-tagrow span{padding:9px 16px;border:1px solid var(--hair);border-radius:100px;font-size:14px;letter-spacing:.04em}
+
+.dp-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(40px,4vw,70px)}
+.dp-note{margin:clamp(24px,2vw,34px) 0 0;font-size:14px;letter-spacing:.02em;color:var(--ink-2)}
+
+/* 문서(인증서·특허) 그리드는 넓은 폭에 맞춰 간격만 키운다 */
+.dp .docgrid{margin-top:clamp(56px,5.4vw,100px);gap:clamp(28px,3.4vw,70px)}
+.dp .map{margin-top:clamp(50px,5vw,90px)}
+
+/* ── 반응형 ────────────────────────────────────── */
+@media (max-width:1024px){
+  .dp-li{grid-template-columns:minmax(0,.3fr) minmax(0,1fr)}
+  .dp-li__body{grid-column:2}
+}
+@media (max-width:860px){
+  .dp-head,.dp-row{grid-template-columns:minmax(0,1fr);gap:clamp(28px,6vw,48px)}
+  .dp-row--rev .dp-row__img{order:0}
+  .dp-row__copy{max-width:none}
+  .dp-grid,.dp-grid--2,.dp-flow,.dp-facts,.dp-proof{grid-template-columns:minmax(0,1fr)}
+  .dp-flow > div + div{border-left:0;padding-left:0;border-top:1px solid var(--hair);margin-top:28px}
+  .dp-full img,.dp-full--tall img{aspect-ratio:4/3}
+  .dp-li{grid-template-columns:minmax(0,1fr);gap:14px}
+  .dp-li__body{grid-column:auto}
+}

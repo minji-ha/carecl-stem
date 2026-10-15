@@ -9,8 +9,9 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261016043923">
-<link rel="stylesheet" href="css/sub.css?v=261016043923">
+<link rel="stylesheet" href="css/stem.css?v=261016044908">
+<link rel="stylesheet" href="css/sub.css?v=261016044908">
+<link rel="stylesheet" href="css/detail.css?v=261016044908">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -38,26 +39,53 @@
     <nav class="subtabs" aria-label="Products 하위 메뉴"><div class="wrap subtabs__in"><a href="products.html" aria-current="page">Beauty Device</a><a href="cosmetics.html">Cosmetics</a></div></nav>
   </section>
   <div class="sub-body">
-<section data-led="yellow" class="sec" id="device">
-  <div class="wrap">
-    <div class="seclabel"><i></i><span>BEAUTY DEVICE &nbsp;·&nbsp; 뷰티 디바이스</span></div>
-    <h2>진단 결과에 맞춰<br>조합하는 디바이스</h2>
-    <div class="pillars" style="margin-top:50px">
-      <div class="pillar"><div class="pillar__img has-img"><img src="assets/img/p-techfit.jpg" alt="TECHFIT"></div><h3>DEVICE</h3><h4>TECHFIT</h4><p>5초 스탬핑 고주파 디바이스</p></div>
-      <div class="pillar"><div class="pillar__img has-img"><img src="assets/img/p-clb.jpg" alt="CLB"></div><h3>DEVICE</h3><h4>CLB</h4><p>고주파 마사지기</p></div>
-      <div class="pillar"><div class="pillar__img"><em>COMING</em><span>향후 Device</span></div><h3>DEVICE</h3><h4>향후 라인업</h4><p>추가 디바이스가 이어집니다.</p></div>
+<section data-led="yellow" class="dp" id="device">
+  <div class="dp__in">
+    <div class="dp-head">
+      <div>
+        <p class="dp-label rv">Beauty Device</p>
+        <h2 class="dp-title rv">진단 결과에 맞춰<br>조합하는 디바이스</h2>
+      </div>
+    </div>
+  </div>
+  <figure class="dp-full rv"><img src="assets/img/d-lineup2.jpg" alt="TECH FIT과 콜라겐 젤, 그리드 마스크" loading="lazy" data-zoom></figure>
+</section>
+
+<section data-led="yellow" class="dp">
+  <div class="dp__in">
+    <div class="dp-row">
+      <figure class="dp-row__img dp-row__img--v rv"><img src="assets/img/d-techfit-stand.jpg" alt="TECH FIT" loading="lazy"></figure>
+      <div class="dp-row__copy">
+        <p class="dp-label rv">Device 01</p>
+        <h3 class="dp-h3 rv">TECHFIT</h3>
+        <div class="dp-body rv"><p class="dp-lead">5초 스탬핑 고주파 디바이스</p></div>
+      </div>
+    </div>
+    <div class="dp-row dp-row--rev">
+      <figure class="dp-row__img dp-row__img--v rv"><img src="assets/img/d-clb-pair.jpg" alt="CLB" loading="lazy"></figure>
+      <div class="dp-row__copy">
+        <p class="dp-label rv">Device 02</p>
+        <h3 class="dp-h3 rv">CLB</h3>
+        <div class="dp-body rv"><p class="dp-lead">고주파 마사지기</p></div>
+      </div>
     </div>
   </div>
 </section>
-<section data-led="yellow" class="figbreak" style="--fw:980px"><div class="figbreak__img"><img src="assets/img/c-overhead.jpg" alt=""></div><div class="figbreak__cap"><em>CARECL DEVICE</em><span>매일의 루틴에 들어오는 클리닉의 방식</span></div></section>
-<section data-led="yellow" class="sec sec--grey">
-  <div class="wrap">
-    <div class="splitfig">
-      <div class="splitfig__img"><img src="assets/img/c-techfit-case.jpg" alt=""></div>
-      <div class="splitfig__copy">
-        <h3>문지르지 않고, 눌러서</h3>
+
+<section data-led="yellow" class="dp dp--tint">
+  <div class="dp__in">
+    <div class="dp-head">
+      <div>
+        <p class="dp-label rv">How It Works</p>
+        <h2 class="dp-title rv">문지르지 않고,<br>눌러서</h2>
+      </div>
+      <div class="dp-body rv">
         <p>문지르거나 굴리지 않습니다. 관리 부위에 정확히 올려두고 정해진 시간 동안 에너지를 전달합니다.</p>
       </div>
+    </div>
+    <div class="dp-grid dp-grid--2">
+      <div class="dp-item rv"><span class="dp-item__no">Coming</span><h4>향후 라인업<small>Device</small></h4><p>추가 디바이스가 이어집니다.</p></div>
+      <div class="dp-item rv" data-d="1"><span class="dp-item__no">Care</span><h4>매일의 루틴에 들어오는<br>클리닉의 방식<small>careCL Device</small></h4></div>
     </div>
   </div>
 </section>
@@ -95,7 +123,7 @@
   </div>
 </footer>
 <a class="aifab" href="survey.html" aria-label="AI 피부 진단 시작하기"><span class="aifab__ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/><circle cx="19.4" cy="4.2" r="1.7" fill="currentColor" opacity=".9"/><circle cx="4.8" cy="18.4" r="1.2" fill="currentColor" opacity=".7"/></svg></span><span class="aifab__txt">AI 피부 진단</span></a>
-<script src="js/led.js?v=261016043923"></script>
-<script src="js/stem.js?v=261016043923"></script>
+<script src="js/led.js?v=261016044908"></script>
+<script src="js/stem.js?v=261016044908"></script>
 </body>
 </html>

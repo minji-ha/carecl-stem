@@ -412,14 +412,14 @@ def sub_page(group, led, items, idx):
         return 'src="assets/img/' + IMG_MAP.get(name, name) + '"'
     body = re.sub(r'src="(assets/img/[^"]+)"', img, body)
     # 섹션마다 LED 색 지정
-    body = re.sub(r'<section class="(sec|figbreak)', lambda m: '<section data-led="' + led + '" class="' + m.group(1), body)
+    body = re.sub(r'<section class="(sec|figbreak|dp)', lambda m: '<section data-led="' + led + '" class="' + m.group(1), body)
     # 회사 소개의 파티클 캔버스 → 9구 LED 헤드
     body = re.sub(r'<div class="about__visual ceo__visual" id="brandParticles">.*?</div></div>',
                   '<div class="about__visual"><div class="led9 about__led" data-led9><canvas></canvas></div>'
                   '<span class="about__tag">Ageless Beauty</span></div>', body, flags=re.S)
     # 지도 자리 → 구글 지도 (주소 그대로 검색)
-    body = re.sub(r'<div class="map">.*?</div>',
-                  '<div class="map"><iframe title="케어클 위치 — 경기도 고양시 일산동구 동국로 32" loading="lazy" '
+    body = re.sub(r'<div class="map( rv)?">.*?</div>',
+                  lambda m: '<div class="map' + (m.group(1) or '') + '"><iframe title="케어클 위치 — 경기도 고양시 일산동구 동국로 32" loading="lazy" '
                   'referrerpolicy="no-referrer-when-downgrade" '
                   'src="https://www.google.com/maps?q=%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EB%8F%99%EA%B5%AD%EB%A1%9C%2032&output=embed"></iframe></div>',
                   body, count=1, flags=re.S)
@@ -440,7 +440,7 @@ def sub_page(group, led, items, idx):
   </div>
 </main>
 """
-    return (head(f"{title_kr} | careCL 케어클", f"careCL {title_kr}", sub=True)
+    return (head(f"{title_kr} | careCL 케어클", f"careCL {title_kr}", sub=True, css=("css/detail.css",))
             + header(GROUP_HREF[group]) + head_html + FOOTER + tail(three=False))
 
 
