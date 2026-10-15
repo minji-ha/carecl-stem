@@ -241,9 +241,8 @@
 .subhead__vis--cut{top:calc(-1 * clamp(40px,4vw,80px));bottom:0}
 .subhead__vis--cut img{object-fit:contain;object-position:right bottom}
 .subhead__vis--cut:not(.cut--tall){width:min(46%,820px);top:0}
-.subhead__vis.cut--tall{width:min(30%,460px);right:clamp(40px,8vw,160px);top:0;
-  -webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
-.subhead__vis.cut--tall img{object-position:center bottom}
+.subhead__vis.cut--tall{width:min(30%,460px);right:clamp(40px,8vw,160px);top:0;bottom:clamp(30px,3vw,56px)}
+.subhead__vis.cut--tall img{object-position:center center}
 /* 사진 — 왼쪽으로 하얗게 사라지게 */
 .subhead__vis--photo img{object-fit:cover;object-position:right 30%}
 .subhead__vis--photo{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
