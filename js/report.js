@@ -88,11 +88,40 @@
     return '<section class="rp-card' + (extra ? ' ' + extra : '') + '"><h3 class="rp-ct"><i aria-hidden="true">' + icon + '</i>' + esc(title) + '</h3>' + inner + '</section>';
   }
 
-  /* opts: { counts, roles:{key:'대표'|'보조'}, mixWith, parts, restart } */
+  /* 로그인 전 — 유형 이름·소개까지만 공개하고 나머지는 잠근다 (개발 화면 ScoringService.redact와 같은 범위) */
+  function lockedHtml(R, opts) {
+    return '<div class="rp" data-rpt>' +
+      '<section class="rp-card rp-cover">' +
+        '<p class="rp-eyebrow">진단 결과</p><p class="rp-code">' + esc(R.en) + '</p>' +
+        '<h2 class="rp-name">' + esc(R.name) + '</h2><p class="rp-tag">' + esc(R.tagline) + '</p>' +
+      '</section>' +
+      '<section class="rp-card">' +
+        '<p class="rp-desc">' + esc(R.desc) + '</p>' +
+        '<ul class="rp-traits">' + R.traits.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
+        '<p class="rp-concern"><small>대표 고민</small>' + esc(R.concern) + '</p>' +
+      '</section>' +
+      '<section class="rp-lock">' +
+        '<div class="rp-lock__ghost" aria-hidden="true"><span></span><span></span><span></span><span></span></div>' +
+        '<div class="rp-lock__box">' +
+          '<div class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>' +
+          '<h3>로그인하면 전체 결과가 열려요</h3>' +
+          '<p>고객님만을 위한 상세 진단 이유, 집중 케어 부위,<br>맞춤 홈케어 루틴을 확인해보세요.</p>' +
+          '<ul><li>진단 이유</li><li>집중 케어 부위 TOP 3</li><li>홈케어 루틴</li><li>SHOT 모드 가이드</li><li>전용 혜택</li><li>실제 후기</li></ul>' +
+          '<a class="rp-btn dark" href="' + esc(opts.loginHref || '#') + '">로그인하고 전체 결과 보기</a>' +
+        '</div>' +
+      '</section>' +
+      '<div class="rp-actions">' +
+        (opts.restart ? '<button type="button" class="rp-btn line" data-restart>다시 하기</button>' : '<a class="rp-btn line" href="survey.html">다시 하기</a>') +
+      '</div>' +
+    '</div>';
+  }
+
+  /* opts: { counts, roles:{key:'대표'|'보조'}, mixWith, parts, restart, locked, loginHref } */
   function html(key, opts) {
     opts = opts || {};
     var k = REPORT[key] ? key : 'early';
     var R = REPORT[k];
+    if (opts.locked) return lockedHtml(R, opts);
     var D = dataFor(k, opts.mixWith) || {};
     var counts = opts.counts || sample(k);
     var roles = opts.roles || {};

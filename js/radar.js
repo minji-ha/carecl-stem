@@ -28,6 +28,7 @@
   function poly(vs) { return vs.map(function (v, i) { return pt(i, v).map(function (n) { return n.toFixed(1); }).join(','); }).join(' '); }
 
   function draw(vals, done) {
+    if (!svg) return;
     svg.innerHTML = '';
     el('defs', {}).innerHTML =
       '<radialGradient id="' + uid + 'f" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#F0A877" stop-opacity=".15"/><stop offset="1" stop-color="#C46A3A" stop-opacity=".62"/></radialGradient>' +
@@ -73,7 +74,8 @@
       if (p < 1) raf = requestAnimationFrame(step);
     }
     raf = requestAnimationFrame(step);
-    setTimeout(function () { if (cur.join() !== to.join()) { cancelAnimationFrame(raf); cur = to; draw(cur, true); } }, dur + 80);
+    // rAF가 멈춘 창(숨겨진 탭 등)에서도 최종 모양은 꼭 그린다
+    setTimeout(function () { cancelAnimationFrame(raf); cur = to; draw(cur, true); }, dur + 80);
     var cap = document.querySelector('[data-radar-roles]');
     if (cap) {
       var keys = Object.keys(roles);
@@ -93,5 +95,5 @@
   }
 
   window.ckuRadar = { mount: mount, set: set, axes: AXES };
-  if (document.readyState !== 'loading') mount(); else document.addEventListener('DOMContentLoaded', function () { mount(); });
+  mount();   // 스크립트가 본문 끝에 있어 패널은 이미 있다 — survey.js가 바로 set()을 불러도 그릴 곳이 있게 먼저 붙인다
 })();

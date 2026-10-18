@@ -207,8 +207,18 @@
   /* 왼쪽 레이더 — 답할 때마다 갱신 */
   function syncRadar(roles) { if (window.ckuRadar) window.ckuRadar.set(tally(), roles); }
 
+  /* 설문 없이 결과 화면만 보기 — survey.html?view=guest|member&type=mixed
+     guest = 로그인 전(유형 소개까지 + 잠금), member = 로그인 후(전체) */
+  var PREVIEW = (function () {
+    var v = (location.search.match(/[?&]view=(guest|member)/) || [])[1];
+    if (!v) return null;
+    var t = (location.search.match(/[?&]type=(early|tired|fine|sag|muscle|mixed)/) || [])[1] || 'mixed';
+    return { view: v, type: t };
+  })();
+  var main = document.querySelector('.sv');
+
   function renderDone() {
-    var counts = tally();
+    var counts = PREVIEW ? window.ckuReport.sample(PREVIEW.type) : tally();
     var order = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
 
     /* 1위가 동점이면 혼합형으로 본다 — 원고 예시 A/B/C 중 같이 높은 유형에 맞는 것을 고른다 */
@@ -222,15 +232,19 @@
       roles[order[0]] = '대표';
     }
 
+    var locked = !!(PREVIEW && PREVIEW.view === 'guest');
+    if (main) main.classList.toggle('is-locked', locked);
     form.innerHTML = window.ckuReport.html(key, {
       counts: counts,
       roles: roles,
       mixWith: mixWith,
       parts: (answers[14] || []).join(' · '),
-      restart: true
+      restart: true,
+      locked: locked,
+      loginHref: 'survey.html?view=member&type=' + key   // 시안에서는 로그인 대신 '로그인 후' 화면으로 이동
     });
     window.ckuReport.fillBars(form);
-    syncRadar(roles);
+    if (window.ckuRadar) window.ckuRadar.set(counts, roles);   // 미리보기는 예시 응답으로 그린다
   }
 
   function render() {
@@ -248,6 +262,8 @@
     if (startBtn) { step = 0; render(); return; }
 
     if (e.target.closest('[data-restart]')) {
+      PREVIEW = null; if (main) main.classList.remove('is-locked');
+      if (location.search) history.replaceState(null, '', location.pathname);
       answers = {}; step = -1; render(); syncRadar({});
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -281,5 +297,6 @@
     }
   });
 
+  if (PREVIEW) step = TOTAL;
   render();
 })();
