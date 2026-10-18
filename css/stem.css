@@ -364,7 +364,13 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 .foot__side h2{margin:0 0 14px;font-family:var(--f-ui);font-weight:500;font-size:clamp(12px,.97vw,16px);text-transform:uppercase;letter-spacing:.04em}
 .foot__side p{margin:0;font-size:14px;line-height:1.9;color:var(--ink-2)}
 .foot__side a.btn-line{margin-top:18px}
-.foot__nav{display:flex;flex-wrap:wrap;gap:12px clamp(20px,4.2vw,80px);margin-top:clamp(30px,3.4vw,60px);padding-bottom:clamp(30px,3vw,54px)}
+.foot__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 40px;margin-top:clamp(30px,3.4vw,60px);padding-bottom:clamp(30px,3vw,54px)}
+.foot__nav{display:flex;flex-wrap:wrap;gap:12px clamp(20px,4.2vw,80px)}
+.foot__sns{display:flex;gap:10px}
+.foot__sns a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid var(--hair);transition:transform .25s ease,border-color .25s ease}
+.foot__sns a:hover{transform:translateY(-2px);border-color:var(--ink)}
+.foot__sns img{display:block;width:20px;height:20px;object-fit:contain}
+.foot__sns img.is-wide{width:22px;height:16px}
 .foot__nav a{font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:clamp(12px,1.04vw,17px)}
 .foot__bar{
   background:var(--bar);color:#d9d4cf;

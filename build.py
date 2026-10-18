@@ -74,6 +74,10 @@ def header(active=""):
 """
 
 
+# 푸터 SNS — 링크 주소는 받는 대로 href에 넣는다. 유튜브만 가로형이라 따로 크기를 준다.
+SNS = [("Instagram", "instagram", ""), ("Facebook", "facebook", ""),
+       ("YouTube", "youtube", ' class="is-wide"'), ("KakaoTalk", "kakaotalk", "")]
+
 FOOTER = f"""<footer class="foot">
   <div class="wrap">
     <div class="foot__top">
@@ -87,9 +91,12 @@ FOOTER = f"""<footer class="foot">
         <a class="btn-line" href="survey.html">진단 시작하기</a>
       </div>
     </div>
-    <nav class="foot__nav" aria-label="푸터 메뉴">
-      {"".join(f'<a href="{h}">{t}</a>' for t, h, _ in NAV_LEFT + NAV_RIGHT)}
-    </nav>
+    <div class="foot__row">
+      <nav class="foot__nav" aria-label="푸터 메뉴">
+        {"".join(f'<a href="{h}">{t}</a>' for t, h, _ in NAV_LEFT + NAV_RIGHT)}
+      </nav>
+      <div class="foot__sns">{"".join(f'<a href="#" aria-label="{t}"><img{c} src="assets/img/sns/{f}.svg" alt=""></a>' for t, f, c in SNS)}</div>
+    </div>
   </div>
   <div class="foot__bar">
     <span>CARECL CO.,Ltd. · CEO Hyungkyu Choi · 사업자등록번호 591-88-03097 · 통신판매업 제2025-고양일산동-0585호</span>
@@ -523,7 +530,7 @@ AI_TEST_PUBLIC = False
 
 def hide_ai_test(html):
     html = re.sub(r'<a class="aifab".*?</a>\n?', '', html, flags=re.S)                       # 오른쪽 아래 버튼
-    html = re.sub(r'<div class="foot__side">.*?</div>\s*(?=</div>\s*<nav class="foot__nav")', '', html, flags=re.S)  # 푸터 진단 안내
+    html = re.sub(r'<div class="foot__side">.*?</div>\s*(?=</div>\s*<div class="foot__row")', '', html, flags=re.S)  # 푸터 진단 안내
     html = re.sub(r'<div class="core__cta">.*?</div>', '', html, flags=re.S)                   # 메인 '나의 Aging Type 알아보기'
     html = re.sub(r'<a[^>]*href="(?:survey|report)\.html[^"]*"[^>]*>.*?</a>', '', html, flags=re.S)  # 나머지 링크
     html = re.sub(r'<p>\s*</p>', '', html)
