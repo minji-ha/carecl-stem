@@ -4,7 +4,7 @@
    · 리포트가 보이면: 분석을 한 번 돌리고 결과에서 멈춤 (embed=1)
    survey2.html (data-flow):
    · 인트로(모든 탭): 그래픽이 화면 전체 배경으로 깔리고 인트로 글이 그 위에 (embed=hero)
-   · 설문·리포트: 1번(입자 얼굴)은 왼쪽 패널, 2~5번은 그래픽이 빠지고 설문이 가운데로. 5번(3D 기기)은 설문 중 오른쪽 아래에 기기가 돈다 (embed=mini) */
+   · 설문·리포트: 1번(입자 얼굴)은 왼쪽 패널, 2~5번은 그래픽이 빠지고 설문이 가운데로. 설문하는 동안은 모든 탭에서 오른쪽 아래에 3D 기기가 돈다 (embed=mini) */
 (function () {
   var nav = document.querySelector('.pvtabs'), frame = document.querySelector('.sv__stick--frame iframe'), form = document.getElementById('svForm');
   if (!nav || !frame) return;
@@ -37,10 +37,10 @@
     // 설문 가운데 모드에서는 왼쪽 그래픽이 안 보이니 불러오지 않는다
     if (!(center && st !== 'intro') && (force || want !== shown)) { shown = want; frame.src = want; }
     if (mini) {
-      var on = flow && tabs.indexOf(cur) === tabs.length - 1 && st === 'q';
+      var on = flow && st === 'q';   // 모든 탭에서 설문하는 동안 3D 기기가 오른쪽 아래에서 돈다
       mini.hidden = !on;
       var f = mini.querySelector('iframe');
-      if (on && !f.getAttribute('src')) f.src = cur.dataset.src + '?embed=mini' + (ver ? '&v=' + ver : '');
+      if (on && !f.getAttribute('src')) f.src = tabs[tabs.length - 1].dataset.src + '?embed=mini' + (ver ? '&v=' + ver : '');
     }
   }
 
