@@ -536,21 +536,16 @@ PANEL_VARIANTS = [
 
 def page_survey_panel(idx):
     name, src, _ = PANEL_VARIANTS[idx]
-    tabs = "".join(f'<a href="{n}?view=guest&amp;type=mixed"{" class=on" if i == idx else ""}><i>{i + 1}</i>{label}</a>'
-                   for i, (n, _s, label) in enumerate(PANEL_VARIANTS))
+    tabs = "".join(f'<a href="{n}" data-src="{s_}"{" class=on" if i == idx else ""}><i>{i + 1}</i>{label}</a>'
+                   for i, (n, s_, label) in enumerate(PANEL_VARIANTS))
     out = page_survey()
     out = re.sub(r'<div class="sv__stick">.*?</div>\n    </div>\n  </aside>',
                  f'<div class="sv__stick sv__stick--frame"><iframe src="{src}?embed=1&amp;v={VER}" title="AI 진단 그래픽" loading="eager"></iframe></div>\n  </aside>',
                  out, count=1, flags=re.S)
     out = out.replace('<main class="sv sv--stem"', f'<nav class="pvtabs" aria-label="왼쪽 그래픽 시안">{tabs}</nav>\n<main class="sv sv--stem sv--framed"', 1)
     out = out.replace('<script src="js/orb.js', '<script data-off="js/orb.js', 1)
-    # 탭을 옮겨도 지금 보고 있는 화면(로그인 전/후)을 그대로 유지.
-    # 결과 미리보기가 아니면(설문 진행 중) 탭은 새 설문으로, 왼쪽 그래픽은 멈추지 않고 계속 돈다.
-    keep = ('<script>(function(){var v=(location.search.match(/[?&]view=(guest|member)/)||[])[1];'
-            'document.querySelectorAll(".pvtabs a").forEach(function(a){var h=a.getAttribute("href");'
-            'a.href=v?h.replace(/view=[a-z]+/,"view="+v):h.split("?")[0];});'
-            'if(!v){var f=document.querySelector(".sv__stick--frame iframe");f.src=f.getAttribute("src").replace("embed=1","embed=loop");}})();</script>\n')
-    out = out.replace('</body>', keep + '</body>', 1)
+    # 탭은 페이지 이동 없이 왼쪽 그래픽만 바꾼다 (js/pvtabs.js)
+    out = out.replace('</body>', f'<script src="js/pvtabs.js?v={VER}"></script>' + chr(10) + '</body>', 1)
     return out
 
 
