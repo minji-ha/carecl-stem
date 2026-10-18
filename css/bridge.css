@@ -108,13 +108,13 @@ body.survey .foot{margin-top:0}
 /* ── survey2.html — 2~5번 탭: 전체 화면 인트로 → 가운데 설문 (js/pvtabs.js) ── */
 /* 인트로: 그래픽이 화면 전체에 깔리고(오른쪽으로 비켜 서서 왼쪽이 자연스럽게 흐려짐) 왼쪽에 인트로 글 */
 .sv--flow.is-hero{display:block;position:relative;min-height:calc(100vh - var(--head));
-  background:radial-gradient(70% 90% at 68% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
+  background:radial-gradient(70% 90% at 30% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
 .sv--flow.is-hero .sv__panel{position:absolute;inset:0;height:auto;background:transparent}
 .sv--flow.is-hero .sv__dots{display:none}
 .sv--flow.is-hero .sv__stick{position:absolute;inset:0;height:auto;min-height:0}
 .sv--flow.is-hero .sv__stick iframe{background:transparent}
-.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(47%,700px);min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
-.sv--flow.is-hero .sv__form{width:auto;max-width:540px;margin:0 0 0 clamp(28px,6vw,110px)}
+.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(47%,700px);margin-left:auto;min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
+.sv--flow.is-hero .sv__form{width:auto;max-width:540px;margin:0 clamp(28px,6vw,110px) 0 0}
 .sv--flow.is-hero .sv__intro h1{color:#fff}
 .sv--flow.is-hero .sv__intro .desc{color:rgba(255,255,255,.64);font-size:15px}
 .sv--flow.is-hero .sv__intro .desc br{display:none}
@@ -125,6 +125,15 @@ body.survey .foot{margin-top:0}
 .sv--flow.is-hero .sv__intro .caution{color:rgba(255,255,255,.4)}
 .sv--flow.is-hero .sv__intro .go .btn{background:#fff;color:#2B2724;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,color .35s .05s;box-shadow:0 16px 36px -14px rgba(0,0,0,.6)}
 .sv--flow.is-hero .sv__intro .go .btn:hover,.sv--flow.is-hero .sv__intro .go .btn:focus-visible{color:#fff}
+/* 오로라 인트로 — 빛이 화면 전체를 가로지르고, 그 위에 검정 박스가 떠 있고, 글은 가운데 정렬 */
+.sv--flow.is-hero.is-full{background:radial-gradient(80% 90% at 50% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
+.sv--flow.is-hero.is-full .sv__body{width:auto;margin:0;justify-content:center}
+.sv--flow.is-hero.is-full .sv__form{margin:0 auto;max-width:720px;padding:clamp(34px,4vw,56px) clamp(24px,4vw,60px);text-align:center;
+  background:rgba(14,11,10,.82);border:1px solid rgba(240,168,119,.18);border-radius:28px;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03) inset;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.sv--flow.is-hero.is-full .sv__intro .label{justify-content:center}
+.sv--flow.is-hero.is-full .sv__chips{justify-content:center}
+.sv--flow.is-hero.is-full .sv__intro .desc{max-width:560px;margin-left:auto;margin-right:auto}
 /* 설문·리포트: 그래픽은 빠지고 가운데 한 줄로 */
 .sv--flow.is-center{grid-template-columns:minmax(0,1fr)}
 .sv--flow.is-center .sv__panel{display:none}
@@ -149,8 +158,19 @@ body.survey .foot{margin-top:0}
 @media (max-width:1100px){
   .sv--flow.is-hero .sv__panel{position:relative}
   .sv--flow.is-hero .sv__stick{position:relative;inset:auto;height:min(58vh,520px);-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent);mask-image:linear-gradient(180deg,#000 78%,transparent)}
-  .sv--flow.is-hero .sv__body{width:auto;min-height:0;padding:10px 0 110px}
+  .sv--flow.is-hero .sv__body{width:auto;min-height:0;padding:10px 0 110px;margin:0}
   .sv--flow.is-hero .sv__form{margin:0 auto;max-width:calc(100% - 48px)}
+  .sv--flow.is-hero.is-full .sv__panel{position:absolute;inset:0}
+  .sv--flow.is-hero.is-full .sv__stick{position:absolute;inset:0;height:auto;-webkit-mask-image:none;mask-image:none}
+  .sv--flow.is-hero.is-full .sv__body{min-height:calc(100vh - var(--head));padding:40px 0 110px}
+  .sv--flow.is-hero.is-full .sv__form{max-width:calc(100% - 32px)}
   .sv__mini{width:96px;height:140px;bottom:70px}
 }
 @media (max-width:640px){.sv__intro .label{gap:10px}.sv__intro .label i{width:24px}.sv__intro .label span{font-size:11px;letter-spacing:.1em;white-space:nowrap}}
+.sv--flow.is-hero.is-full .sv__intro h1{font-size:clamp(28px,2.8vw,38px)}
+.sv--flow.is-hero.is-full .sv__intro .label{margin-bottom:22px}
+.sv--flow.is-hero.is-full .sv__intro .desc{margin-top:20px}
+.sv--flow.is-hero.is-full .sv__chips{margin-top:24px}
+.sv--flow.is-hero.is-full .sv__intro .go{margin-top:28px}
+.sv--flow.is-hero.is-full .sv__intro .caution{margin-top:18px;font-size:13px}
+@media (max-width:640px){.sv--flow.is-hero.is-full .sv__form{padding:28px 18px}.sv--flow.is-hero.is-full .sv__intro .label i{display:none}.sv--flow.is-hero.is-full .sv__intro .label span{font-size:10px;letter-spacing:.06em}}

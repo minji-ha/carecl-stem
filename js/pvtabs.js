@@ -30,7 +30,9 @@
       main.classList.toggle('is-hero', flow && st === 'intro');            // 인트로는 모든 탭이 전체 화면
       main.classList.toggle('is-center', center && st !== 'intro');       // 설문·리포트: 1번만 왼쪽 패널, 2~5번은 가운데
     }
-    var mode = flow && st === 'intro' ? 'hero' : (st === 'done' ? '1' : 'loop');
+    var full = /aurora/.test(cur.dataset.src);   // 오로라는 인트로 배경을 화면 전체로 관통 + 가운데 박스
+    if (main && flow) main.classList.toggle('is-full', full);
+    var mode = flow && st === 'intro' ? (full ? 'herofull' : 'hero') : (st === 'done' ? '1' : 'loop');
     var want = cur.dataset.src + '?embed=' + mode + (ver ? '&v=' + ver : '');
     // 설문 가운데 모드에서는 왼쪽 그래픽이 안 보이니 불러오지 않는다
     if (!(center && st !== 'intro') && (force || want !== shown)) { shown = want; frame.src = want; }
