@@ -45,8 +45,14 @@
 
   function resize() {
     W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // 얼굴 바깥을 듬성듬성 채우는 별 — 화면 넓이에 맞춰 개수를 정하고, 10개 중 1개쯤은 크고 밝게
     stars = [];
-    for (var i = 0; i < 160; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, s: Math.random() * 1.1 + .3, ph: Math.random() * 6.28 });
+    var n = Math.max(220, Math.min(900, W * H / 1300 | 0));
+    for (var i = 0; i < n; i++) {
+      var big = Math.random() < .1;
+      stars.push({ x: Math.random() * W, y: Math.random() * H, s: big ? Math.random() * 1.4 + 1.4 : Math.random() * 1.1 + .4,
+                   a: big ? .55 : .18 + Math.random() * .25, ph: Math.random() * 6.28, v: .02 + Math.random() * .06, big: big });
+    }
   }
 
   function spawn(p) {
@@ -75,8 +81,14 @@
     ctx.clearRect(0, 0, W, H);
     // 배경 별
     stars.forEach(function (s) {
-      ctx.fillStyle = 'rgba(255,245,235,' + (.15 + .35 * (.5 + .5 * Math.sin(now / 900 + s.ph))).toFixed(3) + ')';
-      ctx.fillRect(s.x, s.y, s.s, s.s);
+      var y = (s.y - now * s.v / 60) % H; if (y < 0) y += H;          // 아주 천천히 위로 떠오른다
+      var al = s.a * (.55 + .45 * Math.sin(now / 900 + s.ph));
+      ctx.fillStyle = 'rgba(255,240,226,' + al.toFixed(3) + ')';
+      if (s.big) {
+        ctx.beginPath(); ctx.arc(s.x, y, s.s / 2, 0, 6.283); ctx.fill();
+        ctx.fillStyle = 'rgba(255,200,160,' + (al * .18).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(s.x, y, s.s * 2.2, 0, 6.283); ctx.fill();
+      } else ctx.fillRect(s.x, y, s.s, s.s);
     });
     if (!ready) return;
     var t = (now - t0) / 1000;

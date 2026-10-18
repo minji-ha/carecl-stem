@@ -108,13 +108,13 @@ body.survey .foot{margin-top:0}
 /* ── survey2.html — 2~5번 탭: 전체 화면 인트로 → 가운데 설문 (js/pvtabs.js) ── */
 /* 인트로: 그래픽이 화면 전체에 깔리고(오른쪽으로 비켜 서서 왼쪽이 자연스럽게 흐려짐) 왼쪽에 인트로 글 */
 .sv--flow.is-hero{display:block;position:relative;min-height:calc(100vh - var(--head));
-  background:radial-gradient(70% 90% at 30% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
+  background:radial-gradient(60% 90% at 22% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
 .sv--flow.is-hero .sv__panel{position:absolute;inset:0;height:auto;background:transparent}
 .sv--flow.is-hero .sv__dots{display:none}
 .sv--flow.is-hero .sv__stick{position:absolute;inset:0;height:auto;min-height:0}
 .sv--flow.is-hero .sv__stick iframe{background:transparent}
-.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(47%,700px);margin-left:auto;min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
-.sv--flow.is-hero .sv__form{width:auto;max-width:540px;margin:0 clamp(28px,6vw,110px) 0 0}
+.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(58%,860px);margin-left:auto;min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
+.sv--flow.is-hero .sv__form{width:auto;max-width:660px;margin:0 clamp(28px,6vw,110px) 0 clamp(20px,3vw,48px)}
 .sv--flow.is-hero .sv__intro h1{color:#fff}
 .sv--flow.is-hero .sv__intro .desc{color:rgba(255,255,255,.64);font-size:15px}
 .sv--flow.is-hero .sv__intro .desc br{display:none}
