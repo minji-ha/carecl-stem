@@ -22,5 +22,25 @@
 }
 .checkup .cku-btn.cku-retry:hover{background:#A8521F;transform:translateY(-2px)}
 
+/* 로그인 전 — 상세 카드를 흐리게 깔고 잠금 상자를 띄운다 */
+.checkup .cku-lock{position:relative;margin-top:16px}
+.checkup .cku-lock-preview{display:grid;gap:16px;filter:blur(7px);opacity:.6;pointer-events:none;user-select:none;
+  max-height:760px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(#000 35%,transparent 100%);mask-image:linear-gradient(#000 35%,transparent 100%)}
+.checkup .cku-lock-box{position:absolute;left:50%;top:70px;transform:translateX(-50%);width:min(480px,calc(100% - 24px));
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:32px 26px 28px;
+  border-radius:24px;background:#FDFCFA;border:1px solid var(--n-200);box-shadow:0 30px 60px -22px rgba(43,39,36,.28)}
+.checkup .cku-lock-ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--orange-100);color:var(--orange)}
+.checkup .cku-lock-title{margin:0;font-size:20px;font-weight:700;line-height:1.45;letter-spacing:-.02em;color:var(--ink);word-break:keep-all}
+.checkup .cku-lock-desc{margin:0;font-size:14px;line-height:1.7;color:var(--n-600);word-break:keep-all}
+.checkup .cku-lock-list{list-style:none;margin:4px 0 6px;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.checkup .cku-lock-list li{font-size:12px;padding:6px 11px;border-radius:999px;background:var(--n-50);border:1px solid var(--n-200);color:var(--n-700)}
+.checkup .cku-lock-btn{min-width:240px}
+@media (max-width:640px){
+  .checkup .cku-lock-box{top:40px;padding:26px 18px 22px}
+  .checkup .cku-lock-title{font-size:18px}
+  .checkup .cku-lock-desc br{display:none}
+}
+
 /* 성분 설명 상자 — hidden 속성이 디자인 display 규칙에 지지 않게 */
 .checkup [data-ing-detail][hidden],.checkup .cku-review-more[hidden]{display:none}

@@ -85,7 +85,8 @@
     busy: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     ai: '<path d="M21 12a8 8 0 01-8 8H8l-4 3v-5.5A8 8 0 1121 12z"/><path d="M9 11h6M9 14h4"/>',
     coupon: '<path d="M3 9V6a1 1 0 011-1h16a1 1 0 011 1v3a3 3 0 000 6v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3a3 3 0 000-6z"/><path d="M13 5v14"/>',
-    review: '<path d="M16 20v-1.5a3.5 3.5 0 00-3.5-3.5h-5A3.5 3.5 0 004 18.5V20"/><circle cx="10" cy="8" r="3.2"/><path d="M20 20v-1.5a3.5 3.5 0 00-2.6-3.4M15.5 5.2a3.2 3.2 0 010 5.6"/>'
+    review: '<path d="M16 20v-1.5a3.5 3.5 0 00-3.5-3.5h-5A3.5 3.5 0 004 18.5V20"/><circle cx="10" cy="8" r="3.2"/><path d="M20 20v-1.5a3.5 3.5 0 00-2.6-3.4M15.5 5.2a3.2 3.2 0 010 5.6"/>',
+    lock: '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/>'
   };
   function icon(name) {
     return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || '') + '</svg>';
@@ -170,20 +171,11 @@
   }
   function wrap(inner) { return '<div class="checkup" data-rpt><div class="cku-result">' + inner + '</div></div>'; }
 
-  /* 로그인 전 — 유형 이름·소개까지만 공개 (개발 화면과 같은 범위) */
-  function lockedHtml(R, opts) {
-    return wrap(cover(R) + intro(R) +
-      '<div class="cku-result-locked"><p class="cku-result-locked-desc">고객님만을 위한 상세 진단 이유, 집중 케어 부위, 맞춤 홈케어 루틴을 확인해보세요.</p>' +
-      '<a class="cku-btn cku-btn-primary" href="' + esc(opts.loginHref || '#') + '">로그인하고 전체 결과 보기</a></div>' +
-      share() + actions(opts));
-  }
-
   /* opts: { counts, roles:{key:'대표'|'보조'}, mixWith, parts, restart, locked, loginHref } */
   function html(key, opts) {
     opts = opts || {};
     var k = REPORT[key] ? key : 'early';
     var R = REPORT[k];
-    if (opts.locked) return lockedHtml(R, opts);
     var D = dataFor(k, opts.mixWith) || {};
     var counts = opts.counts || sample(k);
     var roles = opts.roles || {};
@@ -213,7 +205,7 @@
     var maxShot = Math.max.apply(null, (D.shots || []).map(function (s) { return s.count; }).concat([1]));
     var ingr = D.ingredients || [];
 
-    return wrap(
+    var inner = (
       cover(R, stats) + intro(R) +
 
       /* 왜 이 유형 */
@@ -323,6 +315,25 @@
 
       share() + actions(opts)
     );
+    if (!opts.locked) return wrap(inner);
+
+    /* 로그인 전 — 유형 소개까지 보여주고, 그 아래 상세 카드(진단 이유·집중 부위·홈케어)는 흐리게 깔고 잠금 상자를 띄운다 */
+    var from = inner.indexOf('<section class="cku-card">' + title('reason', ''));
+    from = from > -1 ? from : inner.indexOf('<section class="cku-card"><h3 class="cku-card-title"><span class="cku-card-icon">' + icon('reason'));
+    var to = inner.indexOf('<div class="cku-card-row">');
+    var preview = from > -1 && to > from ? inner.slice(from, to) : '';
+    return wrap(cover(R) + intro(R) +
+      '<div class="cku-lock">' +
+        '<div class="cku-lock-preview" aria-hidden="true" inert>' + preview + '</div>' +
+        '<div class="cku-lock-box" role="region" aria-label="로그인 안내">' +
+          '<span class="cku-lock-ico">' + icon('lock') + '</span>' +
+          '<p class="cku-lock-title">로그인하면 더 자세한<br>AI 피부 진단을 받을 수 있어요</p>' +
+          '<p class="cku-lock-desc">고객님만을 위한 상세 진단 이유, 집중 케어 부위, <br>맞춤 홈케어 루틴과 AI 맞춤 상담을 확인해보세요.</p>' +
+          '<ul class="cku-lock-list"><li>진단 이유</li><li>집중 케어 부위 TOP 3</li><li>맞춤 홈케어 루틴</li><li>SHOT 모드 가이드</li><li>AI 맞춤 상담</li><li>전용 혜택</li></ul>' +
+          '<a class="cku-btn cku-btn-primary cku-lock-btn" href="' + esc(opts.loginHref || '#') + '">로그인하고 전체 결과 보기</a>' +
+        '</div>' +
+      '</div>' +
+      share() + actions(opts));
   }
 
   /* 그린 다음: 막대 채우기, 긴 후기에만 '더보기' */
