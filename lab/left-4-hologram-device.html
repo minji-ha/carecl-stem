@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>왼쪽 패널 시안 4 — 홀로그램 TECH FIT</title>
+<title>왼쪽 패널 시안 3 — 홀로그램 TECH FIT</title>
 <link rel="stylesheet" href="lab.css">
 <style>
 .mode{position:absolute;right:clamp(20px,4vw,48px);top:clamp(150px,22vh,200px);z-index:5;text-align:right;pointer-events:none}
@@ -15,7 +15,7 @@
 <script type="importmap">{"imports":{"three":"../libs/three/three.module.min.js"}}</script>
 </head>
 <body>
-<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 4 · 홀로그램 TECH FIT</span>
+<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 3 · 홀로그램 TECH FIT</span>
   <div class="mode"><small>SHOT MODE</small><b data-mode style="color:#F0A877">STANDBY</b><span data-mode-d>설문 응답에 맞춰 헤드 색이 바뀌어요</span></div>
 </div>
 <script src="lab.js"></script>
@@ -77,12 +77,33 @@ scene.add(beam);
 // 스캔 면
 scanPlane = new THREE.Mesh(new THREE.CircleGeometry(.7, 64), new THREE.MeshBasicMaterial({ color: 0xF0A877, transparent: true, opacity: .14, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }));
 scanPlane.rotation.x = -Math.PI / 2; scene.add(scanPlane);
-// 떠다니는 입자
-const dust = new THREE.BufferGeometry(), N = 500, arr = new Float32Array(N * 3);
-for (let i = 0; i < N; i++) { arr[i * 3] = (Math.random() - .5) * 3; arr[i * 3 + 1] = (Math.random() - .5) * 3.2; arr[i * 3 + 2] = (Math.random() - .5) * 2; }
-dust.setAttribute('position', new THREE.BufferAttribute(arr, 3));
-const dustPts = new THREE.Points(dust, new THREE.PointsMaterial({ color: 0xF0A877, size: .01, transparent: true, opacity: .6, blending: THREE.AdditiveBlending, depthWrite: false }));
-scene.add(dustPts);
+// 넘실거리는 그리드 — 기기 뒤로 깔린 바닥면이 파도처럼 움직인다
+const GN = 44, GS = 9, gPos = [], gCol = [], gBase = [];
+const gc = new THREE.Color(0xE07B45);
+function gv(i, j) { return [(i / GN - .5) * GS, (j / GN - .5) * GS]; }
+for (let i = 0; i <= GN; i++) for (let j = 0; j <= GN; j++) {
+  [[i + 1, j], [i, j + 1]].forEach(([i2, j2]) => {
+    if (i2 > GN || j2 > GN) return;
+    [[i, j], [i2, j2]].forEach(([a, b]) => {
+      const [x, z] = gv(a, b); gBase.push(x, z); gPos.push(x, 0, z);
+      const f = Math.max(0, 1 - Math.hypot(x / (GS * .5), (z + 1.8) / (GS * .5)));   // 가장자리로 갈수록 사라진다
+      gCol.push(gc.r * f, gc.g * f, gc.b * f);
+    });
+  });
+}
+const gridGeo = new THREE.BufferGeometry();
+gridGeo.setAttribute('position', new THREE.Float32BufferAttribute(gPos, 3));
+gridGeo.setAttribute('color', new THREE.Float32BufferAttribute(gCol, 3));
+const grid = new THREE.LineSegments(gridGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .55, blending: THREE.AdditiveBlending, depthWrite: false }));
+grid.position.set(0, -H / 2 - .35, -2.4); scene.add(grid);
+function waveGrid(s) {
+  const p = gridGeo.attributes.position.array;
+  for (let k = 0, n = gBase.length / 2; k < n; k++) {
+    const x = gBase[k * 2], z = gBase[k * 2 + 1];
+    p[k * 3 + 1] = Math.sin(x * 1.1 + s * 1.1) * .16 + Math.sin(z * 1.4 - s * .9) * .2 + Math.sin((x + z) * .7 + s * .6) * .12 * (1 + pulse);
+  }
+  gridGeo.attributes.position.needsUpdate = true;
+}
 
 function resize() {
   const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
@@ -101,7 +122,7 @@ renderer.setAnimationLoop((t) => {
   pivot.rotation.y = spin; pivot.position.y = Math.sin(s * 1.2) * .04;
   rings.children.forEach((r, i) => { r.rotation.z = s * (i % 2 ? -.3 : .4); r.material.opacity = (.35 - i * .07) * (.7 + .3 * Math.sin(s * 2 + i)); });
   scanPlane.position.y = Math.sin(s * .9) * (H / 2);
-  dustPts.rotation.y = s * .05;
+  waveGrid(s);
   headColor.lerp(headTarget, .06); pulse *= .96;
   if (headGlow) { headGlow.material.color.copy(headColor); headGlow.material.opacity = .75; const k = 1 + .2 * Math.sin(s * 4) + pulse * .6; headGlow.scale.set(.55 * k, .55 * k, 1); }
   lineMat.color.copy(new THREE.Color(0xF0A877).lerp(headColor, .25));

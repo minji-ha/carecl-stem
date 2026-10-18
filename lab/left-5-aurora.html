@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>왼쪽 패널 시안 5 — 오로라 데이터 스트림</title>
+<title>왼쪽 패널 시안 4 — 오로라 데이터 스트림</title>
 <link rel="stylesheet" href="lab.css">
 <style>
 .legend{position:absolute;left:clamp(20px,4vw,48px);top:clamp(150px,22vh,200px);z-index:5;display:grid;gap:7px;pointer-events:none}
@@ -14,7 +14,7 @@
 </style>
 </head>
 <body>
-<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 5 · 오로라 데이터 스트림</span>
+<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 4 · 오로라 데이터 스트림</span>
   <div class="legend" data-legend></div>
 </div>
 <script src="lab.js"></script>
@@ -25,7 +25,7 @@
   var lg = document.querySelector('[data-legend]');
   lg.innerHTML = TYPES.map(function (t) { return '<span data-k="' + t[0] + '"><i style="color:rgb(' + t[3] + ');background:rgb(' + t[3] + ')"></i>' + t[1] + '</span>'; }).join('');
   var cv = document.querySelector('.stage'), ctx = cv.getContext('2d'), W, H, DPR = Math.min(2, devicePixelRatio || 1);
-  var weight = {}, wT = {}, energy = .2, energyT = .2, converge = 0, convT = 0, flash = 0, sparks = [];
+  var weight = {}, wT = {}, energy = .2, energyT = .2, converge = 0, convT = 0, flash = 0;
   TYPES.forEach(function (t) { weight[t[0]] = .2; wT[t[0]] = .2; });
 
   function resize() { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
@@ -68,30 +68,19 @@
       g.addColorStop(0, 'rgba(255,240,228,' + (.75 * converge) + ')'); g.addColorStop(.3, 'rgba(' + c + ',' + (.5 * converge) + ')'); g.addColorStop(1, 'rgba(' + c + ',0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rad * 2.2, 0, 6.283); ctx.fill();
     }
-    // 반짝이 — 답할 때 터져 나온다
-    for (var i = sparks.length - 1; i >= 0; i--) {
-      var s = sparks[i]; s.x += s.vx; s.y += s.vy; s.vx *= .985; s.vy *= .985; s.life -= .012;
-      if (s.life <= 0) { sparks.splice(i, 1); continue; }
-      ctx.fillStyle = 'rgba(' + s.c + ',' + s.life + ')'; ctx.beginPath(); ctx.arc(s.x, s.y, 1.6 * s.life + .4, 0, 6.283); ctx.fill();
-    }
-    if (Math.random() < .3) sparks.push({ x: Math.random() * W, y: cy + (Math.random() - .5) * 200, vx: (Math.random() - .5) * .4, vy: -Math.random() * .4, life: .8, c: mixColor(Math.random() * 6) });
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
-
-  function burst(rgb) { for (var i = 0; i < 70; i++) { var a = Math.random() * 6.283, v = 1 + Math.random() * 4; sparks.push({ x: W / 2, y: 150 + (H - 230) / 2, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, c: rgb }); } }
 
   Lab.start({
     onStep: function (s) {
       TYPES.forEach(function (ty) { wT[ty[0]] = .2 + (s.counts[ty[0]] || 0) / ty[2] * 3; });
       energyT = .3 + s.progress * .9;
-      if (s.type) { var ty = TYPES.filter(function (x) { return x[0] === s.type; })[0]; burst(ty[3]); }
       TYPES.forEach(function (ty) { var el = lg.querySelector('[data-k="' + ty[0] + '"]'); el.classList.toggle('on', ty[0] === s.type); });
     },
     onResult: function (r) {
       convT = 1; flash = 1; energyT = 1;
       TYPES.forEach(function (ty) { wT[ty[0]] = r.roles[ty[0]] ? 3 : .1; lg.querySelector('[data-k="' + ty[0] + '"]').classList.toggle('on', !!r.roles[ty[0]]); });
-      burst([255, 220, 190]);
     },
     onReset: function () { convT = 0; energyT = .2; TYPES.forEach(function (ty) { wT[ty[0]] = .2; lg.querySelector('[data-k="' + ty[0] + '"]').classList.remove('on'); }); }
   });
