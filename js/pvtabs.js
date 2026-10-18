@@ -4,7 +4,7 @@
    · 리포트가 보이면: 분석을 한 번 돌리고 결과에서 멈춤 (embed=1)
    survey2.html (data-flow):
    · 인트로(모든 탭): 그래픽이 화면 전체 배경으로 깔리고 인트로 글이 그 위에 (embed=hero)
-   · 설문 도중: 모든 탭이 그래픽 없이 가운데. 리포트: 1번(입자 얼굴)만 왼쪽 패널, 2~5번은 가운데. 설문하는 동안은 모든 탭에서 오른쪽 아래에 3D 기기가 돈다 (embed=mini) */
+   · 설문·리포트: 모든 탭이 그래픽 없이 가운데. 설문하는 동안은 모든 탭에서 오른쪽 아래에 3D 기기가 돈다 (embed=mini) */
 (function () {
   var nav = document.querySelector('.pvtabs'), frame = document.querySelector('.sv__stick--frame iframe'), form = document.getElementById('svForm');
   if (!nav || !frame) return;
@@ -25,7 +25,7 @@
     return 'q';
   }
   function apply(force) {
-    var st = stage(), center = flow && (st === 'q' || tabs.indexOf(cur) > 0);   // 설문 도중엔 모든 탭이 가운데(그래픽 없음), 리포트는 1번만 왼쪽 패널
+    var st = stage(), center = flow && st !== 'intro';   // 인트로가 끝나면(설문·리포트) 모든 탭이 그래픽 없이 가운데
     if (main) {
       main.classList.toggle('is-hero', flow && st === 'intro');            // 인트로는 모든 탭이 전체 화면
       main.classList.toggle('is-center', center && st !== 'intro');       // 설문·리포트: 1번만 왼쪽 패널, 2~5번은 가운데
