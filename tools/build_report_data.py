@@ -49,6 +49,7 @@ def body(boxes):
 
 
 def clean(s):
+    s = re.sub(r"[-]", "", s)   # pptx 기호 글꼴(Wingdings 등)의 사용자 정의 문자 — 화면에선 네모로 깨진다
     return re.sub(r"\s+", " ", s).strip()
 
 

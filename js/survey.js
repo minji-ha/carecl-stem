@@ -244,8 +244,11 @@
       loginHref: 'survey.html?view=member&type=' + key   // 시안에서는 로그인 대신 '로그인 후' 화면으로 이동
     });
     window.ckuReport.fillBars(form);
-    // 로그인 전에는 빈 오각형(스캔만 돈다), 로그인 후에 신호 분포를 그린다. 미리보기는 예시 응답.
-    if (window.ckuRadar) window.ckuRadar.set(locked ? {} : counts, locked ? {} : roles);
+    // 결과 커버의 유형 이름 옆 오각형 — 로그인 전에는 빈 오각형(스캔만), 로그인 후에 신호 분포. 미리보기는 예시 응답.
+    if (window.ckuRadar) {
+      window.ckuRadar.mount(form.querySelector('[data-radar]'));
+      window.ckuRadar.set(locked ? {} : counts, locked ? {} : roles);
+    }
   }
 
   function render() {

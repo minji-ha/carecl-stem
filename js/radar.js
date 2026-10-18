@@ -87,10 +87,12 @@
     }
   }
 
+  /* 그릴 자리를 정한다 — 결과 커버가 새로 그려지면 그 안의 [data-radar]로 다시 붙인다 */
   function mount(root) {
     root = root || document.querySelector('[data-radar]');
-    if (!root) return;
+    if (!root) { svg = null; return; }
     svg = root.querySelector('svg');
+    cur = AXES.map(function () { return 0; });
     draw(cur, false);
   }
 

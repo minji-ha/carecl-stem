@@ -129,6 +129,15 @@
     '일상 속의 작은 생활 습관도 안티에이징 케어에 든든한 밑거름이 됩니다. 외출 전에는 사계절 내내 자외선 차단제를 꼼꼼히 발라 피부를 보호해주시고, 하루 동안 지친 피부가 스스로 회복할 수 있도록 충분한 수면과 규칙적인 수분 섭취를 잊지 마세요. 지금처럼 피부가 보내는 신호에 귀 기울이며 차근차근 관리를 이어가신다면, 시간이 지나도 생기 넘치고 건강한 피부를 충분히 지켜나가실 수 있을 거예요.'
   ];
 
+  /* AI 상담 글에서 눈에 먼저 들어와야 할 말 — 유형·신호, 먼저 관리할 부위, 성분, 생활 습관 */
+  var AI_KEYS = ['혼합형으로 나타났어요', '잔주름 신호', '초기 노화 신호', '두 신호를 함께 다독여주는 체계적인 관리',
+    '이마와 인중 주변, 그리고 얇고 연약한 눈가 부위', '세라마이드', '히알루론산', '펩타이드와 콜라겐 추출물',
+    '뷰티기기 케어', '자외선 차단제', '충분한 수면과 규칙적인 수분 섭취'];
+  function aiHighlight(html) {
+    AI_KEYS.forEach(function (k) { html = html.split(k).join('<mark class="cku-ai-hl">' + k + '</mark>'); });
+    return html;
+  }
+
   /* 미리보기(설문 없이)용 예시 응답 — 결과 유형이 가장 높게 */
   function sample(key) {
     var c = { fine: 2, sag: 2, muscle: 2, tired: 2, early: 1 };
@@ -143,10 +152,14 @@
   }
 
   function cover(R, stats) {
-    return '<section class="cku-cover">' +
+    // 오른쪽 오각형은 그린 뒤 survey.js가 ckuRadar.mount()로 채운다
+    return '<section class="cku-cover has-radar">' +
       '<p class="cku-result-eyebrow">진단 결과</p>' +
       '<h2 class="cku-result-title"><span class="cku-code">' + esc(R.en) + '</span>' + esc(R.name) + '</h2>' +
-      '<p class="cku-result-tagline">' + esc(R.tagline) + '</p>' + (stats || '') +
+      '<p class="cku-result-tagline">' + esc(R.tagline) + '</p>' +
+      '<div class="cku-cover-radar" data-radar><div class="sv__sweep" aria-hidden="true"></div>' +
+        '<svg viewBox="-215 -205 430 410" role="img" aria-label="5가지 노화 유형별 신호 세기"></svg></div>' +
+      (stats || '') +
     '</section>';
   }
   function intro(R) {
@@ -289,7 +302,7 @@
       /* AI 맞춤 상담 */
       '<section class="cku-card cku-card-dark">' + title('ai', 'AI 맞춤 상담') +
         (k === 'mixed'
-          ? '<div class="cku-ai-answer">' + AI_SAMPLE.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') + '</div>'
+          ? '<div class="cku-ai-answer">' + AI_SAMPLE.map(function (t) { return '<p>' + aiHighlight(esc(t)) + '</p>'; }).join('') + '</div>'
           : '<div class="cku-ai-answer"><p>결과를 바탕으로 AI가 고객님께 쓴 맞춤 상담 글이 이 자리에 들어갑니다. (답변은 결과마다 한 번 만들어 저장돼요.)</p></div>') +
       '</section>' +
 

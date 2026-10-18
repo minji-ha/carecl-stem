@@ -10,4 +10,9 @@
 
   out.innerHTML = window.ckuReport.html(key, {});
   window.ckuReport.fillBars(out);
+  if (window.ckuRadar) {   // 커버 오각형 — 예시 응답, 결과 유형을 대표로
+    var roles = {}; if (key !== 'mixed') roles[key] = '대표'; else { roles.fine = '대표'; roles.sag = '보조'; }
+    window.ckuRadar.mount(out.querySelector('[data-radar]'));
+    window.ckuRadar.set(window.ckuReport.sample(key), roles);
+  }
 })();

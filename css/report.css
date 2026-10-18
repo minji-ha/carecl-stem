@@ -22,6 +22,25 @@
 }
 .checkup .cku-btn.cku-retry:hover{background:#A8521F;transform:translateY(-2px)}
 
+/* AI 맞춤 상담 — 중요한 말에 형광펜처럼 밑줄 강조 */
+.checkup .cku-ai-hl{background:linear-gradient(transparent 58%,rgba(224,123,69,.55) 58%);color:#fff;font-weight:700;padding:0 1px;border-radius:2px}
+
+/* 결과 커버 — 유형 이름 옆에 노화 신호 오각형 */
+.checkup .cku-cover.has-radar{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,42%);column-gap:16px;align-items:center}
+.checkup .cku-cover.has-radar > .cku-stats{grid-column:1 / -1}
+.checkup .cku-cover-radar{position:relative;grid-row:1 / span 3;grid-column:2;display:grid;place-items:center;align-self:stretch}
+.checkup .cku-cover-radar svg{width:100%;max-width:300px;height:auto;overflow:visible}
+.checkup .cku-cover-radar .sv__sweep{width:58%}
+.checkup .cku-cover-radar .rd-axis{font-family:var(--f-kr);font-size:13px;font-weight:600;fill:#bfb3a8}
+.checkup .cku-cover-radar .rd-axis.is-on{fill:#fff}
+.checkup .cku-cover-radar .rd-role{font-family:var(--f-kr);font-size:11px;font-weight:700;fill:#F0A877}
+.checkup .cku-cover-radar .rd-dot{fill:#fff;stroke:#C46A3A;stroke-width:2.5}
+.checkup .cku-cover-radar .rd-halo{fill:rgba(240,168,119,.4);transform-box:fill-box;transform-origin:center;animation:svHalo 2.2s ease-out infinite}
+@media (max-width:640px){
+  .checkup .cku-cover.has-radar{grid-template-columns:1fr}
+  .checkup .cku-cover-radar{grid-row:auto;grid-column:auto;margin:14px auto 0;width:100%;max-width:280px}
+}
+
 /* 로그인 전 — 상세 카드를 흐리게 깔고 잠금 상자를 띄운다 */
 .checkup .cku-lock{position:relative;margin-top:16px}
 .checkup .cku-lock-preview{display:grid;gap:16px;filter:blur(7px);opacity:.6;pointer-events:none;user-select:none;
