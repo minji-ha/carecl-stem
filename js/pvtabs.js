@@ -2,9 +2,9 @@
    탭을 눌러도 페이지는 그대로 두고 왼쪽 그래픽만 바꾼다 — 설문 중이면 설문 중 그대로, 리포트면 리포트 그대로.
    · 설문 중: 그래픽이 분석 장면을 계속 반복 (embed=loop)
    · 리포트가 보이면: 분석을 한 번 돌리고 결과에서 멈춤 (embed=1)
-   survey2.html (data-flow): 1번(입자 얼굴)만 왼쪽 패널. 2~5번은
-   · 인트로: 그래픽이 화면 전체 배경으로 깔리고 인트로 글이 그 위에 (embed=hero)
-   · 설문·리포트: 그래픽은 빠지고 설문이 가운데로. 5번(3D 기기)은 설문 중 오른쪽 아래에 기기가 돈다 (embed=mini) */
+   survey2.html (data-flow):
+   · 인트로(모든 탭): 그래픽이 화면 전체 배경으로 깔리고 인트로 글이 그 위에 (embed=hero)
+   · 설문·리포트: 1번(입자 얼굴)은 왼쪽 패널, 2~5번은 그래픽이 빠지고 설문이 가운데로. 5번(3D 기기)은 설문 중 오른쪽 아래에 기기가 돈다 (embed=mini) */
 (function () {
   var nav = document.querySelector('.pvtabs'), frame = document.querySelector('.sv__stick--frame iframe'), form = document.getElementById('svForm');
   if (!nav || !frame) return;
@@ -25,15 +25,15 @@
     return 'q';
   }
   function apply(force) {
-    var st = stage(), hero = flow && tabs.indexOf(cur) > 0;
+    var st = stage(), center = flow && tabs.indexOf(cur) > 0;
     if (main) {
-      main.classList.toggle('is-hero', hero && st === 'intro');
-      main.classList.toggle('is-center', hero && st !== 'intro');
+      main.classList.toggle('is-hero', flow && st === 'intro');            // 인트로는 모든 탭이 전체 화면
+      main.classList.toggle('is-center', center && st !== 'intro');       // 설문·리포트: 1번만 왼쪽 패널, 2~5번은 가운데
     }
-    var mode = hero && st === 'intro' ? 'hero' : (st === 'done' ? '1' : 'loop');
+    var mode = flow && st === 'intro' ? 'hero' : (st === 'done' ? '1' : 'loop');
     var want = cur.dataset.src + '?embed=' + mode + (ver ? '&v=' + ver : '');
     // 설문 가운데 모드에서는 왼쪽 그래픽이 안 보이니 불러오지 않는다
-    if (!(hero && st !== 'intro') && (force || want !== shown)) { shown = want; frame.src = want; }
+    if (!(center && st !== 'intro') && (force || want !== shown)) { shown = want; frame.src = want; }
     if (mini) {
       var on = flow && tabs.indexOf(cur) === tabs.length - 1 && st === 'q';
       mini.hidden = !on;

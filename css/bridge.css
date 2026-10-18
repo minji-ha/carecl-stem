@@ -106,13 +106,15 @@ body.survey .foot{margin-top:0}
 @media (prefers-reduced-motion:reduce){.sv__intro .go .btn::after{animation:none;display:none}}
 
 /* ── survey2.html — 2~5번 탭: 전체 화면 인트로 → 가운데 설문 (js/pvtabs.js) ── */
-/* 인트로: 그래픽이 오른쪽에서 화면 전체로 번지고, 왼쪽 어두운 면 위에 인트로 글 */
-.sv--flow.is-hero{display:block;position:relative;min-height:calc(100vh - var(--head));background:#1C1916}
-.sv--flow.is-hero .sv__panel{position:absolute;inset:0;height:auto}
-.sv--flow.is-hero .sv__stick{position:absolute;top:0;bottom:0;left:34%;right:0;height:auto;min-height:0;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}
-.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(52%,760px);min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
-.sv--flow.is-hero .sv__form{width:auto;max-width:600px;margin:0 0 0 clamp(28px,6vw,110px)}
+/* 인트로: 그래픽이 화면 전체에 깔리고(오른쪽으로 비켜 서서 왼쪽이 자연스럽게 흐려짐) 왼쪽에 인트로 글 */
+.sv--flow.is-hero{display:block;position:relative;min-height:calc(100vh - var(--head));
+  background:radial-gradient(70% 90% at 68% 55%,#2c231e 0%,#1C1916 55%,#141110 100%)}
+.sv--flow.is-hero .sv__panel{position:absolute;inset:0;height:auto;background:transparent}
+.sv--flow.is-hero .sv__dots{display:none}
+.sv--flow.is-hero .sv__stick{position:absolute;inset:0;height:auto;min-height:0}
+.sv--flow.is-hero .sv__stick iframe{background:transparent}
+.sv--flow.is-hero .sv__body{position:relative;z-index:2;width:min(47%,700px);min-height:calc(100vh - var(--head));padding:80px 0 120px;align-items:center;background:transparent}
+.sv--flow.is-hero .sv__form{width:auto;max-width:540px;margin:0 0 0 clamp(28px,6vw,110px)}
 .sv--flow.is-hero .sv__intro h1{color:#fff}
 .sv--flow.is-hero .sv__intro .desc{color:rgba(255,255,255,.64);font-size:15px}
 .sv--flow.is-hero .sv__intro .desc br{display:none}
@@ -132,10 +134,23 @@ body.survey .foot{margin-top:0}
   filter:drop-shadow(0 18px 22px rgba(40,25,15,.28));animation:svMiniIn .7s cubic-bezier(.2,.8,.2,1) both}
 .sv__mini iframe{display:block;width:100%;height:100%;border:0;background:transparent;color-scheme:normal}
 @keyframes svMiniIn{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:none}}
+/* 인트로 글은 차례로 떠오르고, 설문이 시작되면 가운데 설문이 부드럽게 나타난다 */
+.sv--flow.is-hero .sv__intro>*{animation:svRise .9s cubic-bezier(.2,.8,.2,1) both}
+.sv--flow.is-hero .sv__intro>*:nth-child(2){animation-delay:.08s}
+.sv--flow.is-hero .sv__intro>*:nth-child(3){animation-delay:.16s}
+.sv--flow.is-hero .sv__intro>*:nth-child(4){animation-delay:.24s}
+.sv--flow.is-hero .sv__intro>*:nth-child(5){animation-delay:.32s}
+.sv--flow.is-hero .sv__intro>*:nth-child(6){animation-delay:.4s}
+.sv--flow.is-hero .sv__stick{animation:svFade 1.2s ease both}
+.sv--flow:not(.is-hero) .sv__form{animation:svRise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes svRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes svFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.sv--flow .sv__intro>*,.sv--flow .sv__form,.sv--flow .sv__stick{animation:none}}
 @media (max-width:1100px){
   .sv--flow.is-hero .sv__panel{position:relative}
-  .sv--flow.is-hero .sv__stick{position:relative;left:0;height:min(58vh,520px);-webkit-mask-image:linear-gradient(180deg,#000 75%,transparent);mask-image:linear-gradient(180deg,#000 75%,transparent)}
+  .sv--flow.is-hero .sv__stick{position:relative;inset:auto;height:min(58vh,520px);-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent);mask-image:linear-gradient(180deg,#000 78%,transparent)}
   .sv--flow.is-hero .sv__body{width:auto;min-height:0;padding:10px 0 110px}
   .sv--flow.is-hero .sv__form{margin:0 auto;max-width:calc(100% - 48px)}
   .sv__mini{width:96px;height:140px;bottom:70px}
 }
+@media (max-width:640px){.sv__intro .label{gap:10px}.sv__intro .label i{width:24px}.sv__intro .label span{font-size:11px;letter-spacing:.1em;white-space:nowrap}}
