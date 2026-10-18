@@ -10,10 +10,10 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261019000645">
-<link rel="stylesheet" href="css/bridge.css?v=261019000645">
-<link rel="stylesheet" href="css/survey.css?v=261019000645">
-<link rel="stylesheet" href="css/report.css?v=261019000645">
+<link rel="stylesheet" href="css/stem.css?v=261019004431">
+<link rel="stylesheet" href="css/bridge.css?v=261019004431">
+<link rel="stylesheet" href="css/survey.css?v=261019004431">
+<link rel="stylesheet" href="css/report.css?v=261019004431">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body class="survey">
@@ -34,11 +34,20 @@
 <main class="sv sv--stem" data-led="red">
   <aside class="sv__panel">
     <div class="sv__dots" data-dotfield></div>
-    <div class="sv__orb" data-orb aria-hidden="true"><canvas></canvas></div>
-    <div class="sv__lock">
-      <em>AI Skin Agent</em>
-      <b>Aging Map 22</b>
-      <p>얼굴을 22개 좌표로 나누어<br>당신의 노화 타입을 진단합니다</p>
+    <div class="sv__stick">
+      <div class="sv__lock">
+        <em>AI Skin Agent</em>
+        <b>Aging Map 22</b>
+        <p>설문 답변에서 읽힌 노화 신호</p>
+      </div>
+      <div class="sv__radar" data-radar>
+        <div class="sv__sweep" aria-hidden="true"></div>
+        <svg viewBox="-215 -205 430 410" role="img" aria-label="5가지 노화 유형별 신호 세기"></svg>
+      </div>
+      <div class="sv__radar-foot">
+        <div class="roles" data-radar-roles hidden></div>
+        답할수록 모양이 채워져요. 점수가 아니라 답변에서 읽힌 신호의 상대적인 세기입니다.
+      </div>
     </div>
   </aside>
   <section class="sv__body"><div class="sv__form" id="svForm"></div></section>
@@ -76,11 +85,11 @@
     <span>© 2026 CARECL. All rights reserved.</span>
   </div>
 </footer>
-<a class="aifab" href="survey.html" aria-label="AI 피부 진단 시작하기"><span class="aifab__ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/><circle cx="19.4" cy="4.2" r="1.7" fill="currentColor" opacity=".9"/><circle cx="4.8" cy="18.4" r="1.2" fill="currentColor" opacity=".7"/></svg></span><span class="aifab__txt">AI 피부 진단</span></a>
-<script src="js/led.js?v=261019000645"></script>
-<script src="js/stem.js?v=261019000645"></script>
-<script src="js/report.js?v=261019000645"></script>
-<script src="js/survey.js?v=261019000645"></script>
-<script src="js/orb.js?v=261019000645"></script>
+<script src="js/led.js?v=261019004431"></script>
+<script src="js/stem.js?v=261019004431"></script>
+<script src="js/report-data.js?v=261019004431"></script>
+<script src="js/report.js?v=261019004431"></script>
+<script src="js/radar.js?v=261019004431"></script>
+<script src="js/survey.js?v=261019004431"></script>
 </body>
 </html>

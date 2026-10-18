@@ -19,7 +19,7 @@
 }
 
 /* ── 설문 왼쪽 패널 — 얼굴 사진 대신 9구 LED 헤드 ── */
-.sv--stem .sv__panel{background:#1C1916;overflow:hidden}
+.sv--stem .sv__panel{background:#1C1916;overflow:clip}   /* hidden이면 안쪽 레이더 sticky가 안 붙는다 */
 .sv--stem .sv__panel::after{display:none}
 .sv__dots{position:absolute;left:0;right:0;top:0;height:100vh;z-index:0;opacity:.9;
   -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 60%,#000 25%,transparent 100%);
@@ -31,6 +31,36 @@
 /* 설문 페이지는 푸터 위 여백을 줄인다 */
 body.survey .foot{margin-top:0}
 
-/* 설문 왼쪽 패널 — 살아 움직이는 구체 (js/orb.js) */
-.sv__orb{position:absolute;left:50%;top:min(52vh,560px);transform:translate(-50%,-50%);width:min(96%,500px);aspect-ratio:1;z-index:1;pointer-events:none}
-.sv__orb canvas{display:block;width:100%;height:100%}
+/* 설문 왼쪽 패널 — 노화 신호 레이더 (js/radar.js). 결과가 길어져도 화면에 붙어 있게 sticky */
+.sv__stick{position:sticky;top:var(--head);height:calc(100vh - var(--head));min-height:560px;display:flex;flex-direction:column;padding:40px clamp(28px,3vw,56px) 28px;z-index:1}
+.sv--stem .sv__stick .sv__lock{position:static}
+.sv__radar{position:relative;flex:1;display:grid;place-items:center;min-height:280px}
+.sv__radar svg{width:100%;max-width:430px;height:auto;overflow:visible}
+.sv__sweep{position:absolute;left:50%;top:50%;width:min(64%,290px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 0deg,transparent 0 300deg,rgba(240,168,119,.16) 345deg,rgba(240,168,119,.3) 360deg);
+  -webkit-mask:radial-gradient(circle,#000 0 69%,transparent 70%);mask:radial-gradient(circle,#000 0 69%,transparent 70%);
+  animation:svSweep 6s linear infinite;mix-blend-mode:screen}
+@keyframes svSweep{to{rotate:360deg}}
+.sv__radar .rd-axis{font-family:var(--f-kr);font-size:13px;font-weight:600;fill:#bfb3a8}
+.sv__radar .rd-axis.is-on{fill:#fff}
+.sv__radar .rd-role{font-family:var(--f-kr);font-size:10.5px;font-weight:700;fill:#F0A877}
+.sv__radar .rd-dot{fill:#fff;stroke:#C46A3A;stroke-width:2.5}
+.sv__radar .rd-halo{fill:rgba(240,168,119,.4);transform-box:fill-box;transform-origin:center;animation:svHalo 2.2s ease-out infinite}
+@keyframes svHalo{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.8);opacity:0}}
+.sv__radar-foot{font-size:12px;line-height:1.6;color:#a99d92}
+.sv__radar-foot .roles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.sv__radar-foot .roles span{font-size:12px;color:#efe5dc;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.sv__radar-foot .roles b{color:#F0A877;font-weight:700;margin-right:4px}
+@media (max-width:1100px){
+  .sv--stem .sv__panel{height:auto}
+  .sv__stick{position:relative;top:0;height:auto;min-height:0;padding:24px 20px 20px}
+  .sv__radar{min-height:0;padding:4px 0}
+  .sv__radar svg{max-width:300px}
+  .sv--stem .sv__stick .sv__lock b{font-size:26px;margin:8px 0 4px}
+  .sv--stem .sv__stick .sv__lock p{display:block;font-size:13px}
+}
+@media (max-width:640px){
+  .sv__radar svg{max-width:250px}
+  .sv__radar-foot{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){.sv__sweep,.sv__radar .rd-halo{animation:none}}

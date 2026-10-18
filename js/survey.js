@@ -193,32 +193,50 @@
     if (counter && q.multi) counter.textContent = (Array.isArray(cur) ? cur.length : 0) + ' / ' + q.multi + ' 선택';
   }
 
-  function renderDone() {
-    /* 유형별 점수 집계 */
+  /* 유형별 점수 집계 (Q1~Q14, 보기에 붙은 type 개수) */
+  function tally() {
     var counts = {};
     Object.keys(answers).forEach(function (k) {
       var q = QUESTIONS[k], v = answers[k];
       if (!q || q.multi || q.fromPrev) return;
       q.opts.forEach(function (o) { if (o.type && o.t === v) counts[o.type] = (counts[o.type] || 0) + 1; });
     });
+    return counts;
+  }
+
+  /* 왼쪽 레이더 — 답할 때마다 갱신 */
+  function syncRadar(roles) { if (window.ckuRadar) window.ckuRadar.set(tally(), roles); }
+
+  function renderDone() {
+    var counts = tally();
     var order = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
 
-    /* 1위가 동점이면 혼합형으로 본다 */
-    var key = order[0] || 'early';
-    if (order.length > 1 && counts[order[1]] === counts[order[0]]) key = 'mixed';
+    /* 1위가 동점이면 혼합형으로 본다 — 원고 예시 A/B/C 중 같이 높은 유형에 맞는 것을 고른다 */
+    var key = order[0] || 'early', roles = {}, mixWith = 'fine';
+    if (order.length > 1 && counts[order[1]] === counts[order[0]]) {
+      key = 'mixed';
+      var pair = order.slice(0, 2);
+      mixWith = pair.indexOf('tired') > -1 ? 'tired' : pair.indexOf('muscle') > -1 ? 'muscle' : 'fine';
+      roles[order[0]] = '대표'; roles[order[1]] = '보조';
+    } else if (order[0]) {
+      roles[order[0]] = '대표';
+    }
 
     form.innerHTML = window.ckuReport.html(key, {
       counts: counts,
+      roles: roles,
+      mixWith: mixWith,
       parts: (answers[14] || []).join(' · '),
       restart: true
     });
     window.ckuReport.fillBars(form);
+    syncRadar(roles);
   }
 
   function render() {
     if (step === -1) renderIntro();
     else if (step >= TOTAL) renderDone();
-    else renderQuestion(step);
+    else { renderQuestion(step); syncRadar({}); }
     /* 문항 이동 시 스크롤 위치 유지 (인트로/완료 화면 진입 때만 상단으로) */
     if ((step === -1 || step >= TOTAL) && window.scrollY > 40) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -230,7 +248,7 @@
     if (startBtn) { step = 0; render(); return; }
 
     if (e.target.closest('[data-restart]')) {
-      answers = {}; step = -1; render();
+      answers = {}; step = -1; render(); syncRadar({});
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -250,6 +268,7 @@
         answers[step] = val;
       }
       syncOptions(q, step);   // 다시 그리지 않고 상태만 갱신 → 깜빡임 제거
+      if (!q.multi) syncRadar({});
       return;
     }
 

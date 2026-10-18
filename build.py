@@ -113,9 +113,9 @@ AIFAB = ('<a class="aifab" href="survey.html" aria-label="AI 피부 진단 시�
          '<span class="aifab__txt">AI 피부 진단</span></a>\n')
 
 
-def tail(three=True, js=()):
+def tail(three=True, js=(), fab=True):
     mod = f'<script type="module" src="js/device3d.js?v={VER}"></script>\n' if three else ""
-    return AIFAB + f"""<script src="js/led.js?v={VER}"></script>
+    return (AIFAB if fab else "") + f"""<script src="js/led.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
 {"".join(f'<script src="{j}?v={VER}"></script>' + chr(10) for j in js)}{mod}</body>
 </html>
@@ -484,11 +484,20 @@ def page_survey():
     body = """<main class="sv sv--stem" data-led="red">
   <aside class="sv__panel">
     <div class="sv__dots" data-dotfield></div>
-    <div class="sv__orb" data-orb aria-hidden="true"><canvas></canvas></div>
-    <div class="sv__lock">
-      <em>AI Skin Agent</em>
-      <b>Aging Map 22</b>
-      <p>얼굴을 22개 좌표로 나누어<br>당신의 노화 타입을 진단합니다</p>
+    <div class="sv__stick">
+      <div class="sv__lock">
+        <em>AI Skin Agent</em>
+        <b>Aging Map 22</b>
+        <p>설문 답변에서 읽힌 노화 신호</p>
+      </div>
+      <div class="sv__radar" data-radar>
+        <div class="sv__sweep" aria-hidden="true"></div>
+        <svg viewBox="-215 -205 430 410" role="img" aria-label="5가지 노화 유형별 신호 세기"></svg>
+      </div>
+      <div class="sv__radar-foot">
+        <div class="roles" data-radar-roles hidden></div>
+        답할수록 모양이 채워져요. 점수가 아니라 답변에서 읽힌 신호의 상대적인 세기입니다.
+      </div>
     </div>
   </aside>
   <section class="sv__body"><div class="sv__form" id="svForm"></div></section>
@@ -497,7 +506,7 @@ def page_survey():
     return (head("노화 타입 진단 | Aging Map 22 — careCL 케어클", "2분 설문으로 나의 노화 타입과 먼저 관리할 부위를 확인하세요",
                  css=("css/bridge.css", "css/survey.css", "css/report.css"), body_cls="survey")
             + header("aging-types.html") + body + FOOTER
-            + tail(three=False, js=("js/report.js", "js/survey.js", "js/orb.js")))
+            + tail(three=False, js=("js/report-data.js", "js/report.js", "js/radar.js", "js/survey.js"), fab=False))
 
 
 def page_report():
@@ -515,7 +524,7 @@ def page_report():
     return (head("진단 결과 리포트 | Aging Map 22 — careCL 케어클", "careCL 노화 타입 진단 결과 리포트",
                  sub=True, css=("css/bridge.css", "css/report.css"))
             + header("aging-types.html") + body + FOOTER
-            + tail(three=False, js=("js/report.js", "js/reportpage.js")))
+            + tail(three=False, js=("js/report-data.js", "js/report.js", "js/reportpage.js")))
 
 
 PAGES["survey.html"] = page_survey
