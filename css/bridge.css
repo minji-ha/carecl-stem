@@ -51,12 +51,6 @@ body.survey .foot{margin-top:0}
 .sv__radar-foot .roles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .sv__radar-foot .roles span{font-size:12px;color:#efe5dc;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
 .sv__radar-foot .roles b{color:#F0A877;font-weight:700;margin-right:4px}
-/* 로그인 전 — 레이더는 흐리게 잠근다 (신호 분포는 로그인 후 공개) */
-.sv__radar-lock{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:20px}
-.sv__radar-lock span{background:rgba(20,15,13,.72);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:16px 20px;font-size:13px;line-height:1.6;color:#efe5dc;backdrop-filter:blur(4px)}
-.sv.is-locked .sv__radar svg{filter:blur(6px);opacity:.55}
-.sv.is-locked .sv__radar-lock{display:grid}
-.sv.is-locked [data-radar-roles]{visibility:hidden}
 @media (max-width:1100px){
   .sv--stem .sv__panel{height:auto}
   .sv__stick{position:relative;top:0;height:auto;min-height:0;padding:24px 20px 20px}

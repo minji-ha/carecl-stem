@@ -492,9 +492,7 @@ def page_survey():
       </div>
       <div class="sv__radar" data-radar>
         <div class="sv__sweep" aria-hidden="true"></div>
-        <svg viewBox="-215 -205 430 410" role="img" aria-label="5가지 노화 유형별 신호 세기"></svg>
-        <div class="sv__radar-lock"><span>로그인하면<br>내 노화 신호 분포가 보여요</span></div>
-      </div>
+        <svg viewBox="-215 -205 430 410" role="img" aria-label="5가지 노화 유형별 신호 세기"></svg>      </div>
       <div class="sv__radar-foot">
         <div class="roles" data-radar-roles hidden></div>
         답할수록 모양이 채워져요. 점수가 아니라 답변에서 읽힌 신호의 상대적인 세기입니다.

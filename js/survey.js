@@ -244,7 +244,8 @@
       loginHref: 'survey.html?view=member&type=' + key   // 시안에서는 로그인 대신 '로그인 후' 화면으로 이동
     });
     window.ckuReport.fillBars(form);
-    if (window.ckuRadar) window.ckuRadar.set(counts, roles);   // 미리보기는 예시 응답으로 그린다
+    // 로그인 전에는 빈 오각형(스캔만 돈다), 로그인 후에 신호 분포를 그린다. 미리보기는 예시 응답.
+    if (window.ckuRadar) window.ckuRadar.set(locked ? {} : counts, locked ? {} : roles);
   }
 
   function render() {
