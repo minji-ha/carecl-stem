@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>왼쪽 패널 시안 1 — 빛 입자 얼굴 홀로그램</title>
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 1 · 빛 입자 얼굴 홀로그램</span></div>
+<script src="lab.js"></script>
+<script>
+(function () {
+  var cv = document.querySelector('.stage'), ctx = cv.getContext('2d');
+  var W = 0, H = 0, DPR = Math.min(2, devicePixelRatio || 1);
+  var FW = 400, FH = 560;           // 얼굴 좌표계
+  var parts = [], targets = [], t0 = performance.now();
+  var heat = {}, focus = null, result = null;
+
+  /* 얼굴 영역 — 답할 때 해당 부위 입자가 주황으로 물든다 */
+  var REGION = {
+    '이마': [[200, 120, 70]], '미간': [[200, 190, 26]], '눈가': [[118, 222, 30], [282, 222, 30]],
+    '눈밑': [[150, 258, 30], [250, 258, 30]], '앞광대': [[138, 292, 34], [262, 292, 34]],
+    '볼': [[122, 338, 40], [278, 338, 40]], '심부볼': [[130, 345, 40], [270, 345, 40]],
+    '팔자': [[166, 335, 22], [234, 335, 22]], '입가': [[170, 385, 22], [230, 385, 22]],
+    '턱선': [[128, 418, 36], [272, 418, 36], [200, 462, 34]], '목': [[200, 525, 40]]
+  };
+  /* Aging Map 22 좌표 (대칭) */
+  var P22 = [[200,95],[150,120],[250,120],[200,185],[118,222],[282,222],[150,258],[250,258],[138,292],[262,292],[200,300],
+             [122,338],[278,338],[166,335],[234,335],[170,385],[230,385],[128,418],[272,418],[200,462],[200,520],[200,410]];
+
+  /* 얼굴을 선으로 그린 뒤 픽셀을 뽑아 입자 목표점으로 쓴다 (사진 없이) */
+  function buildTargets() {
+    var c = document.createElement('canvas'); c.width = FW; c.height = FH;
+    var g = c.getContext('2d'); g.strokeStyle = '#fff'; g.lineCap = 'round'; g.lineJoin = 'round';
+    function path(fn, w) { g.lineWidth = w; g.beginPath(); fn(); g.stroke(); }
+    path(function () { g.moveTo(200, 40); g.bezierCurveTo(300, 40, 330, 140, 325, 240); g.bezierCurveTo(320, 340, 290, 420, 240, 465); g.quadraticCurveTo(200, 495, 160, 465); g.bezierCurveTo(110, 420, 80, 340, 75, 240); g.bezierCurveTo(70, 140, 100, 40, 200, 40); }, 3);
+    path(function () { g.moveTo(120, 200); g.quadraticCurveTo(150, 186, 180, 196); g.moveTo(220, 196); g.quadraticCurveTo(250, 186, 280, 200); }, 2.4);
+    path(function () { g.moveTo(125, 225); g.quadraticCurveTo(152, 208, 180, 225); g.quadraticCurveTo(152, 238, 125, 225); g.moveTo(220, 225); g.quadraticCurveTo(248, 208, 275, 225); g.quadraticCurveTo(248, 238, 220, 225); }, 2.2);
+    path(function () { g.arc(152, 224, 6, 0, Math.PI * 2); g.moveTo(254, 224); g.arc(248, 224, 6, 0, Math.PI * 2); }, 2);
+    path(function () { g.moveTo(200, 230); g.lineTo(196, 300); g.quadraticCurveTo(186, 312, 180, 318); g.moveTo(200, 322); g.quadraticCurveTo(212, 316, 222, 318); }, 2);
+    path(function () { g.moveTo(168, 380); g.quadraticCurveTo(200, 368, 232, 380); g.quadraticCurveTo(200, 400, 168, 380); g.moveTo(172, 381); g.lineTo(228, 381); }, 2.2);
+    path(function () { g.moveTo(108, 300); g.quadraticCurveTo(120, 340, 150, 360); g.moveTo(292, 300); g.quadraticCurveTo(280, 340, 250, 360); }, 1.2);
+    path(function () { g.moveTo(165, 470); g.lineTo(158, 556); g.moveTo(235, 470); g.lineTo(242, 556); }, 2.4);
+    path(function () { g.moveTo(140, 70); g.quadraticCurveTo(200, 52, 260, 70); }, 1.2);
+    var d = g.getImageData(0, 0, FW, FH).data, out = [];
+    for (var y = 0; y < FH; y += 2) for (var x = 0; x < FW; x += 2) if (d[(y * FW + x) * 4 + 3] > 80) out.push([x, y, 1]);
+    // 얼굴 안쪽에도 성긴 입자를 깔아 면처럼 보이게
+    for (var k = 0; k < 500; k++) {
+      var a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random());
+      var px = 200 + Math.cos(a) * r * 118, py = 260 + Math.sin(a) * r * 200;
+      out.push([px, py, .12]);
+    }
+    return out;
+  }
+
+  function resize() {
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  function init() {
+    targets = buildTargets();
+    parts = targets.map(function (tg) {
+      var sx = Math.random() * W, sy = Math.random() * H;
+      return { x: sx, y: sy, sx: sx, sy: sy, tx: tg[0], ty: tg[1], a: tg[2], ph: Math.random() * 6.28, s: Math.random() * .8 + .5, d: Math.random() * 1.2 };
+    });
+  }
+  function scatter() { parts.forEach(function (p) { p.sx = p.x = Math.random() * W; p.sy = p.y = Math.random() * H; p.d = Math.random() * 1.2; }); t0 = performance.now(); }
+
+  function heatAt(x, y) {
+    var h = 0;
+    for (var k in heat) (REGION[k] || []).forEach(function (r) { var dx = x - r[0], dy = y - r[1], d = Math.sqrt(dx * dx + dy * dy); if (d < r[2] * 1.4) h = Math.max(h, heat[k] * (1 - d / (r[2] * 1.4))); });
+    return Math.min(1, h);
+  }
+
+  function frame(now) {
+    var t = (now - t0) / 1000;
+    var sc = Math.min(W / FW * .82, (H - 220) / FH * .95), ox = W / 2 - FW * sc / 2, oy = 150 + (H - 220 - FH * sc) / 2;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    var scanY = (Math.sin(now / 1600) * .5 + .5) * FH;
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i], k = Math.min(1, Math.max(0, (t - p.d) / 1.6)), e = 1 - Math.pow(1 - k, 3);
+      var tx = ox + (p.tx + Math.sin(now / 900 + p.ph) * 1.4) * sc, ty = oy + (p.ty + Math.cos(now / 1100 + p.ph) * 1.4) * sc;
+      // 흩어진 자리 → 얼굴 자리로 시간에 따라 모인다 (프레임 수와 무관)
+      p.x = p.sx + (tx - p.sx) * e; p.y = p.sy + (ty - p.sy) * e;
+      var h = heatAt(p.tx, p.ty), near = Math.max(0, 1 - Math.abs(p.ty - scanY) / 24);
+      var al = (.12 + .8 * p.a + near * .5) * (.4 + .6 * e);
+      var r = 238 - h * 14, gg = 226 - h * 110, b = 214 - h * 165;
+      ctx.fillStyle = 'rgba(' + (r | 0) + ',' + (gg | 0) + ',' + (b | 0) + ',' + al.toFixed(3) + ')';
+      var size = p.s * (.5 + p.a * 1.3) * (1 + h * 1.4 + near * .8);
+      ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
+    }
+    // 스캔 선
+    var sy = oy + scanY * sc, grd = ctx.createLinearGradient(0, sy - 30, 0, sy + 30);
+    grd.addColorStop(0, 'rgba(240,168,119,0)'); grd.addColorStop(.5, 'rgba(240,168,119,.07)'); grd.addColorStop(1, 'rgba(240,168,119,0)');
+    ctx.fillStyle = grd; ctx.fillRect(ox - 20, sy - 30, FW * sc + 40, 60);
+    // 22 좌표
+    P22.forEach(function (q, j) {
+      var x = ox + q[0] * sc, y = oy + q[1] * sc, h = heatAt(q[0], q[1]);
+      var tw = .5 + .5 * Math.sin(now / 500 + j);
+      var rad = 1.2 + h * 2.2 + tw * .6;
+      var gl = ctx.createRadialGradient(x, y, 0, x, y, rad * 3.4);
+      gl.addColorStop(0, h > .2 ? 'rgba(255,170,110,.85)' : 'rgba(255,240,225,.5)'); gl.addColorStop(1, 'rgba(255,160,100,0)');
+      ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(x, y, rad * 3.4, 0, 6.283); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y, rad * .6, 0, 6.283); ctx.fill();
+    });
+    ctx.globalCompositeOperation = 'source-over';
+    // 지금 읽는 부위 라벨 / 결과 TOP3 라벨
+    var labels = result ? result.areas : (focus ? [focus] : []);
+    labels.forEach(function (name, j) {
+      var r = (REGION[name] || [])[0]; if (!r) return;
+      var x = ox + r[0] * sc, y = oy + r[1] * sc, lx = x < W / 2 ? x - 90 : x + 30;
+      ctx.strokeStyle = 'rgba(240,168,119,.8)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(lx + (x < W / 2 ? 60 : 0), y - 18 - j * 4); ctx.stroke();
+      ctx.font = '600 12px Pretendard, sans-serif'; ctx.fillStyle = '#F0A877';
+      ctx.fillText((result ? (j + 1) + '. ' : '') + name, lx, y - 22 - j * 4);
+    });
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener('resize', function () { resize(); });
+  resize(); init(); requestAnimationFrame(frame);
+  Lab.start({
+    onStep: function (s) { if (s.area) { heat[s.area] = Math.min(1, (heat[s.area] || 0) + .34); focus = s.area; } },
+    onResult: function (r) { result = r; r.areas.forEach(function (a) { heat[a] = 1; }); },
+    onReset: function () { heat = {}; focus = null; result = null; scatter(); }
+  });
+})();
+</script>
+</body>
+</html>

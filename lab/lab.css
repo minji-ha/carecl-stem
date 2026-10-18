@@ -1,0 +1,30 @@
+/* 설문 왼쪽 패널 그래픽 시안 — 공통 틀 (패널 하나만 크게 보여준다) */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#1C1916;color:#F4EDE6;font-family:"Pretendard",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.panel{position:relative;width:100%;height:100%;overflow:hidden;
+  background:radial-gradient(120% 80% at 50% 60%,#2a221d 0%,#1C1916 60%,#141110 100%)}
+.panel canvas.stage{position:absolute;inset:0;width:100%;height:100%;display:block}
+.head{position:absolute;left:clamp(20px,4vw,48px);top:clamp(20px,4vw,44px);z-index:5;pointer-events:none}
+.head em{display:block;font-style:normal;font-size:12px;letter-spacing:.22em;color:#F0A877}
+.head b{display:block;margin-top:10px;font-size:clamp(26px,3vw,36px);font-weight:600;letter-spacing:-.01em}
+.head p{margin:8px 0 0;font-size:13.5px;line-height:1.6;color:#bfb3a8}
+.hud{position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:70px;z-index:5;pointer-events:none;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font-size:12px;color:#a99d92}
+.hud .q{max-width:70%;line-height:1.55}
+.hud .q b{display:block;margin-bottom:4px;font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.12em;color:#F0A877}
+.hud .pct{font-family:ui-monospace,Consolas,monospace;font-size:28px;font-weight:600;color:#fff;text-align:right}
+.hud .pct small{display:block;font-size:10.5px;letter-spacing:.14em;color:#a99d92;font-weight:400}
+.result{position:absolute;left:50%;bottom:120px;transform:translate(-50%,16px);z-index:6;opacity:0;pointer-events:none;
+  padding:14px 22px;border-radius:16px;background:rgba(28,22,19,.78);border:1px solid rgba(240,168,119,.45);backdrop-filter:blur(6px);
+  text-align:center;transition:opacity .6s ease,transform .6s ease;box-shadow:0 0 40px -10px rgba(224,123,69,.6)}
+.result.on{opacity:1;transform:translate(-50%,0)}
+.result small{display:block;font-size:11px;letter-spacing:.2em;color:#F0A877}
+.result b{display:block;margin-top:4px;font-size:22px}
+.result span{display:block;margin-top:4px;font-size:12px;color:#cbbfb4}
+.ctrl{position:absolute;left:0;right:0;bottom:0;z-index:7;display:flex;justify-content:center;gap:6px;padding:14px;
+  background:linear-gradient(transparent,rgba(0,0,0,.45))}
+.ctrl button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#e9dfd6;font:inherit;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer}
+.ctrl button:hover{background:rgba(255,255,255,.14)}
+.tag{position:absolute;right:14px;top:14px;z-index:7;font-size:11px;color:#8d8178;letter-spacing:.06em}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

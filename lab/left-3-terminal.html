@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>왼쪽 패널 시안 3 — 실시간 분석 터미널</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+.term{position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);top:150px;bottom:150px;z-index:4;display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.box{border:1px solid rgba(240,168,119,.28);border-radius:14px;background:rgba(20,15,13,.55);backdrop-filter:blur(2px);overflow:hidden}
+.box h4{margin:0;padding:9px 14px;border-bottom:1px solid rgba(240,168,119,.18);font:600 10.5px ui-monospace,Consolas,monospace;letter-spacing:.16em;color:#F0A877;display:flex;justify-content:space-between}
+.box h4 i{font-style:normal;color:#7fd39a}
+.meters{padding:10px 14px 12px;display:grid;gap:8px}
+.meter{display:grid;grid-template-columns:86px 1fr 34px;gap:10px;align-items:center;font:12px "Pretendard",sans-serif;color:#cbbfb4}
+.meter .t{height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.meter .t i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#7a5a48,#E07B45);transition:width .8s cubic-bezier(.2,.7,.2,1);box-shadow:0 0 10px rgba(224,123,69,.6)}
+.meter .n{font:11px ui-monospace,Consolas,monospace;color:#8d8178;text-align:right}
+.meter.on{color:#fff;font-weight:700}.meter.on .n{color:#F0A877}
+.log{padding:10px 14px;font:12px/1.75 ui-monospace,Consolas,monospace;color:#bfb3a8;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log .ts{color:#6e645c;margin-right:8px}
+.log .ok{color:#7fd39a}.log .hl{color:#F0A877}.log .w{color:#fff}
+.log .cur::after{content:"▋";color:#F0A877;animation:blink 1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.wave canvas{display:block;width:100%;height:70px}
+canvas.rain{position:absolute;inset:0;z-index:1;opacity:.22}
+</style>
+</head>
+<body>
+<div class="panel"><canvas class="rain"></canvas><span class="tag">시안 3 · 실시간 분석 터미널</span>
+  <div class="term">
+    <div class="box"><h4>AGING SIGNAL <i data-status>● STANDBY</i></h4><div class="meters" data-meters></div></div>
+    <div class="box" style="display:flex;flex-direction:column"><h4>MORPHO-NET LOG <span data-clock>00:00.0</span></h4><div class="log" data-log style="flex:1"></div></div>
+    <div class="box wave"><h4>RESPONSE WAVEFORM <span data-freq>0.0 Hz</span></h4><canvas data-wave></canvas></div>
+  </div>
+</div>
+<script src="lab.js"></script>
+<script>
+(function () {
+  var TYPES = [['fine', '잔주름형', 8], ['sag', '변형·처짐형', 7], ['muscle', '근육형', 9], ['tired', '피로형', 9], ['early', '초기노화형', 7]];
+  var NAME = { fine: '잔주름', sag: '처짐', muscle: '표정 주름', tired: '피로', early: '초기 노화' };
+  var mBox = document.querySelector('[data-meters]'), log = document.querySelector('[data-log]');
+  mBox.innerHTML = TYPES.map(function (t) { return '<div class="meter" data-k="' + t[0] + '"><span>' + t[1] + '</span><span class="t"><i></i></span><span class="n">0.00</span></div>'; }).join('');
+  var start = performance.now(), energy = 0, queue = [], typing = null;
+
+  function ts() { var s = (performance.now() - start) / 1000; return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60).toFixed(1)).slice(-4); }
+  function push(html, plain) { queue.push({ html: html, plain: plain }); if (!typing) typeNext(); }
+  function typeNext() {
+    var item = queue.shift(); if (!item) { typing = null; return; }
+    var row = document.createElement('div'); row.className = 'cur'; log.appendChild(row);
+    while (log.children.length > 40) log.removeChild(log.firstChild);
+    var stamp = '<span class="ts">' + ts() + '</span>', n = 0, full = item.plain;
+    typing = setInterval(function () {
+      n += 2; row.innerHTML = stamp + full.slice(0, n).replace(/</g, '&lt;');
+      if (n >= full.length) { clearInterval(typing); row.innerHTML = stamp + item.html; row.className = ''; typing = null; typeNext(); }
+    }, 14);
+  }
+
+  function setMeters(counts, roles) {
+    var max = 0; TYPES.forEach(function (t) { max = Math.max(max, (counts[t[0]] || 0) / t[2]); });
+    TYPES.forEach(function (t) {
+      var v = (counts[t[0]] || 0) / t[2], el = mBox.querySelector('[data-k="' + t[0] + '"]');
+      el.querySelector('i').style.width = (max ? v / max * 100 : 0) + '%';
+      el.querySelector('.n').textContent = v.toFixed(2);
+      el.classList.toggle('on', !!(roles && roles[t[0]]));
+    });
+  }
+
+  /* 배경 — 아주 옅게 흐르는 좌표 숫자 */
+  var rain = document.querySelector('.rain'), rc = rain.getContext('2d'), cols = [];
+  function rsz() { rain.width = rain.clientWidth; rain.height = rain.clientHeight; cols = []; for (var x = 0; x < rain.width; x += 16) cols.push(Math.random() * rain.height); }
+  rsz(); addEventListener('resize', rsz);
+  var wave = document.querySelector('[data-wave]'), wc = wave.getContext('2d');
+  function frame(now) {
+    rc.fillStyle = 'rgba(28,25,22,.18)'; rc.fillRect(0, 0, rain.width, rain.height);
+    rc.font = '11px ui-monospace, monospace'; rc.fillStyle = '#C46A3A';
+    cols.forEach(function (y, j) { rc.fillText(Math.random() < .5 ? (Math.random() * 9 | 0) : 'UMLB'.charAt(Math.random() * 4 | 0), j * 16, y); cols[j] = y > rain.height + Math.random() * 400 ? 0 : y + 14; });
+    var w = wave.width = wave.clientWidth * 2, h = wave.height = 140; wc.clearRect(0, 0, w, h);
+    energy *= .985;
+    [['rgba(224,123,69,.9)', 1], ['rgba(240,168,119,.35)', .6], ['rgba(255,255,255,.18)', .3]].forEach(function (L, li) {
+      wc.strokeStyle = L[0]; wc.lineWidth = 2 - li * .5; wc.beginPath();
+      for (var x = 0; x <= w; x += 4) { var p = x / w, a = (8 + energy * 46) * L[1] * Math.sin(p * Math.PI); var y = h / 2 + Math.sin(p * 18 + now / 180 + li) * a + Math.sin(p * 47 + now / 90) * a * .3; x ? wc.lineTo(x, y) : wc.moveTo(x, y); }
+      wc.stroke();
+    });
+    document.querySelector('[data-clock]').textContent = ts();
+    document.querySelector('[data-freq]').textContent = (2 + energy * 9).toFixed(1) + ' Hz';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  Lab.start({
+    onStep: function (s) {
+      energy = 1;
+      document.querySelector('[data-status]').textContent = '● ANALYZING';
+      push('<span class="w">' + s.label + '</span> 응답 수신 · ' + s.text, s.label + ' 응답 수신 · ' + s.text);
+      if (s.type) push('  └ <span class="hl">' + NAME[s.type] + ' 신호</span> 감지 → 가중치 갱신', '  └ ' + NAME[s.type] + ' 신호 감지 → 가중치 갱신');
+      if (s.area) push('  └ 좌표 매핑 <span class="ok">' + s.area + '</span> · AGING MAP 22', '  └ 좌표 매핑 ' + s.area + ' · AGING MAP 22');
+      setMeters(s.counts);
+    },
+    onResult: function (r) {
+      energy = 1.4;
+      document.querySelector('[data-status]').textContent = '● COMPLETE';
+      push('<span class="ok">✓ 분석 완료</span> — 진단 유형 <span class="hl">' + r.name + '</span>', '✓ 분석 완료 — 진단 유형 ' + r.name);
+      push('  └ 대표 <span class="w">잔주름형</span> · 보조 <span class="w">변형·처짐형</span>', '  └ 대표 잔주름형 · 보조 변형·처짐형');
+      push('  └ 집중 케어 TOP3 <span class="ok">' + r.areas.join(' · ') + '</span>', '  └ 집중 케어 TOP3 ' + r.areas.join(' · '));
+      setMeters(r.counts, r.roles);
+    },
+    onReset: function () {
+      document.querySelector('[data-status]').textContent = '● STANDBY';
+      log.innerHTML = ''; queue = []; setMeters({});
+      push('<span class="ok">MORPHO-NET v2.2</span> 초기화 · 22개 좌표 준비 완료', 'MORPHO-NET v2.2 초기화 · 22개 좌표 준비 완료');
+      push('설문 응답을 기다리는 중…', '설문 응답을 기다리는 중…');
+    }
+  });
+})();
+</script>
+</body>
+</html>

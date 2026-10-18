@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>왼쪽 패널 시안 2 — 피부 현미경 렌즈</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+.read{position:absolute;right:clamp(20px,4vw,48px);top:clamp(150px,22vh,200px);z-index:5;width:170px;font-size:11px;color:#bfb3a8;pointer-events:none}
+.read b{display:block;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.14em;color:#F0A877;margin-bottom:8px}
+.read .row{margin:9px 0}
+.read .row span{display:block;margin-bottom:4px}
+.read .bar{height:4px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
+.read .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#F0A877,#C46A3A);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.zone{font-size:18px;font-weight:700;color:#fff;margin:0 0 6px}
+@media (max-width:640px){.read{display:none}}
+</style>
+</head>
+<body>
+<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 2 · 피부 현미경 렌즈</span>
+  <div class="read"><b>MICRO SCAN</b><p class="zone" data-zone>—</p>
+    <div class="row"><span>잔주름 밀도</span><div class="bar"><i data-m="fine"></i></div></div>
+    <div class="row"><span>탄력 · 처짐</span><div class="bar"><i data-m="sag"></i></div></div>
+    <div class="row"><span>톤 · 색소</span><div class="bar"><i data-m="early"></i></div></div>
+    <div class="row"><span>생기 · 그늘</span><div class="bar"><i data-m="tired"></i></div></div>
+    <div class="row"><span>표정 주름 깊이</span><div class="bar"><i data-m="muscle"></i></div></div>
+  </div>
+</div>
+<script src="lab.js"></script>
+<script>
+(function () {
+  var cv = document.querySelector('.stage'), ctx = cv.getContext('2d');
+  var W, H, DPR = Math.min(2, devicePixelRatio || 1);
+  var TEX = {}, cur = 'base', prevTex = null, mix = 1, pan = { x: 300, y: 300 }, panT = { x: 300, y: 300 };
+  var lensPos = { x: .5, y: .5 }, lensT = { x: .5, y: .5 }, zoom = 1, zoomT = 1, area = null, done = false;
+  /* 미니 얼굴 지도에서 렌즈가 가 있는 자리 */
+  var MAP = { '이마': [.5, .2], '미간': [.5, .33], '눈가': [.3, .4], '눈밑': [.38, .46], '앞광대': [.34, .53], '볼': [.3, .62],
+    '팔자': [.42, .62], '입가': [.42, .7], '턱선': [.33, .78], '목': [.5, .95], '심부볼': [.31, .63] };
+
+  function rnd(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+
+  /* 사람 얼굴이 아닌 '피부결 확대' 질감을 그때그때 그린다 — 유형마다 특징이 다르게 */
+  function makeTex(kind) {
+    var S = 900, c = document.createElement('canvas'); c.width = c.height = S; var g = c.getContext('2d'), r = rnd(kind.length * 977 + 13);
+    var base = g.createLinearGradient(0, 0, S, S);
+    var tone = { base: ['#e9c3a7', '#d9a98a'], fine: ['#ecc8ae', '#dcae90'], sag: ['#e6bea2', '#d3a083'], early: ['#e3b998', '#cf9f7d'], tired: ['#d9b29a', '#bf927b'], muscle: ['#e8c0a4', '#d4a184'] }[kind];
+    base.addColorStop(0, tone[0]); base.addColorStop(1, tone[1]); g.fillStyle = base; g.fillRect(0, 0, S, S);
+    // 피부결 망 (작은 마름모 결)
+    g.strokeStyle = 'rgba(120,70,50,.10)'; g.lineWidth = 1;
+    for (var k = 0; k < 2600; k++) { var x = r() * S, y = r() * S, a = r() * Math.PI, l = 8 + r() * 18; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke(); }
+    // 모공
+    for (k = 0; k < 900; k++) { var px = r() * S, py = r() * S, pr = .8 + r() * 1.8; var rg = g.createRadialGradient(px, py, 0, px, py, pr * 2.4); rg.addColorStop(0, 'rgba(105,55,35,.7)'); rg.addColorStop(1, 'rgba(110,60,40,0)'); g.fillStyle = rg; g.beginPath(); g.arc(px, py, pr * 2.4, 0, 6.283); g.fill(); }
+    // 유형별 특징
+    function lines(n, w, al, len) { g.strokeStyle = 'rgba(100,55,40,' + al + ')'; g.lineWidth = w; for (var j = 0; j < n; j++) { var x0 = r() * S, y0 = r() * S, ang = (r() - .5) * .6; g.beginPath(); g.moveTo(x0, y0); for (var s = 1; s <= 6; s++) { g.lineTo(x0 + s * len / 6, y0 + Math.sin(s + j) * 4 + s * ang * len / 6); } g.stroke(); } }
+    if (kind === 'fine') lines(70, 1.1, .32, 90);
+    if (kind === 'muscle') { lines(14, 3, .35, 260); lines(20, 1.2, .2, 120); }
+    if (kind === 'early') for (k = 0; k < 90; k++) { var sx = r() * S, sy = r() * S, sr = 6 + r() * 22; var sg = g.createRadialGradient(sx, sy, 0, sx, sy, sr); sg.addColorStop(0, 'rgba(140,80,45,.35)'); sg.addColorStop(1, 'rgba(140,80,45,0)'); g.fillStyle = sg; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill(); }
+    if (kind === 'tired') { var tg = g.createLinearGradient(0, 0, 0, S); tg.addColorStop(0, 'rgba(70,40,60,.0)'); tg.addColorStop(1, 'rgba(70,40,60,.28)'); g.fillStyle = tg; g.fillRect(0, 0, S, S); }
+    if (kind === 'sag') { g.strokeStyle = 'rgba(100,55,40,.18)'; g.lineWidth = 2; for (k = 0; k < 10; k++) { g.beginPath(); var yy = r() * S; g.moveTo(0, yy); g.bezierCurveTo(S * .3, yy + 40, S * .6, yy + 70, S, yy + 120); g.stroke(); } }
+    // 빛 반사
+    var hl = g.createRadialGradient(S * .35, S * .3, 10, S * .35, S * .3, S * .7); hl.addColorStop(0, 'rgba(255,255,255,.22)'); hl.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = hl; g.fillRect(0, 0, S, S);
+    return c;
+  }
+  ['base', 'fine', 'sag', 'early', 'tired', 'muscle'].forEach(function (k) { TEX[k] = makeTex(k); });
+
+  function resize() { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+  addEventListener('resize', resize); resize();
+
+  function drawTex(img, cx, cy, R, alpha) {
+    var s = 1.4 * zoom * (R * 2 / 900);
+    ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.283); ctx.clip();
+    ctx.translate(cx, cy); ctx.scale(s, s); ctx.drawImage(img, -pan.x, -pan.y); ctx.restore();
+  }
+
+  function frame(now) {
+    ctx.clearRect(0, 0, W, H);
+    var R = Math.min(W * .34, (H - 260) * .42), cx = W * (W > 640 ? .42 : .5), cy = 150 + (H - 230) / 2;
+    pan.x += (panT.x - pan.x) * .05 + Math.sin(now / 2200) * .3; pan.y += (panT.y - pan.y) * .05 + Math.cos(now / 2600) * .3;
+    zoom += (zoomT - zoom) * .05; mix = Math.min(1, mix + .025);
+    // 렌즈 바깥 빛
+    var halo = ctx.createRadialGradient(cx, cy, R * .9, cx, cy, R * 1.5); halo.addColorStop(0, 'rgba(224,123,69,.28)'); halo.addColorStop(1, 'rgba(224,123,69,0)');
+    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, R * 1.5, 0, 6.283); ctx.fill();
+    if (prevTex && mix < 1) drawTex(prevTex, cx, cy, R, 1 - mix);
+    drawTex(TEX[cur], cx, cy, R, mix);
+    // 렌즈 안쪽 비네팅 + 격자
+    ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.283); ctx.clip();
+    var vg = ctx.createRadialGradient(cx, cy, R * .55, cx, cy, R); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(10,6,4,.65)'); ctx.fillStyle = vg; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
+    for (var gx = -R; gx <= R; gx += R / 5) { ctx.beginPath(); ctx.moveTo(cx + gx, cy - R); ctx.lineTo(cx + gx, cy + R); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - R, cy + gx); ctx.lineTo(cx + R, cy + gx); ctx.stroke(); }
+    // 스캔 줄
+    var sy = cy - R + ((now / 18) % (R * 2)); var sg = ctx.createLinearGradient(0, sy - 18, 0, sy + 2); sg.addColorStop(0, 'rgba(240,168,119,0)'); sg.addColorStop(1, 'rgba(240,168,119,.55)'); ctx.fillStyle = sg; ctx.fillRect(cx - R, sy - 18, R * 2, 20);
+    ctx.restore();
+    // 테두리 눈금 링 (돌아간다)
+    ctx.save(); ctx.translate(cx, cy);
+    ctx.strokeStyle = 'rgba(240,168,119,.75)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, R + 4, 0, 6.283); ctx.stroke();
+    ctx.rotate(now / 9000);
+    for (var k = 0; k < 120; k++) { var a = k / 120 * 6.283, l = k % 10 === 0 ? 12 : 5; ctx.strokeStyle = k % 10 === 0 ? 'rgba(255,220,190,.8)' : 'rgba(255,255,255,.28)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(Math.cos(a) * (R + 12), Math.sin(a) * (R + 12)); ctx.lineTo(Math.cos(a) * (R + 12 + l), Math.sin(a) * (R + 12 + l)); ctx.stroke(); }
+    ctx.rotate(-now / 4500);
+    ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.setLineDash([3, 9]); ctx.beginPath(); ctx.arc(0, 0, R + 34, 0, 6.283); ctx.stroke(); ctx.setLineDash([]);
+    ctx.restore();
+    // 십자선
+    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx - 16, cy); ctx.lineTo(cx - 5, cy); ctx.moveTo(cx + 5, cy); ctx.lineTo(cx + 16, cy); ctx.moveTo(cx, cy - 16); ctx.lineTo(cx, cy - 5); ctx.moveTo(cx, cy + 5); ctx.lineTo(cx, cy + 16); ctx.stroke();
+    ctx.font = '600 11px ui-monospace, Consolas, monospace'; ctx.fillStyle = 'rgba(240,168,119,.9)';
+    ctx.fillText('×' + (40 * zoom).toFixed(0) + ' MAGNIFY', cx - R, cy + R + 52);
+    // 미니 얼굴 지도
+    var mw = 70, mh = 96, mx = W > 640 ? W - mw - 50 : W - mw - 24, my = H - mh - 150;
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(mx + mw / 2, my + mh * .45, mw * .42, mh * .45, 0, 0, 6.283); ctx.stroke();
+    lensPos.x += (lensT.x - lensPos.x) * .08; lensPos.y += (lensT.y - lensPos.y) * .08;
+    var dx = mx + lensPos.x * mw, dy = my + lensPos.y * mh;
+    ctx.strokeStyle = '#F0A877'; ctx.beginPath(); ctx.arc(dx, dy, 7, 0, 6.283); ctx.stroke(); ctx.fillStyle = '#F0A877'; ctx.beginPath(); ctx.arc(dx, dy, 2, 0, 6.283); ctx.fill();
+    ctx.font = '10px ui-monospace, Consolas, monospace'; ctx.fillStyle = '#a99d92'; ctx.fillText('LENS POSITION', mx - 10, my + mh + 16);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  var meters = {};
+  function setMeter(k, v) { var el = document.querySelector('[data-m="' + k + '"]'); if (el) el.style.width = Math.min(100, v) + '%'; }
+  Lab.start({
+    onStep: function (s) {
+      if (s.area) { var m = MAP[s.area] || [.5, .5]; lensT.x = m[0]; lensT.y = m[1]; document.querySelector('[data-zone]').textContent = s.area; }
+      if (s.type) { prevTex = TEX[cur]; cur = s.type; mix = 0; meters[s.type] = (meters[s.type] || 0) + 18; setMeter(s.type, meters[s.type]); }
+      panT.x = 200 + Math.random() * 400; panT.y = 200 + Math.random() * 400; zoomT = 1 + Math.random() * .5;
+    },
+    onResult: function (r) { document.querySelector('[data-zone]').textContent = r.name; zoomT = .8; prevTex = TEX[cur]; cur = 'fine'; mix = 0; lensT.x = .5; lensT.y = .5; },
+    onReset: function () { meters = {}; ['fine', 'sag', 'early', 'tired', 'muscle'].forEach(function (k) { setMeter(k, 0); }); document.querySelector('[data-zone]').textContent = '—'; prevTex = TEX[cur]; cur = 'base'; mix = 0; zoomT = 1; }
+  });
+})();
+</script>
+</body>
+</html>
