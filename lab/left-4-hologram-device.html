@@ -77,37 +77,30 @@ scene.add(beam);
 // 스캔 면
 scanPlane = new THREE.Mesh(new THREE.CircleGeometry(.7, 64), new THREE.MeshBasicMaterial({ color: 0xF0A877, transparent: true, opacity: .14, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }));
 scanPlane.rotation.x = -Math.PI / 2; scene.add(scanPlane);
-// 넘실거리는 그리드 — 기기 뒤로 깔린 바닥면이 파도처럼 움직인다
-const GN = 44, GS = 9, gPos = [], gCol = [], gBase = [];
-const gc = new THREE.Color(0xE07B45);
-function gv(i, j) { return [(i / GN - .5) * GS, (j / GN - .5) * GS]; }
-for (let i = 0; i <= GN; i++) for (let j = 0; j <= GN; j++) {
-  [[i + 1, j], [i, j + 1]].forEach(([i2, j2]) => {
-    if (i2 > GN || j2 > GN) return;
-    [[i, j], [i2, j2]].forEach(([a, b]) => {
-      const [x, z] = gv(a, b); gBase.push(x, z); gPos.push(x, 0, z);
-      const f = Math.max(0, 1 - Math.hypot(x / (GS * .5), (z + 1.8) / (GS * .5)));   // 가장자리로 갈수록 사라진다
-      gCol.push(gc.r * f, gc.g * f, gc.b * f);
-    });
-  });
-}
-const gridGeo = new THREE.BufferGeometry();
-gridGeo.setAttribute('position', new THREE.Float32BufferAttribute(gPos, 3));
-gridGeo.setAttribute('color', new THREE.Float32BufferAttribute(gCol, 3));
-const grid = new THREE.LineSegments(gridGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .55, blending: THREE.AdditiveBlending, depthWrite: false }));
-grid.position.set(0, -H / 2 - .35, -2.4); scene.add(grid);
+// 넘실거리는 그리드 — 인트로 물결 배경(wave3d.js)과 같은 방식: 화면 가득 펼쳐진 와이어프레임 평면
+const bgScene = new THREE.Scene();
+bgScene.fog = new THREE.FogExp2(0x1C1916, .016);
+const bgCam = new THREE.PerspectiveCamera(70, 1, .1, 1000);
+bgCam.position.set(0, 4.2, 26); bgCam.lookAt(0, -3, 0);
+const gridGeo = new THREE.PlaneGeometry(220, 220, 70, 70);
+const gridBase = gridGeo.attributes.position.array.slice();
+const gridMat = new THREE.MeshBasicMaterial({ color: 0xE07B45, wireframe: true, transparent: true, opacity: .3 });
+const terrain = new THREE.Mesh(gridGeo, gridMat);
+terrain.rotation.x = -Math.PI / 2; terrain.position.y = -7; bgScene.add(terrain);
 function waveGrid(s) {
-  const p = gridGeo.attributes.position.array;
-  for (let k = 0, n = gBase.length / 2; k < n; k++) {
-    const x = gBase[k * 2], z = gBase[k * 2 + 1];
-    p[k * 3 + 1] = Math.sin(x * 1.1 + s * 1.1) * .16 + Math.sin(z * 1.4 - s * .9) * .2 + Math.sin((x + z) * .7 + s * .6) * .12 * (1 + pulse);
+  const pos = gridGeo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = gridBase[i * 3], y = gridBase[i * 3 + 1];
+    pos.setZ(i, Math.sin(x * .12 + s * 1.2) * 2.6 + Math.cos(y * .10 - s * 1.0) * 2.6 + Math.sin((x + y) * .06 + s * .5) * 1.4 * (1 + pulse));
   }
-  gridGeo.attributes.position.needsUpdate = true;
+  pos.needsUpdate = true;
 }
+renderer.autoClear = false;
 
 function resize() {
   const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
   camera.aspect = w / h; camera.updateProjectionMatrix();
+  bgCam.aspect = w / h; bgCam.updateProjectionMatrix();
   // 위아래로 머리글·진행 표시가 있으니 여유를 넉넉히 둔다
   const fit = (H + 2.2) / (2 * Math.tan(THREE.MathUtils.degToRad(15)));
   camera.position.set(0, .1, Math.max(fit, fit / camera.aspect * .7));
@@ -126,7 +119,8 @@ renderer.setAnimationLoop((t) => {
   headColor.lerp(headTarget, .06); pulse *= .96;
   if (headGlow) { headGlow.material.color.copy(headColor); headGlow.material.opacity = .75; const k = 1 + .2 * Math.sin(s * 4) + pulse * .6; headGlow.scale.set(.55 * k, .55 * k, 1); }
   lineMat.color.copy(new THREE.Color(0xF0A877).lerp(headColor, .25));
-  renderer.render(scene, camera);
+  gridMat.color.copy(new THREE.Color(0xE07B45).lerp(headColor, .35));
+  renderer.clear(); renderer.render(bgScene, bgCam); renderer.clearDepth(); renderer.render(scene, camera);
 });
 
 Lab.start({
