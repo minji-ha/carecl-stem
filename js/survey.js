@@ -241,7 +241,7 @@
       parts: (answers[14] || []).join(' · '),
       restart: true,
       locked: locked,
-      loginHref: (location.pathname.split('/').pop() || 'survey.html') + '?view=member&type=' + key   // 시안에서는 로그인 대신 같은 페이지의 '로그인 후' 화면으로 이동
+      loginHref: (location.pathname.split('/').pop() || 'survey.html') + '?view=member&type=' + key + ((location.search.match(/[?&](g=\d)/) || [])[1] ? '&' + location.search.match(/[?&](g=\d)/)[1] : '')   // 시안에서는 로그인 대신 같은 페이지의 '로그인 후' 화면으로 이동
     });
     window.ckuReport.fillBars(form);
     // 결과 커버의 유형 이름 옆 오각형 — 로그인 전에는 빈 오각형(스캔만), 로그인 후에 신호 분포. 미리보기는 예시 응답.

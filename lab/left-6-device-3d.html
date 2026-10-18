@@ -63,8 +63,9 @@ new GLTFLoader().load('../assets/model/techfit-v2.glb', (gltf) => {
 function resize() {
   const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
   camera.aspect = w / h; camera.updateProjectionMatrix();
-  const fit = (H + 1.5) / (2 * Math.tan(THREE.MathUtils.degToRad(15)));
-  camera.position.set(0, .1, Math.max(fit, fit / camera.aspect * .7));
+  const mini = document.documentElement.classList.contains('is-mini');
+  const fit = (H + (mini ? .35 : 1.5)) / (2 * Math.tan(THREE.MathUtils.degToRad(15)));
+  camera.position.set(0, mini ? 0 : .1, mini ? fit : Math.max(fit, fit / camera.aspect * .7));
 }
 addEventListener('resize', resize); resize();
 

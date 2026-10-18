@@ -35,3 +35,9 @@ html,body{margin:0;height:100%;background:#1C1916;color:#F4EDE6;font-family:"Pre
 .is-embed .result{bottom:96px}
 .result span{white-space:nowrap}
 @media (max-width:420px){.result{padding:10px 16px;bottom:84px}.result b{font-size:18px}.result span{font-size:11px}.is-embed .result{bottom:80px}}
+
+/* 전체 화면 인트로 배경 (?embed=hero) — 왼쪽 머리글은 페이지 인트로가 대신한다 */
+.is-hero .head{display:none}
+/* 구석 위젯 (?embed=mini) — 그래픽만, 배경 투명 */
+html.is-mini,.is-mini body,.is-mini .panel{background:transparent}
+.is-mini .head,.is-mini .hud,.is-mini .result,.is-mini .mode,.is-mini .tag{display:none}

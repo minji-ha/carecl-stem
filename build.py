@@ -551,7 +551,20 @@ def page_survey_panel(idx):
 
 for _i, (_n, _s, _l) in enumerate(PANEL_VARIANTS):
     PAGES[_n] = (lambda i=_i: page_survey_panel(i))
-PAGES["survey.html"] = lambda: page_survey_panel(0)   # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 5개
+PAGES["survey.html"] = lambda: page_survey_panel(0)
+
+
+def page_survey_flow():
+    """survey2.html — 1번은 왼쪽 패널, 2~5번은 전체 화면 인트로 → 가운데 설문 (js/pvtabs.js data-flow)"""
+    out = page_survey_panel(0)
+    out = re.sub(r'href="survey-p(\d)\.html"', r'href="survey2.html?g=\1"', out)
+    out = out.replace('<nav class="pvtabs"', '<nav class="pvtabs" data-flow', 1)
+    out = out.replace('sv--framed"', 'sv--framed sv--flow"', 1)
+    out = out.replace('</main>', '<div class="sv__mini" hidden aria-hidden="true"><iframe title="TECH FIT 3D" tabindex="-1"></iframe></div>\n</main>', 1)
+    return out
+
+
+PAGES["survey2.html"] = page_survey_flow   # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 5개
 PAGES["report.html"] = page_report
 
 # ── AI 피부 진단 공개 여부 ──────────────────────────────
@@ -573,7 +586,7 @@ def hide_ai_test(html):
 if __name__ == "__main__":
     for name, fn in PAGES.items():
         out = fn()
-        if name.startswith("survey-p"):   # 왼쪽 그래픽 비교용 시안 페이지는 공개 후에도 검색에서 뺀다
+        if name.startswith("survey-p") or name == "survey2.html":   # 왼쪽 그래픽 비교용 시안 페이지는 공개 후에도 검색에서 뺀다
             out = out.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex, nofollow">', 1)
         elif not AI_TEST_PUBLIC:
             if name.startswith("survey") or name == "report.html":
