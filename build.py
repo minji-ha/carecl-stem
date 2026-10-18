@@ -544,6 +544,10 @@ def page_survey_panel(idx):
                  out, count=1, flags=re.S)
     out = out.replace('<main class="sv sv--stem"', f'<nav class="pvtabs" aria-label="왼쪽 그래픽 시안">{tabs}</nav>\n<main class="sv sv--stem sv--framed"', 1)
     out = out.replace('<script src="js/orb.js', '<script data-off="js/orb.js', 1)
+    # 탭을 옮겨도 지금 보고 있는 화면(로그인 전/후)을 그대로 유지
+    keep = ('<script>(function(){var v=(location.search.match(/[?&]view=(guest|member)/)||[])[1];if(!v)return;'
+            'document.querySelectorAll(".pvtabs a").forEach(function(a){a.href=a.getAttribute("href").replace(/view=[a-z]+/,"view="+v);});})();</script>\n')
+    out = out.replace('</body>', keep + '</body>', 1)
     return out
 
 
