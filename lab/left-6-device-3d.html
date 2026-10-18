@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>왼쪽 패널 시안 5 — TECH FIT 3D</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+.mode{position:absolute;right:clamp(20px,4vw,48px);top:clamp(150px,22vh,200px);z-index:5;text-align:right;pointer-events:none}
+.mode small{display:block;font:600 10.5px ui-monospace,Consolas,monospace;letter-spacing:.16em;color:#a99d92}
+.mode b{display:block;margin-top:6px;font:700 20px ui-monospace,Consolas,monospace;letter-spacing:.06em;transition:color .5s}
+.mode span{display:block;margin-top:4px;font-size:12px;color:#cbbfb4}
+</style>
+<script type="importmap">{"imports":{"three":"../libs/three/three.module.min.js"}}</script>
+</head>
+<body>
+<div class="panel"><canvas class="stage"></canvas><span class="tag">시안 5 · TECH FIT 3D</span>
+  <div class="mode"><small>SHOT MODE</small><b data-mode style="color:#F0A877">STANDBY</b><span data-mode-d>설문 응답에 맞춰 헤드 색이 바뀌어요</span></div>
+</div>
+<script src="lab.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from '../libs/three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from '../libs/three/addons/environments/RoomEnvironment.js';
+import { cleanDeviceMaterial } from '../js/device-material.js?v=2';
+
+/* 실제 3D 모델(제품 페이지와 같은 재질) — 홀로그램 효과·배경 장식 없이 기기만 돈다 */
+const cv = document.querySelector('.stage');
+const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(-1, 2, 2); scene.add(key);
+const camera = new THREE.PerspectiveCamera(30, 1, .01, 50);
+const pivot = new THREE.Group(); scene.add(pivot);
+
+/* 헤드 색 — TechFit SHOT 모드 색 */
+const MODE = {
+  fine: ['EYE', '#38D678', '눈가 · 입가 잔결 관리'], tired: ['EYE', '#38D678', '눈밑 생기 관리'],
+  sag: ['FACE', '#FF4648', '볼 · 턱선 탄력 관리'], muscle: ['FACE', '#FF4648', '이마 · 미간 표정 주름'],
+  early: ['GLOW', '#9E68FF', '톤 · 광채 · 컨디션']
+};
+let headColor = new THREE.Color('#F0A877'), headTarget = headColor.clone(), pulse = 0, headGlow;
+const H = 2.2;
+
+new GLTFLoader().load('../assets/model/techfit-v2.glb', (gltf) => {
+  const model = gltf.scene;
+  cleanDeviceMaterial(model, THREE);
+  const size = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+  model.scale.setScalar(H / size.y);
+  const b2 = new THREE.Box3().setFromObject(model); model.position.sub(b2.getCenter(new THREE.Vector3()));
+  pivot.add(model);
+  // 헤드 LED 빛
+  const tex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.3, 'rgba(255,255,255,.45)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+  headGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: headColor, transparent: true, opacity: .35, blending: THREE.AdditiveBlending, depthWrite: false }));
+  headGlow.scale.set(.36, .36, 1); headGlow.position.set(0, H / 2 - .02, 0); pivot.add(headGlow);
+});
+
+function resize() {
+  const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  const fit = (H + 1.5) / (2 * Math.tan(THREE.MathUtils.degToRad(15)));
+  camera.position.set(0, .1, Math.max(fit, fit / camera.aspect * .7));
+}
+addEventListener('resize', resize); resize();
+
+let spin = 0;
+renderer.setAnimationLoop((t) => {
+  const s = t / 1000;
+  spin += .006 + pulse * .02;
+  pivot.rotation.y = spin; pivot.position.y = Math.sin(s * 1.2) * .04;
+  headColor.lerp(headTarget, .06); pulse *= .96;
+  if (headGlow) { headGlow.material.color.copy(headColor); const k = 1 + .15 * Math.sin(s * 4) + pulse * .5; headGlow.scale.set(.36 * k, .36 * k, 1); }
+  renderer.render(scene, camera);
+});
+
+function setMode(name, color, desc) {
+  const el = document.querySelector('[data-mode]'); el.textContent = name; el.style.color = color;
+  document.querySelector('[data-mode-d]').textContent = desc;
+}
+Lab.start({
+  onStep: (s) => { if (!s.type) return; const m = MODE[s.type]; headTarget = new THREE.Color(m[1]); pulse = 1; setMode(m[0] + ' SHOT', m[1], m[2]); },
+  onResult: () => { headTarget = new THREE.Color('#F0A877'); pulse = 1.5; setMode('FACE + EYE', '#F0A877', '혼합형 맞춤 루틴 · 총 140샷'); },
+  onReset: () => { headTarget = new THREE.Color('#F0A877'); setMode('STANDBY', '#F0A877', '설문 응답에 맞춰 헤드 색이 바뀌어요'); }
+});
+</script>
+</body>
+</html>

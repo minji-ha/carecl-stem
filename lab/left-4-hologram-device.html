@@ -77,30 +77,16 @@ scene.add(beam);
 // 스캔 면
 scanPlane = new THREE.Mesh(new THREE.CircleGeometry(.7, 64), new THREE.MeshBasicMaterial({ color: 0xF0A877, transparent: true, opacity: .14, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }));
 scanPlane.rotation.x = -Math.PI / 2; scene.add(scanPlane);
-// 넘실거리는 그리드 — 인트로 물결 배경(wave3d.js)과 같은 방식: 화면 가득 펼쳐진 와이어프레임 평면
-const bgScene = new THREE.Scene();
-bgScene.fog = new THREE.FogExp2(0x1C1916, .016);
-const bgCam = new THREE.PerspectiveCamera(70, 1, .1, 1000);
-bgCam.position.set(0, 4.2, 26); bgCam.lookAt(0, -3, 0);
-const gridGeo = new THREE.PlaneGeometry(220, 220, 70, 70);
-const gridBase = gridGeo.attributes.position.array.slice();
-const gridMat = new THREE.MeshBasicMaterial({ color: 0xE07B45, wireframe: true, transparent: true, opacity: .3 });
-const terrain = new THREE.Mesh(gridGeo, gridMat);
-terrain.rotation.x = -Math.PI / 2; terrain.position.y = -7; bgScene.add(terrain);
-function waveGrid(s) {
-  const pos = gridGeo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = gridBase[i * 3], y = gridBase[i * 3 + 1];
-    pos.setZ(i, Math.sin(x * .12 + s * 1.2) * 2.6 + Math.cos(y * .10 - s * 1.0) * 2.6 + Math.sin((x + y) * .06 + s * .5) * 1.4 * (1 + pulse));
-  }
-  pos.needsUpdate = true;
-}
-renderer.autoClear = false;
+// 떠다니는 입자
+const dust = new THREE.BufferGeometry(), N = 500, arr = new Float32Array(N * 3);
+for (let i = 0; i < N; i++) { arr[i * 3] = (Math.random() - .5) * 3; arr[i * 3 + 1] = (Math.random() - .5) * 3.2; arr[i * 3 + 2] = (Math.random() - .5) * 2; }
+dust.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+const dustPts = new THREE.Points(dust, new THREE.PointsMaterial({ color: 0xF0A877, size: .01, transparent: true, opacity: .6, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(dustPts);
 
 function resize() {
   const w = cv.clientWidth, h = cv.clientHeight; renderer.setSize(w, h, false);
   camera.aspect = w / h; camera.updateProjectionMatrix();
-  bgCam.aspect = w / h; bgCam.updateProjectionMatrix();
   // 위아래로 머리글·진행 표시가 있으니 여유를 넉넉히 둔다
   const fit = (H + 2.2) / (2 * Math.tan(THREE.MathUtils.degToRad(15)));
   camera.position.set(0, .1, Math.max(fit, fit / camera.aspect * .7));
@@ -115,12 +101,11 @@ renderer.setAnimationLoop((t) => {
   pivot.rotation.y = spin; pivot.position.y = Math.sin(s * 1.2) * .04;
   rings.children.forEach((r, i) => { r.rotation.z = s * (i % 2 ? -.3 : .4); r.material.opacity = (.35 - i * .07) * (.7 + .3 * Math.sin(s * 2 + i)); });
   scanPlane.position.y = Math.sin(s * .9) * (H / 2);
-  waveGrid(s);
+  dustPts.rotation.y = s * .05;
   headColor.lerp(headTarget, .06); pulse *= .96;
   if (headGlow) { headGlow.material.color.copy(headColor); headGlow.material.opacity = .75; const k = 1 + .2 * Math.sin(s * 4) + pulse * .6; headGlow.scale.set(.55 * k, .55 * k, 1); }
   lineMat.color.copy(new THREE.Color(0xF0A877).lerp(headColor, .25));
-  gridMat.color.copy(new THREE.Color(0xE07B45).lerp(headColor, .35));
-  renderer.clear(); renderer.render(bgScene, bgCam); renderer.clearDepth(); renderer.render(scene, camera);
+  renderer.render(scene, camera);
 });
 
 Lab.start({

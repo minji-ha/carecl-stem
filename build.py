@@ -530,6 +530,7 @@ PANEL_VARIANTS = [
     ("survey-p2.html", "lab/left-3-terminal.html", "터미널"),
     ("survey-p3.html", "lab/left-4-hologram-device.html", "홀로그램"),
     ("survey-p4.html", "lab/left-5-aurora.html", "오로라"),
+    ("survey-p5.html", "lab/left-6-device-3d.html", "3D 기기"),
 ]
 
 
