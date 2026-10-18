@@ -503,7 +503,7 @@ def page_survey():
 </main>
 """
     return (head("노화 타입 진단 | Aging Map 22 — careCL 케어클", "2분 설문으로 나의 노화 타입과 먼저 관리할 부위를 확인하세요",
-                 css=("css/bridge.css", "css/survey.css", "css/report.css"), body_cls="survey")
+                 css=("css/bridge.css", "css/survey.css", "css/checkup-result.css", "css/report.css"), body_cls="survey")
             + header("aging-types.html") + body + FOOTER
             + tail(three=False, js=("js/report-data.js", "js/report.js", "js/radar.js", "js/survey.js"), fab=False))
 
@@ -521,7 +521,7 @@ def page_report():
 </main>
 """
     return (head("진단 결과 리포트 | Aging Map 22 — careCL 케어클", "careCL 노화 타입 진단 결과 리포트",
-                 sub=True, css=("css/bridge.css", "css/report.css"))
+                 sub=True, css=("css/bridge.css", "css/checkup-result.css", "css/report.css"))
             + header("aging-types.html") + body + FOOTER
             + tail(three=False, js=("js/report-data.js", "js/report.js", "js/reportpage.js")))
 
