@@ -544,15 +544,19 @@ def page_survey_panel(idx):
                  out, count=1, flags=re.S)
     out = out.replace('<main class="sv sv--stem"', f'<nav class="pvtabs" aria-label="왼쪽 그래픽 시안">{tabs}</nav>\n<main class="sv sv--stem sv--framed"', 1)
     out = out.replace('<script src="js/orb.js', '<script data-off="js/orb.js', 1)
-    # 탭을 옮겨도 지금 보고 있는 화면(로그인 전/후)을 그대로 유지
-    keep = ('<script>(function(){var v=(location.search.match(/[?&]view=(guest|member)/)||[])[1];if(!v)return;'
-            'document.querySelectorAll(".pvtabs a").forEach(function(a){a.href=a.getAttribute("href").replace(/view=[a-z]+/,"view="+v);});})();</script>\n')
+    # 탭을 옮겨도 지금 보고 있는 화면(로그인 전/후)을 그대로 유지.
+    # 결과 미리보기가 아니면(설문 진행 중) 탭은 새 설문으로, 왼쪽 그래픽은 멈추지 않고 계속 돈다.
+    keep = ('<script>(function(){var v=(location.search.match(/[?&]view=(guest|member)/)||[])[1];'
+            'document.querySelectorAll(".pvtabs a").forEach(function(a){var h=a.getAttribute("href");'
+            'a.href=v?h.replace(/view=[a-z]+/,"view="+v):h.split("?")[0];});'
+            'if(!v){var f=document.querySelector(".sv__stick--frame iframe");f.src=f.getAttribute("src").replace("embed=1","embed=loop");}})();</script>\n')
     out = out.replace('</body>', keep + '</body>', 1)
     return out
 
 
 for _i, (_n, _s, _l) in enumerate(PANEL_VARIANTS):
     PAGES[_n] = (lambda i=_i: page_survey_panel(i))
+PAGES["survey.html"] = lambda: page_survey_panel(0)   # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 5개
 PAGES["report.html"] = page_report
 
 # ── AI 피부 진단 공개 여부 ──────────────────────────────

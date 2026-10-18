@@ -27,8 +27,8 @@
   var RESULT = { name: '혼합형', roles: { fine: '대표', sag: '보조' }, areas: ['눈가', '심부볼', '턱선'] };
   var STEP_MS = 1500, HOLD_MS = 7000;
   // ?embed — 결과 리포트 왼쪽 패널에 넣을 때: 조작 버튼 없이 분석을 한 번 빠르게 돌리고 결과에서 멈춘다
-  var EMBED = /[?&]embed/.test(location.search);
-  if (EMBED) { STEP_MS = 420; document.documentElement.classList.add('is-embed'); }
+  var EMBED = /[?&]embed/.test(location.search), LOOP = /[?&]embed=loop/.test(location.search);
+  if (EMBED) { STEP_MS = LOOP ? 1500 : 420; document.documentElement.classList.add('is-embed'); }
 
   var api = {}, cb = {}, i = -1, timer = 0, playing = true, counts = {};
 
@@ -81,7 +81,7 @@
   function loop() {
     clearTimeout(timer);
     if (!playing) return;
-    if (i >= STEPS.length - 1) { if (i === STEPS.length - 1) { next(); } if (!EMBED) timer = setTimeout(reset, HOLD_MS); return; }
+    if (i >= STEPS.length - 1) { if (i === STEPS.length - 1) { next(); } if (!EMBED || LOOP) timer = setTimeout(reset, HOLD_MS); return; }
     next();
     timer = setTimeout(loop, STEP_MS);
   }

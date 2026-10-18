@@ -9,11 +9,11 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261019025538">
-<link rel="stylesheet" href="css/bridge.css?v=261019025538">
-<link rel="stylesheet" href="css/survey.css?v=261019025538">
-<link rel="stylesheet" href="css/checkup-result.css?v=261019025538">
-<link rel="stylesheet" href="css/report.css?v=261019025538">
+<link rel="stylesheet" href="css/stem.css?v=261019025625">
+<link rel="stylesheet" href="css/bridge.css?v=261019025625">
+<link rel="stylesheet" href="css/survey.css?v=261019025625">
+<link rel="stylesheet" href="css/checkup-result.css?v=261019025625">
+<link rel="stylesheet" href="css/report.css?v=261019025625">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body class="survey">
@@ -31,18 +31,11 @@
   <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
 </header>
 <nav class="mnav" aria-label="모바일 메뉴"><a href="about.html">Company<small>회사 소개</small></a><a href="aging-types.html">Aging Lab<small>6가지 노화 타입 · 22개 관리 부위</small></a><a href="carecl-technology.html">Technology<small>케어클 기술</small></a><a href="products.html">Products<small>디바이스 · 코스메틱</small></a><a href="contact.html">Contact<small>문의</small></a><a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
-<main class="sv sv--stem" data-led="red">
+<nav class="pvtabs" aria-label="왼쪽 그래픽 시안"><a href="survey-p1.html?view=guest&amp;type=mixed" class=on><i>1</i>입자 얼굴</a><a href="survey-p2.html?view=guest&amp;type=mixed"><i>2</i>터미널</a><a href="survey-p3.html?view=guest&amp;type=mixed"><i>3</i>홀로그램</a><a href="survey-p4.html?view=guest&amp;type=mixed"><i>4</i>오로라</a><a href="survey-p5.html?view=guest&amp;type=mixed"><i>5</i>3D 기기</a></nav>
+<main class="sv sv--stem sv--framed" data-led="red">
   <aside class="sv__panel">
     <div class="sv__dots" data-dotfield></div>
-    <div class="sv__stick">
-      <div class="sv__lock">
-        <em>AI Skin Agent</em>
-        <b>Aging Map 22</b>
-        <p>얼굴을 22개 좌표로 나누어<br>당신의 노화 타입을 진단합니다</p>
-      </div>
-      <!-- 왼쪽 그래픽 자리 (임시: 살아 움직이는 구체 — 새 AI 진단 그래픽으로 바꿀 예정) -->
-      <div class="sv__orbwrap"><div class="sv__orb" data-orb aria-hidden="true"><canvas></canvas></div></div>
-    </div>
+    <div class="sv__stick sv__stick--frame"><iframe src="lab/left-1-particle-face.html?embed=1&amp;v=261019025625" title="AI 진단 그래픽" loading="eager"></iframe></div>
   </aside>
   <section class="sv__body"><div class="sv__form" id="svForm"></div></section>
 </main>
@@ -79,12 +72,13 @@
     <span>© 2026 CARECL. All rights reserved.</span>
   </div>
 </footer>
-<script src="js/led.js?v=261019025538"></script>
-<script src="js/stem.js?v=261019025538"></script>
-<script src="js/report-data.js?v=261019025538"></script>
-<script src="js/report.js?v=261019025538"></script>
-<script src="js/radar.js?v=261019025538"></script>
-<script src="js/survey.js?v=261019025538"></script>
-<script src="js/orb.js?v=261019025538"></script>
+<script src="js/led.js?v=261019025625"></script>
+<script src="js/stem.js?v=261019025625"></script>
+<script src="js/report-data.js?v=261019025625"></script>
+<script src="js/report.js?v=261019025625"></script>
+<script src="js/radar.js?v=261019025625"></script>
+<script src="js/survey.js?v=261019025625"></script>
+<script data-off="js/orb.js?v=261019025625"></script>
+<script>(function(){var v=(location.search.match(/[?&]view=(guest|member)/)||[])[1];document.querySelectorAll(".pvtabs a").forEach(function(a){var h=a.getAttribute("href");a.href=v?h.replace(/view=[a-z]+/,"view="+v):h.split("?")[0];});if(!v){var f=document.querySelector(".sv__stick--frame iframe");f.src=f.getAttribute("src").replace("embed=1","embed=loop");}})();</script>
 </body>
 </html>
