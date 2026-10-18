@@ -441,6 +441,7 @@ body.menu-open .mnav{opacity:1;visibility:visible;transform:none;transition-dela
 /* ── AI 피부 진단 플로팅 버튼 (예전 사이트와 같은 모양, 색은 스크롤 중인 섹션의 LED 색을 따른다) ── */
 .aifab{
   position:fixed;right:clamp(18px,2.4vw,38px);bottom:clamp(18px,2.4vw,38px);z-index:95;
+  translate:0 calc(var(--fab-lift,0px) * -1);   /* 푸터 메뉴·SNS 줄 위에 멈추기 (stem.js fabLift) */
   display:inline-flex;align-items:center;gap:10px;
   padding:14px 22px 14px 14px;border-radius:100px;
   background:var(--led);color:#fff;text-decoration:none;

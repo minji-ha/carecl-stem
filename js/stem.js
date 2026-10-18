@@ -281,5 +281,22 @@
     addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
     update();
   })();
+
+  /* ── AI 진단 버튼 — 맨 아래에서 푸터 메뉴·SNS 줄을 가리지 않게 그 위에 멈춘다 ── */
+  (function fabLift() {
+    var fab = document.querySelector('.aifab'), row = document.querySelector('.foot__row');
+    if (!fab || !row) return;
+    function update() {
+      var gap = parseFloat(getComputedStyle(fab).bottom) || 0;
+      // 버튼 아래끝(innerHeight - gap)이 줄 윗변보다 12px 위에 오도록 올릴 만큼
+      var lift = innerHeight - gap - row.getBoundingClientRect().top + 12;
+      fab.style.setProperty('--fab-lift', Math.max(0, Math.round(lift)) + 'px');
+    }
+    var raf = 0;
+    function queue() { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue);
+    update();
+  })();
 })();
 
