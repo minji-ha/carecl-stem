@@ -518,7 +518,7 @@ def page_report():
     return (head("진단 결과 리포트 | Aging Map 22 — careCL 케어클", "careCL 노화 타입 진단 결과 리포트",
                  sub=True, css=("css/bridge.css", "css/checkup-result.css", "css/report.css"))
             + header("aging-types.html") + body + FOOTER
-            + tail(three=False, js=("js/report-data.js", "js/report.js", "js/radar.js", "js/reportpage.js")))
+            + tail(three=False, js=("js/report-data.js", "js/report.js", "js/radar.js", "js/reportpage.js"), fab=False))
 
 
 PAGES["survey.html"] = page_survey
