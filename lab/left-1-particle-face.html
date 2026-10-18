@@ -38,6 +38,9 @@
     while (out.length < N && tries < 600000) {
       tries++;
       var x = Math.random() * FW, y = Math.random() * FH, l = d[((y | 0) * FW + (x | 0)) * 4] / 255;
+      // 사진 배경의 별은 거의 버려 사람 윤곽이 또렷하게 (머리 타원 + 목·어깨 사다리꼴 밖은 15%만 남김)
+      var hx = (x - 250) / 132, hy = (y - 225) / 190, body = y > 330 && Math.abs(x - 250) < 62 + (y - 330) * 1.9;
+      if (hx * hx + hy * hy > 1 && !body && Math.random() > .15) continue;
       if (Math.random() < Math.pow(l, 1.7)) out.push([x, y, l]);
     }
     return out;
@@ -45,13 +48,13 @@
 
   function resize() {
     W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    // 얼굴 바깥을 듬성듬성 채우는 별 — 화면 넓이에 맞춰 개수를 정하고, 10개 중 1개쯤은 크고 밝게
+    // 얼굴 바깥을 듬성듬성 채우는 별 — 사람과 구분되게 적고 어둡게, 드물게 크고 밝은 별
     stars = [];
-    var n = Math.max(220, Math.min(900, W * H / 1300 | 0));
+    var n = Math.max(70, Math.min(260, W * H / 5200 | 0));
     for (var i = 0; i < n; i++) {
-      var big = Math.random() < .1;
+      var big = Math.random() < .06;
       stars.push({ x: Math.random() * W, y: Math.random() * H, s: big ? Math.random() * 1.4 + 1.4 : Math.random() * 1.1 + .4,
-                   a: big ? .55 : .18 + Math.random() * .25, ph: Math.random() * 6.28, v: .02 + Math.random() * .06, big: big });
+                   a: big ? .4 : .1 + Math.random() * .16, ph: Math.random() * 6.28, v: .02 + Math.random() * .06, big: big });
     }
   }
 
