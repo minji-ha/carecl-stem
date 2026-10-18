@@ -28,3 +28,10 @@ html,body{margin:0;height:100%;background:#1C1916;color:#F4EDE6;font-family:"Pre
 .ctrl button:hover{background:rgba(255,255,255,.14)}
 .tag{position:absolute;right:14px;top:14px;z-index:7;font-size:11px;color:#8d8178;letter-spacing:.06em}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 리포트 왼쪽 패널에 넣을 때 (?embed) */
+.is-embed .tag{display:none}
+.is-embed .hud{bottom:28px}
+.is-embed .result{bottom:96px}
+.result span{white-space:nowrap}
+@media (max-width:420px){.result{padding:10px 16px;bottom:84px}.result b{font-size:18px}.result span{font-size:11px}.is-embed .result{bottom:80px}}

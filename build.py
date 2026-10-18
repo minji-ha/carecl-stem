@@ -522,6 +522,32 @@ def page_report():
 
 
 PAGES["survey.html"] = page_survey
+
+
+# ── 왼쪽 패널 그래픽 시안별 리포트 (로그인 전 화면 비교용) ──
+PANEL_VARIANTS = [
+    ("survey-p1.html", "lab/left-1-particle-face.html", "입자 얼굴"),
+    ("survey-p2.html", "lab/left-3-terminal.html", "터미널"),
+    ("survey-p3.html", "lab/left-4-hologram-device.html", "홀로그램"),
+    ("survey-p4.html", "lab/left-5-aurora.html", "오로라"),
+]
+
+
+def page_survey_panel(idx):
+    name, src, _ = PANEL_VARIANTS[idx]
+    tabs = "".join(f'<a href="{n}?view=guest&amp;type=mixed"{" class=on" if i == idx else ""}><i>{i + 1}</i>{label}</a>'
+                   for i, (n, _s, label) in enumerate(PANEL_VARIANTS))
+    out = page_survey()
+    out = re.sub(r'<div class="sv__stick">.*?</div>\n    </div>\n  </aside>',
+                 f'<div class="sv__stick sv__stick--frame"><iframe src="{src}?embed=1&amp;v={VER}" title="AI 진단 그래픽" loading="eager"></iframe></div>\n  </aside>',
+                 out, count=1, flags=re.S)
+    out = out.replace('<main class="sv sv--stem"', f'<nav class="pvtabs" aria-label="왼쪽 그래픽 시안">{tabs}</nav>\n<main class="sv sv--stem sv--framed"', 1)
+    out = out.replace('<script src="js/orb.js', '<script data-off="js/orb.js', 1)
+    return out
+
+
+for _i, (_n, _s, _l) in enumerate(PANEL_VARIANTS):
+    PAGES[_n] = (lambda i=_i: page_survey_panel(i))
 PAGES["report.html"] = page_report
 
 # ── AI 피부 진단 공개 여부 ──────────────────────────────
@@ -544,7 +570,7 @@ if __name__ == "__main__":
     for name, fn in PAGES.items():
         out = fn()
         if not AI_TEST_PUBLIC:
-            if name in ("survey.html", "report.html"):
+            if name.startswith("survey") or name == "report.html":
                 out = out.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex, nofollow">', 1)
             else:
                 out = hide_ai_test(out)

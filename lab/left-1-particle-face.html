@@ -118,7 +118,7 @@
     // 지금 읽는 부위 라벨 / 결과 TOP3 라벨
     var labels = result ? result.areas : (focus ? [focus] : []);
     labels.forEach(function (name, j) {
-      var rg = (REGION[name] || [])[0]; if (!rg) return;
+      var rs = REGION[name] || [], rg = rs[result && j % 2 && rs[1] ? 1 : 0]; if (!rg) return;
       var x = ox + rg[0] * sc, y = oy + rg[1] * sc, left = x < W / 2;
       var ex = left ? Math.max(16, x - 70 * Math.max(.8, sc)) : Math.min(W - 16, x + 70 * Math.max(.8, sc)), ey = y - 22 - j * 6;
       ctx.strokeStyle = 'rgba(240,168,119,.85)'; ctx.lineWidth = 1;

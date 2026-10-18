@@ -68,3 +68,14 @@ body.survey .foot{margin-top:0}
   .sv__radar-foot{font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){.sv__sweep,.sv__radar .rd-halo{animation:none}}
+
+/* 왼쪽 패널 그래픽 시안 비교 페이지 (survey-p1~4.html) */
+.pvtabs{position:fixed;left:0;right:0;margin:0 auto;width:max-content;bottom:18px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid #E5DFD8;box-shadow:0 10px 30px -10px rgba(40,25,15,.35);backdrop-filter:blur(8px);max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
+.pvtabs a{flex:none;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;color:#5c544d;text-decoration:none;border:1px solid #E5DFD8;background:#fff}
+.pvtabs a i{font-style:normal;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#EFE8E1;font-size:11px}
+.pvtabs a.on{background:#C46A3A;border-color:#C46A3A;color:#fff}
+.pvtabs a.on i{background:rgba(255,255,255,.25)}
+.sv__stick--frame{padding:0}
+.sv__stick--frame iframe{display:block;width:100%;height:100%;border:0;background:#1C1916}
+@media (max-width:1100px){.sv__stick.sv__stick--frame{height:min(74vh,580px);padding:0}}
+@media (max-width:640px){.pvtabs{gap:3px;padding:4px;bottom:12px}.pvtabs a{padding:7px 11px;font-size:12px}.pvtabs a i{display:none}}

@@ -26,6 +26,9 @@
   ];
   var RESULT = { name: '혼합형', roles: { fine: '대표', sag: '보조' }, areas: ['눈가', '심부볼', '턱선'] };
   var STEP_MS = 1500, HOLD_MS = 7000;
+  // ?embed — 결과 리포트 왼쪽 패널에 넣을 때: 조작 버튼 없이 분석을 한 번 빠르게 돌리고 결과에서 멈춘다
+  var EMBED = /[?&]embed/.test(location.search);
+  if (EMBED) { STEP_MS = 420; document.documentElement.classList.add('is-embed'); }
 
   var api = {}, cb = {}, i = -1, timer = 0, playing = true, counts = {};
 
@@ -36,6 +39,7 @@
     panel.appendChild(el('<div class="head"><em>AI SKIN AGENT</em><b>Aging Map 22</b><p>얼굴을 22개 좌표로 나누어<br>당신의 노화 타입을 진단합니다</p></div>'));
     panel.appendChild(el('<div class="hud"><div class="q" data-q><b>READY</b>설문을 시작하면 분석이 시작돼요</div><div class="pct"><span data-pct>0</span>%<small>ANALYZING</small></div></div>'));
     panel.appendChild(el('<div class="result" data-result><small>DIAGNOSIS</small><b>혼합형</b><span>대표 잔주름형 · 보조 변형·처짐형</span></div>'));
+    if (EMBED) return;
     var c = el('<div class="ctrl"><button data-a="play">일시정지</button><button data-a="next">다음 문항</button><button data-a="result">결과 보기</button><button data-a="reset">처음부터</button></div>');
     panel.appendChild(c);
     c.addEventListener('click', function (e) {
@@ -77,12 +81,12 @@
   function loop() {
     clearTimeout(timer);
     if (!playing) return;
-    if (i >= STEPS.length - 1) { if (i === STEPS.length - 1) { next(); } timer = setTimeout(reset, HOLD_MS); return; }
+    if (i >= STEPS.length - 1) { if (i === STEPS.length - 1) { next(); } if (!EMBED) timer = setTimeout(reset, HOLD_MS); return; }
     next();
     timer = setTimeout(loop, STEP_MS);
   }
 
-  api.start = function (callbacks) { cb = callbacks || {}; ui(); if (cb.onReset) cb.onReset(); timer = setTimeout(loop, 1400); };
+  api.start = function (callbacks) { cb = callbacks || {}; ui(); if (cb.onReset) cb.onReset(); timer = setTimeout(loop, EMBED ? 900 : 1400); };
   api.AREAS = ['이마', '미간', '눈가', '눈밑', '앞광대', '볼', '팔자', '입가', '턱선', '목'];
   window.Lab = api;
 })();
