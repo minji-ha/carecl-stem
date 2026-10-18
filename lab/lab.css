@@ -42,7 +42,7 @@ html,body{margin:0;height:100%;background:#1C1916;color:#F4EDE6;font-family:"Pre
 html.is-hero,.is-hero body{background:transparent}
 @media (min-width:1101px){
   /* 그래픽은 왼쪽, 오른쪽 끝을 흐려 글 쪽으로 이어지게 */
-  .is-hero.is-side .panel{position:absolute;top:0;bottom:0;left:0;right:58%;width:auto;background:transparent;
+  .is-hero.is-side .panel{position:absolute;top:0;bottom:0;left:0;right:64%;width:auto;background:transparent;
     -webkit-mask-image:linear-gradient(270deg,transparent 0,#000 12%);mask-image:linear-gradient(270deg,transparent 0,#000 12%)}
 }
 /* 오로라 — 화면 전체를 관통 (?embed=herofull) */
