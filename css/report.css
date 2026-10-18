@@ -63,3 +63,11 @@
 
 /* 성분 설명 상자 — hidden 속성이 디자인 display 규칙에 지지 않게 */
 .checkup [data-ing-detail][hidden],.checkup .cku-review-more[hidden]{display:none}
+
+/* 결과 화면 — 아이보리 상자 대신 오른쪽 전체를 아이보리로 채우고, 흰 카드가 떠 있게 */
+.sv__body:has(.cku-result),.report-body:has(.cku-result){background:#F1ECE5}
+.checkup .cku-result{background:transparent;padding:0;border-radius:0;box-shadow:none;border:0}
+.checkup .cku-result .cku-card{background:#fff;border-color:transparent;
+  box-shadow:0 1px 2px rgba(60,40,25,.04),0 14px 34px -16px rgba(60,40,25,.22)}
+.checkup .cku-result .cku-cover{box-shadow:0 18px 40px -18px rgba(30,20,12,.45)}
+.checkup .cku-lock-box{background:#fff;box-shadow:0 20px 50px -18px rgba(60,40,25,.3)}
