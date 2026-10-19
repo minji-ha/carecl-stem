@@ -205,3 +205,6 @@
 .core{overflow-x:clip}
 .bubble canvas.bubble__gl--wide{inset:-70%;width:240%!important;height:240%!important;pointer-events:none}
 .steps__stage .steps__bubble{position:absolute;inset:0;width:auto;aspect-ratio:auto;translate:none;transform:none!important;transition:none}
+/* 넓은 화면에서 물방울이 무대(최대 1280px) 가장자리에서 잘리지 않게 — 캔버스는 화면 폭 전체, 가운데는 무대 가운데에 맞춘다 */
+.steps{overflow-x:clip}
+.steps__stage .steps__bubble{left:50%;right:auto;width:100vw;translate:-50% 0}
