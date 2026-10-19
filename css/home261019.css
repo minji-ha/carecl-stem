@@ -159,8 +159,9 @@
 .aifab,html:not([data-led-now]) .aifab,html[data-led-off] .aifab{background:#EA7A2C;box-shadow:0 10px 22px -10px rgba(234,122,44,.75),0 0 18px -6px rgba(234,122,44,.6)}
 .aifab:hover,html:not([data-led-now]) .aifab:hover,html[data-led-off] .aifab:hover{background:#D2661C;box-shadow:0 14px 26px -10px rgba(210,102,28,.8),0 0 22px -6px rgba(234,122,44,.7)}
 
-/* 히어로 합쳐지는 제목 — 로고 서체 Caviar Dreams (자료/drive/10. 글꼴) */
-@font-face{font-family:"Caviar Dreams";src:url(../fonts/caviar-dreams.woff2) format("woff2");font-weight:400;font-display:swap}
+/* 히어로 합쳐지는 제목 — 로고 서체 Caviar Dreams (자료/drive/10. 글꼴)
+   글꼴이 오기 전 굵은 대체 글꼴이 잠깐 보이지 않게 block + 미리 받기(build.py head) */
+@font-face{font-family:"Caviar Dreams";src:url(../fonts/caviar-dreams.woff2) format("woff2");font-weight:400;font-display:block}
 .hero__title--merge,.hero__title--merge .mg{font-family:"Caviar Dreams","Metropolis",system-ui,sans-serif;font-weight:400;letter-spacing:0}
 /* 히어로 제목 위아래 간격 — 위(소제목과)는 좁히고 아래(한글 문장과)는 살짝 띄워 균형 */
 .hero__title--merge{margin-top:.16em;line-height:.92}
