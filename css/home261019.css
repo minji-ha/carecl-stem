@@ -85,8 +85,8 @@
 .aicta:hover .aicta__arr{transform:translateX(5px)}
 
 /* 5a 환기용 이미지 — 높이를 절반으로 */
-.sys__img{aspect-ratio:2400/700}
-.sys__img img{object-position:50% 38%}
+.sys__img{aspect-ratio:2400/980}   /* 원래(2400/1405)의 약 70% — 얼굴 위아래가 잘리지 않게 */
+.sys__img img{object-position:50% 40%}
 
 /* 6a 콜렉션 — 좌우로 넘겨 보는 제품 줄 */
 .hscroll{margin-top:clamp(34px,4vw,70px)}

@@ -187,12 +187,15 @@
       var h = hero.offsetHeight || innerHeight;
       // 첫 화면 1/6을 내릴 때부터 시작해 화면 절반쯤에서 완전히 careCL
       var p = reduce ? 0 : Math.max(0, Math.min(1, (scrollY - h * 0.06) / (h * 0.36)));
-      var e = p * p * (3 - 2 * p);
+      // C·L만 남기고 LINICAL → 사이 칸 → EVEL → 첫 칸 차례로 접혀 careCL (각 조각의 구간은 data-mg-at="시작,끝")
       drops.forEach(function (d, i) {
+        var at = (d.dataset.mgAt || '0,1').split(',').map(Number);
+        var k = Math.max(0, Math.min(1, (p - at[0]) / (at[1] - at[0])));
+        var e = k * k * (3 - 2 * k);
         d.style.width = (widths[i] * (1 - e)).toFixed(1) + 'px';
         d.style.opacity = String(Math.max(0, 1 - e * 1.6));
       });
-      box.classList.toggle('is-merged', e > 0.98);
+      box.classList.toggle('is-merged', p > 0.98);
     }
     var raf = 0;
     addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
