@@ -215,3 +215,5 @@
   .header__logo{grid-column:2;justify-self:center}
   .header__menu{display:block;grid-column:3;justify-self:end}
 }
+/* 히어로 상단 Anti-Aging Skincare — 두꺼운 글씨 */
+.hero__eyebrow{font-weight:700}

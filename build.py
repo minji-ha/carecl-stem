@@ -255,7 +255,6 @@ def page_index():
       <p class="hero__eyebrow">Anti-Aging Skincare</p>
       <!-- care CLINICAL LEVEL → 화면을 내리면 careCL로 합쳐진다 (stem.js heroMerge) -->
       <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL">{HERO_MERGE}</h1>
-      <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
 
