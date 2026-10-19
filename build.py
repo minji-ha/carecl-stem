@@ -200,7 +200,23 @@ CONTACTS = [
 ]
 
 
+def hero_merge():
+    """care CLINICAL LEVEL → careCL. C·L만 남기고 LINICAL과 EVEL이 동시에 끝 글자부터 하나씩 사라진 뒤 빈칸이 닫힌다.
+    각 조각의 data-mg-at="시작,끝"은 스크롤 진행도(0~1) 구간 — stem.js heroMerge가 읽는다."""
+    def word(txt):
+        n, out = len(txt), []
+        for j, ch in enumerate(txt):
+            k = n - 1 - j                       # 끝 글자부터
+            st = k / n * 0.62
+            out.append(f'<span class="mg mg--drop" data-mg data-mg-at="{st:.3f},{st + 0.62 / n + 0.06:.3f}">{ch}</span>')
+        return "".join(out)
+    gap = '<span class="mg mg--drop" data-mg data-mg-at=".62,1">&nbsp;</span>'
+    return ('<span class="mg mg--care">care</span>' + gap + '<span class="mg mg--cl">C</span>' + word("LINICAL")
+            + gap + '<span class="mg mg--cl">L</span>' + word("EVEL"))
+
+
 def page_index():
+    HERO_MERGE = hero_merge()
     core = "\n".join(f"""      <div class="anno anno--core rv" data-anno style="left:{x}%;top:{y}%">
         <em class="anno__no">{no}</em>
         <h3 class="anno__title">{t}</h3>
@@ -237,7 +253,7 @@ def page_index():
     <div class="hero__copy" data-merge>
       <p class="hero__eyebrow">Anti-Aging Skincare</p>
       <!-- care CLINICAL LEVEL → 화면을 내리면 careCL로 합쳐진다 (stem.js heroMerge) -->
-      <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL"><span class="mg mg--care">care</span><span class="mg mg--drop" data-mg data-mg-at=".55,1">&nbsp;</span><span class="mg mg--cl">C</span><span class="mg mg--drop" data-mg data-mg-at="0,.5">LINICAL</span><span class="mg mg--drop" data-mg data-mg-at=".3,.75">&nbsp;</span><span class="mg mg--cl">L</span><span class="mg mg--drop" data-mg data-mg-at=".45,1">EVEL</span></h1>
+      <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL">{HERO_MERGE}</h1>
       <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
     </div>
   </section>
