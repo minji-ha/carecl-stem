@@ -6,11 +6,10 @@
    방식: 레이마칭 SDF 메타볼 — 화면 한 장(사각형)을 그리고 픽셀마다 광선을 쏘아
          구 여러 개를 부드럽게 이은 거리장(smooth-min)의 표면을 찾는다. 메시를 만들지 않으므로
          방울이 갈라지고 붙는 모양이 해상도 걱정 없이 매끈하다.
-   재질: 환경 큐브맵(RoomEnvironment) 반사·굴절 + 프레넬 윤곽 + 빛 반짝임 + 얇은 무지개빛.
+   재질: 직접 꾸민 창 있는 방을 구운 환경 큐브맵 반사·굴절 + 프레넬 윤곽 + 빛 반짝임 + 얇은 무지개빛.
    내용: 표면에서 굴절된 광선이 물방울 안쪽 평면에 닿는 곳의 로고/사진을 읽는다 → 렌즈처럼 휘어 보인다.
    ========================================================= */
 import * as THREE from 'three';
-import { RoomEnvironment } from '../libs/three/addons/environments/RoomEnvironment.js';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const NB = 14;
@@ -93,16 +92,16 @@ void main(){
 
   // 비눗방울: 거의 투명한 막 + 방 풍경(창·조명)이 옅게 비침 + 가장자리 연보라 띠와 흰 안쪽 선
   float lr = dot(textureCube(uEnv, reflect(rd, n)).rgb, vec3(0.299, 0.587, 0.114));
-  float win = smoothstep(0.30, 0.80, lr);                              // 밝은 창
+  float win = smoothstep(0.40, 0.75, lr);                              // 밝은 창
   float edgeBand = smoothstep(0.35, 0.95, fr);                         // 가장자리 쪽 넓은 띠
   vec3 lav = vec3(0.68, 0.68, 0.86);
-  vec3 col = mix(vec3(0.78, 0.78, 0.88), vec3(1.0), win);
+  vec3 col = mix(vec3(0.55, 0.55, 0.68), vec3(1.0), win);
   col = mix(col, lav, edgeBand * 0.6 + outer * 0.8);
   col = mix(col, irid, edgeBand * 0.25);
   col = mix(col, vec3(1.0), band(fr, 0.70, 0.05) * 0.8);               // 흰 안쪽 선
   col += vec3(1.0) * g * 0.7;
-  float ga = 0.02 + (1.0 - win) * 0.07 * (0.5 + fr) + win * 0.05 * (0.3 + fr)
-           + edgeBand * 0.16 + outer * 0.38 + inner * 0.10 + band(fr, 0.70, 0.05) * 0.10 + g * 0.35;
+  float ga = (1.0 - win) * 0.14 * (0.3 + fr) + win * 0.03 * fr
+           + edgeBand * 0.12 + outer * 0.34 + inner * 0.10 + band(fr, 0.70, 0.05) * 0.10 + g * 0.35;
   ga = clamp(ga * uGlass, 0.0, 1.0);
 
   // 굴절 광선이 안쪽 평면에 닿는 자리의 그림
@@ -121,15 +120,34 @@ void main(){
 }`;
 
 /* ── 공용 ── */
-let envCube = null;
+const envCache = new WeakMap();      // 텍스처는 만든 렌더러(WebGL 컨텍스트) 안에서만 쓸 수 있다 → 렌더러마다 따로 굽는다
 function getEnv(renderer) {
-  if (envCube) return envCube;
+  if (envCache.has(renderer)) return envCache.get(renderer);
+  // 우리가 직접 꾸민 '창이 있는 밝은 방' — 물방울 겉면에 창틀 모양 반사가 비치게 한다
+  const scene = new THREE.Scene();
+  scene.add(new THREE.Mesh(new THREE.BoxGeometry(12, 7, 12), new THREE.MeshBasicMaterial({ color: 0x9a99a8, side: THREE.BackSide })));
+  const glow = (c) => { const m = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); m.color.setScalar(c); return m; };
+  // 창 하나 = 칸 2×2 (칸 사이는 벽색이 남아 창틀이 된다)
+  function windowAt(pos, rotY, w, h, c) {
+    const g = new THREE.Group();
+    const pw = (w - 0.12) / 2, ph = (h - 0.12) / 2;
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([i, j]) => {
+      const pane = new THREE.Mesh(new THREE.PlaneGeometry(pw, ph), glow(c));
+      pane.position.set(i * (pw / 2 + 0.06), j * (ph / 2 + 0.06), 0);
+      g.add(pane);
+    });
+    g.position.set(...pos); g.rotation.y = rotY; scene.add(g);
+  }
+  windowAt([-2.2, 1.2, 5.9], Math.PI, 3.2, 2.6, 2.6);     // 보는 사람 뒤쪽 왼편 큰 창 (가운데에 비친다)
+  windowAt([2.6, 0.6, 5.9], Math.PI, 1.6, 2.2, 1.8);      // 뒤쪽 오른편 작은 창
+  windowAt([-5.9, 0.8, 0], Math.PI / 2, 3.4, 2.4, 2.2);   // 왼쪽 벽 창 (오른쪽 가장자리에 비친다)
+  windowAt([5.9, 0.2, -1.5], -Math.PI / 2, 2.4, 2.0, 1.6);
+  const top = new THREE.Mesh(new THREE.PlaneGeometry(5, 3), glow(1.6)); top.rotation.x = Math.PI / 2; top.position.set(0, 3.4, 1); scene.add(top);
   const rt = new THREE.WebGLCubeRenderTarget(256, { type: THREE.HalfFloatType });
-  const cam = new THREE.CubeCamera(0.1, 100, rt);
-  const room = new RoomEnvironment();
-  cam.update(renderer, room);
-  room.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
-  return (envCube = rt.texture);
+  new THREE.CubeCamera(0.1, 100, rt).update(renderer, scene);
+  scene.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
+  envCache.set(renderer, rt.texture);
+  return rt.texture;
 }
 const blank = new THREE.DataTexture(new Uint8Array(4), 1, 1); blank.needsUpdate = true;
 
@@ -257,6 +275,12 @@ function lumps(out, c, R, t, k) {
       c[2] + Math.sin(a) * Math.cos(el) * R * 0.3, R * rr * k]);
   });
 }
+/* 옆구리의 작은 방울 — 천천히 돌며 본체에 붙었다(목이 생겼다) 살짝 떨어졌다 한다 */
+function tail(out, c, R, t, k) {
+  if (k <= 0.01) return;
+  const a = -0.35 + Math.sin(t * 0.21) * 0.5, d = R * (1.12 + Math.sin(t * 0.37) * 0.08);
+  out.push([c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, c[2] + R * 0.05, R * 0.3 * k]);
+}
 /* 마우스 쪽 혹 */
 function hoverBall(S, c, R, st) {
   const rc = S.renderer.domElement.getBoundingClientRect();
@@ -298,7 +322,7 @@ function mountLogo(host) {
     if (!S.resize()) return;
     const t = now / 1000, T = t0 < 0 ? -1 : reduce ? 9 : (now - t0) / 1000;
     const R = S.w(host.clientWidth * 0.4), k = R / 0.33;
-    U.uK.value = R * 0.55; U.uTime.value = t; U.uWob.value = reduce ? 0 : 1;
+    U.uK.value = R * (T > 3.5 ? lerp(0.55, 0.26, ease(T - 3.5)) : 0.55); U.uTime.value = t; U.uWob.value = reduce ? 0 : 1;
     const core = [0, 0, 0], list = [];
     if (T >= 0) {
       const cg = ease((T - 0.9) / 2.6);                        // 가운데 방울이 자라는 정도
@@ -314,6 +338,7 @@ function mountLogo(host) {
       if (cg > 0.98) {                                          // 다 모인 뒤에는 표면이 일렁이고 마우스 쪽으로 부푼다
         list.length = 1;
         lumps(list, core, R, t, 1);
+        tail(list, core, R, t, 1);
         const hb = hoverBall(S, core, R, hov); if (hb) list.push(hb);
       }
       U.uTexAlpha.value = ease((T - 2.3) / 1.0);
@@ -367,7 +392,7 @@ function mountSteps(host) {
     const core = [lerp(a[0], b[0], tt), lerp(a[1], b[1], tt), 0];
     const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1;
     const nx = dx / len, ny = dy / len;
-    U.uK.value = R * 0.5; U.uTime.value = t; U.uWob.value = reduce ? 0 : 1 + sc;
+    U.uK.value = R * (0.26 + 0.24 * sc); U.uTime.value = t; U.uWob.value = reduce ? 0 : 1 + sc;
 
     const list = [[core[0], core[1], 0, R * (1 - 0.42 * sc)]];
     if (sc > 0.002) SAT.forEach(([lag, side, depth, size], i) => {
@@ -378,6 +403,7 @@ function mountSteps(host) {
         depth * R * sc, R * size * Math.sqrt(sc)]);
     });
     lumps(list, core, R * (1 - 0.3 * sc), t, 1 - sc);
+    tail(list, core, R, t, 1 - ease(sc / 0.3));
     const hb = hoverBall(S, core, R, hov); if (hb && sc < 0.2) list.push(hb);
     S.set(list, core);
 
