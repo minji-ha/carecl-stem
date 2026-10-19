@@ -174,7 +174,7 @@ CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top
 ]   # 수정요청 261019: 다섯 가지 → 네 가지 기준 (AI 피부 진단은 아래 큰 버튼으로)
 
 PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크, 마우스를 올리면 보이는 같은 제품의 다른 컷)
-    ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html", "e-techfit-lit-v.jpg"),
+    ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html", "n-techfit-stand.jpg"),
     ("Device", "CLB", "고주파 마사지기", "p-clb.jpg", "products.html", "e-clb-v.jpg"),
     ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html", "e-gel-blue-v.jpg"),
     ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html", "s-mask-glass.jpg"),
