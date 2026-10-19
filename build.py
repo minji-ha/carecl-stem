@@ -264,11 +264,9 @@ def page_index():
   <!-- 03 철학 -->
   <section class="phil" data-led="purple" aria-labelledby="phil-title">
     <div class="wrap phil__inner">
-      <h2 class="label label--center rv">Our Philosophy</h2>
-      <p class="phil__title rv" id="phil-title" data-d="1">같은 나이라도<br>노화가 시작되는 자리는 저마다 다릅니다</p>
-      <p class="phil__lead rv" data-d="2">유전, 뼈의 구조, 얼굴 근육의 발달, 피하 지방의 양에 따라 처짐이 먼저 오기도 하고 주름이 먼저 생기기도 합니다.
-      케어클은 그 차이를 먼저 읽는 것에서 안티에이징을 시작합니다. 모두에게 같은 제품을 권하지 않습니다.</p>
-      <p class="phil__en rv" data-d="3">Read precisely, care exactly.</p>
+      <h2 class="phil__label rv">케어클의 철학</h2>
+      <p class="phil__title rv" id="phil-title" data-d="1">노화는 누구에게나 찾아오지만<br>그 모습은 모두 다릅니다.</p>
+      <p class="phil__sub rv" data-d="2">노화를 이해하고<br>타입에 맞추어 케어합니다.</p>
     </div>
   </section>
 

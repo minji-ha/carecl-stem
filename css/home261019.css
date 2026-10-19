@@ -174,3 +174,8 @@
 /* 히어로 제목 위아래 글자 — 조금 키움 */
 .hero__copy .hero__eyebrow{font-size:clamp(12px,1.08vw,17px)}
 .hero__copy .hero__kr{font-size:clamp(14px,1.22vw,19px)}
+
+/* 3 케어클의 철학 — 수정 원고 (영문 원고 받기 전까지) */
+.phil__label{margin:0;font-family:var(--f-kr);font-weight:500;font-size:clamp(15px,1.25vw,20px);color:var(--ink-2);letter-spacing:-.01em}
+.phil .phil__title{margin-top:clamp(22px,2.4vw,40px);max-width:none;font-weight:600;font-size:clamp(28px,3.4vw,56px);line-height:1.35}
+.phil__sub{margin:clamp(30px,3.2vw,56px) 0 0;font-family:var(--f-title);font-weight:500;font-size:clamp(22px,2.5vw,42px);line-height:1.45;letter-spacing:-.02em;color:var(--ink)}
