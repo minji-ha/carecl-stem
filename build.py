@@ -260,7 +260,6 @@ def page_index():
 
   <!-- 03 철학 -->
   <section class="phil" data-led="purple" aria-labelledby="phil-title">
-    <div class="phil__dots" data-dotfield></div>
     <div class="wrap phil__inner">
       <h2 class="label label--center rv">Our Philosophy</h2>
       <p class="phil__title rv" id="phil-title" data-d="1">같은 나이라도<br>노화가 시작되는 자리는 저마다 다릅니다</p>

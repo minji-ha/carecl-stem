@@ -157,3 +157,7 @@
 /* 오른쪽 아래 AI 피부 진단 버튼 — 섹션 LED 색 대신 제품 패키지의 밝은 오렌지로 고정 */
 .aifab,html:not([data-led-now]) .aifab,html[data-led-off] .aifab{background:#EA7A2C;box-shadow:0 10px 22px -10px rgba(234,122,44,.75),0 0 18px -6px rgba(234,122,44,.6)}
 .aifab:hover,html:not([data-led-now]) .aifab:hover,html[data-led-off] .aifab:hover{background:#D2661C;box-shadow:0 14px 26px -10px rgba(210,102,28,.8),0 0 22px -6px rgba(234,122,44,.7)}
+
+/* 히어로 합쳐지는 제목 — 로고 서체 Caviar Dreams (자료/drive/10. 글꼴) */
+@font-face{font-family:"Caviar Dreams";src:url(../fonts/caviar-dreams.woff2) format("woff2");font-weight:400;font-display:swap}
+.hero__title--merge,.hero__title--merge .mg{font-family:"Caviar Dreams","Metropolis",system-ui,sans-serif;font-weight:400;letter-spacing:0}
