@@ -160,3 +160,6 @@
 /* 히어로 합쳐지는 제목 — 로고 서체 Caviar Dreams (자료/drive/10. 글꼴) */
 @font-face{font-family:"Caviar Dreams";src:url(../fonts/caviar-dreams.woff2) format("woff2");font-weight:400;font-display:swap}
 .hero__title--merge,.hero__title--merge .mg{font-family:"Caviar Dreams","Metropolis",system-ui,sans-serif;font-weight:400;letter-spacing:0}
+/* 히어로 제목 위아래 간격 — 위(소제목과)는 좁히고 아래(한글 문장과)는 살짝 띄워 균형 */
+.hero__title--merge{margin-top:.16em;line-height:.92}
+.hero__copy .hero__kr{margin-top:clamp(10px,1.2vw,18px)}
