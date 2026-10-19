@@ -198,3 +198,10 @@
 @media (min-width:861px){
   .sys__title{color:#fff;text-shadow:0 2px 24px rgba(120,60,30,.18)}
 }
+
+/* 물방울 v2 (js/bubble.js 레이마칭 메타볼)
+   · 로고: 흩어진 물방울이 원 밖에서 모여들도록 캔버스를 물방울보다 넓게 (가로 넘침은 섹션에서 자름)
+   · 데일리 루틴: 캔버스가 무대 전체를 덮고, 위치·흩어짐은 스크립트가 스크롤에 맞춰 그린다 */
+.core{overflow-x:clip}
+.bubble canvas.bubble__gl--wide{inset:-70%;width:240%!important;height:240%!important;pointer-events:none}
+.steps__stage .steps__bubble{position:absolute;inset:0;width:auto;aspect-ratio:auto;translate:none;transform:none!important;transition:none}

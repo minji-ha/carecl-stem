@@ -301,7 +301,7 @@ def page_index():
     <div class="sys__img">
       <img src="assets/img/m-model.jpg?v={VER}" alt="고개를 돌려 미소 짓는 케어클 모델" loading="lazy" width="2400" height="1405" data-zoom>
       <div class="sys__copy">
-        <p class="sys__title rv" id="sys-title"><span class="sys__en">Clinic-level care,</span><span class="sys__kr">집 안의 리추얼로</span></p>
+        <p class="sys__title rv" id="sys-title"><span class="sys__en">care Clinic-level</span><span class="sys__kr">집 안의 리추얼로</span></p>
       </div>
     </div>
   </section>
