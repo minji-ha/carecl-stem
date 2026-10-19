@@ -151,6 +151,7 @@
       // 물방울 속 사진 교체 (js/bubble.js) · 마지막 단계에서 SHOP 버튼이 물방울 아래로 올라온다
       if (stage) {
         stage.classList.toggle('is-last', i === items.length - 1);
+        stage.classList.toggle('is-right', i % 2 === 1);   // 짝수 번째 단계는 글이 오른쪽 → 물방울은 왼쪽
         stage.dispatchEvent(new CustomEvent('stepchange', { detail: { index: i, src: items[i].dataset.stepSrc } }));
       }
     }

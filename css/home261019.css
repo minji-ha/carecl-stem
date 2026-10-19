@@ -111,10 +111,12 @@
 .hscroll__btns{display:flex;gap:10px}
 
 /* 7 다섯 단계 — 왼쪽에 붙어 있는 물방울, 오른쪽으로 단계가 지나간다 (3D 기기 회전 효과는 뺐다) */
-.steps__stage{display:flex;flex-direction:column;align-items:center;justify-content:center;width:48%}
-.steps__bubble{width:min(36vw,520px,64vh)}
-.step,.step:nth-child(even){width:min(46%,560px);margin-left:auto}
-.steps__shop{position:absolute;left:50%;bottom:clamp(30px,7vh,80px);pointer-events:auto;
+/* 원래 지그재그 배치(단계 글이 왼쪽·오른쪽 번갈아) 그대로, 3D 기기 대신 물방울이 글 반대편으로 옮겨 간다 */
+.steps__stage{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.steps__stage{--bx:24vw}
+.steps__stage.is-right{--bx:-24vw}
+.steps__bubble{width:min(34vw,500px,62vh);translate:var(--bx) 0;transition:translate 1s cubic-bezier(.65,0,.35,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.steps__shop{position:absolute;left:50%;translate:var(--bx) 0;bottom:clamp(30px,7vh,80px);pointer-events:auto;
   opacity:0;transform:translate(-50%,24px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
 .steps__stage.is-last .steps__shop{opacity:1;transform:translate(-50%,0)}
 .steps__stage:not(.is-last) .steps__shop{pointer-events:none}
@@ -188,3 +190,5 @@
     -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);
             mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
 }
+.steps__stage .steps__shop{position:absolute}
+.steps__stage .steps__shop{bottom:max(24px,calc(50% - min(17vw,250px,31vh) - 92px))}
