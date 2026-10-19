@@ -178,13 +178,13 @@ CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top
     ("04 Product", "디바이스 · 코스메틱", "무엇으로 관리할 것인가", "제품 보기", "products.html", 86, 74),
 ]   # 수정요청 261019: 다섯 가지 → 네 가지 기준 (AI 피부 진단은 아래 큰 버튼으로)
 
-PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크)
-    ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html"),
-    ("Device", "CLB", "고주파 마사지기", "p-clb.jpg", "products.html"),
-    ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html"),
-    ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html"),
-    ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html"),
-    ("Accessory", "Firenze Bag", "케어클 피렌체 백 · 디바이스 전용 가죽 케이스", "p-case.jpg", "products.html"),
+PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크, 마우스를 올리면 보이는 같은 제품의 다른 컷)
+    ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html", "e-techfit-lit-v.jpg"),
+    ("Device", "CLB", "고주파 마사지기", "p-clb.jpg", "products.html", "e-clb-v.jpg"),
+    ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html", "e-gel-blue-v.jpg"),
+    ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html", "s-mask-glass.jpg"),
+    ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html", "e-serum-warm-v.jpg"),
+    ("Accessory", "Firenze Bag", "케어클 피렌체 백 · 디바이스 전용 가죽 케이스", "p-case.jpg", "products.html", "c-techfit-case.jpg"),
 ]
 
 STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
@@ -228,9 +228,9 @@ def page_index():
       </div>""" for no, t, q, lk, h, x, y in CORE)
 
     cards = "\n".join(f"""        <li class="pcard"><a href="{href}" draggable="false">
-          <div class="pcard__img"><img src="assets/img/{img}" alt="{name}" loading="lazy" draggable="false"></div>
+          <div class="pcard__img"><img src="assets/img/{img}" alt="{name}" loading="lazy" draggable="false"><img class="pcard__alt" src="assets/img/{alt}" alt="" loading="lazy" draggable="false"></div>
           <em>{tag}</em><b>{name}</b><span>{desc}</span>
-        </a></li>""" for tag, name, desc, img, href in PRODUCTS)
+        </a></li>""" for tag, name, desc, img, href, alt in PRODUCTS)
 
     step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step data-step-src="assets/img/{img}">
         <div class="step__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>

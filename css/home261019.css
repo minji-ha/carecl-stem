@@ -163,3 +163,14 @@
 /* 히어로 제목 위아래 간격 — 위(소제목과)는 좁히고 아래(한글 문장과)는 살짝 띄워 균형 */
 .hero__title--merge{margin-top:.16em;line-height:.92}
 .hero__copy .hero__kr{margin-top:clamp(10px,1.2vw,18px)}
+
+/* 콜렉션 — 마우스를 올리면 같은 제품의 다른 컷으로 바뀐다 */
+.pcard__img{position:relative}
+.pcard__img img{transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
+.pcard__alt{position:absolute;inset:0;opacity:0;transform:scale(1.06)}
+.pcard a:hover .pcard__alt,.pcard a:focus-visible .pcard__alt{opacity:1;transform:scale(1)}
+.pcard a:hover .pcard__img img:first-child{transform:scale(1.04)}
+@media (hover:none){.pcard__alt{display:none}}
+/* 히어로 제목 위아래 글자 — 조금 키움 */
+.hero__copy .hero__eyebrow{font-size:clamp(12px,1.08vw,17px)}
+.hero__copy .hero__kr{font-size:clamp(14px,1.22vw,19px)}
