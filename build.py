@@ -191,7 +191,8 @@ STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
 ]
 
 # 물방울 속에 띄울 누끼 제품 (tools: 흰 배경 제품컷 → 투명 PNG). 순서는 STEPS와 같다
-STEP_CUTS = ["cut-gel.png", "cut-mask.png", "cut-device.png", "cut-serum.png", "cut-lineup.png"]
+STEP_CUTS = ["cut-gel.png", "cut-mask.png", "cut-device.png", "cut-serum.png", "cut-case.png"]
+STEP_FINAL_CUT = "cut-lineup.png"   # 마지막 단계 뒤 가운데 큰 물방울 속
 
 CONTACTS = [
     ("Global Business", "해외 사업", "수출 · 해외 유통 문의<br>support@carecl.co.kr", "contact.html"),
@@ -334,13 +335,14 @@ def page_index():
         <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
-        <div class="steps__stage" data-steps-stage>
+        <div class="steps__stage" data-steps-stage data-final-cut="assets/img/{STEP_FINAL_CUT}">
           <div class="bubble steps__bubble" data-bubble="steps" aria-hidden="true"></div>
           <a class="btn-roll btn-roll--solid steps__shop" href="{SHOP_HREF}" data-steps-shop><span class="btn-roll__t"><span>Shop now</span><span aria-hidden="true">Shop now</span></span><span class="btn-roll__arr" aria-hidden="true">→</span></a>
         </div>
         <ol class="steps__list" data-steps>
 {step_items}
         </ol>
+        <div class="steps__expand" data-steps-expand aria-hidden="true"></div>
       </div>
     </div>
   </section>

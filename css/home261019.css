@@ -217,3 +217,11 @@
 }
 /* 히어로 상단 Anti-Aging Skincare — 두꺼운 글씨 */
 .hero__eyebrow{font-weight:700}
+
+/* 데일리 루틴 v3 (STEM 방식) — 작은 물방울이 글 옆을 따라다니고, 마지막 단계 뒤에는 가운데 큰 물방울 + 라인업 + SHOP
+   위치·크기는 js/bubble.js가 그린다. 아래 빈 칸(steps__expand)이 마무리 연출의 스크롤 길이 */
+.steps__expand{height:140svh}
+.steps__stage .steps__shop{top:calc(50% + var(--shopY,200px));bottom:auto;left:50%;translate:none;opacity:0;transform:translate(-50%,24px);pointer-events:none}
+.steps__stage.is-last .steps__shop{opacity:0;transform:translate(-50%,24px)}
+.steps__stage.is-final .steps__shop{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+@media (max-width:860px){ .steps__expand{display:none} }

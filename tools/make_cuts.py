@@ -23,7 +23,8 @@ def fit(im, n=900):
 
 gel = cut(SRC + "콜라겐젤.jpg", 251); serum = cut(SRC + "토닝세럼.jpg", 248); mask = cut(SRC + "마스크팩.jpg")
 dev = Image.open(DEV).convert("RGBA"); dev = dev.crop(dev.getbbox())
-for name, im in [("cut-gel", gel), ("cut-mask", mask), ("cut-device", dev), ("cut-serum", serum)]:
+case = cut(SRC + "케이스.jpg")
+for name, im in [("cut-case", case), ("cut-gel", gel), ("cut-mask", mask), ("cut-device", dev), ("cut-serum", serum)]:
     fit(im).save(OUT + name + ".png", optimize=True)
 
 # 05 라인업: 마스크팩 뒤, 기기·젤·세럼 앞

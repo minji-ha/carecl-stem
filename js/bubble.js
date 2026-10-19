@@ -12,7 +12,7 @@
 import * as THREE from 'three';
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const NB = 14;
+const NB = 20;
 
 const VERT = /* glsl */`
 varying vec2 vUv;
@@ -352,71 +352,126 @@ function mountLogo(host) {
 }
 
 /* ── 2. 데일리 루틴 — 스크롤 따라 단계 사이를 옮겨 다니며 흩어졌다 뭉치고, 사진이 바뀐다 ── */
-const SAT = [ // 이동 중에 떨어져 나가는 작은 방울: [늦게 출발하는 정도, 옆으로 퍼짐, 깊이, 크기]
-  [0.00, 0.9, 0.2, 0.34], [0.10, -0.7, -0.3, 0.28], [0.22, 0.4, 0.4, 0.22], [0.30, -1.1, 0.1, 0.20],
-  [0.05, -0.2, -0.5, 0.26], [0.16, 1.2, -0.2, 0.18], [0.36, 0.1, 0.3, 0.16], [0.26, -0.5, 0.5, 0.15]
+const SAT = [ // 이동 중에 떨어져 나가는 작은 방울: [늦게 출발하는 정도, 옆으로 퍼짐, 위아래 퍼짐, 깊이, 크기]
+  [0.00, 0.9, 0.2, 0.2, 0.36], [0.10, -0.7, -0.4, -0.3, 0.30], [0.22, 0.4, 0.9, 0.4, 0.22], [0.30, -1.2, 0.3, 0.1, 0.20],
+  [0.05, -0.2, -1.1, -0.5, 0.26], [0.16, 1.3, -0.6, -0.2, 0.18], [0.36, 0.1, 1.3, 0.3, 0.16], [0.26, -0.6, 0.8, 0.5, 0.15],
+  [0.42, 0.8, -1.4, 0.0, 0.12], [0.12, -1.5, -0.9, 0.2, 0.14], [0.48, 1.6, 0.5, -0.4, 0.11], [0.33, -0.9, 1.6, 0.1, 0.13],
+  [0.20, 0.3, -1.7, 0.3, 0.17]
 ];
 function mountSteps(host) {
   const items = [].slice.call(document.querySelectorAll('[data-step]'));
   if (!items.length) return;
+  const stageEl = host.closest('[data-steps-stage]');
+  const expand = document.querySelector('[data-steps-expand]');
   const S = stage(host, 1.4);
   const U = S.U;
   const hov = { s: 0, x: 1, y: 0 };
   const tex = items.map(() => blank);
   items.forEach((el, i) => (el.dataset.stepCut ? cutTexture(el.dataset.stepCut) : photoTexture(el.dataset.stepSrc)).then((t) => { tex[i] = t; host.classList.add('is-ready'); }));
+  let finalTex = blank;
+  if (stageEl && stageEl.dataset.finalCut) cutTexture(stageEl.dataset.finalCut).then((t) => { finalTex = t; });
   const last = items.length - 1;
 
-  function progress() {                       // 0 ~ 마지막 단계, 소수 = 단계 사이를 지나는 중
+  // 단계 글이 화면에서 차지하는 가로 범위 (스크롤로는 안 바뀌므로 크기가 바뀔 때만 잰다)
+  let edges = [];
+  function measure() {
+    edges = items.map((el) => {
+      // 글자가 실제로 찍힌 범위만 (블록 상자 폭이 아니라 글줄 끝까지)
+      let L = Infinity, Rt = -Infinity;
+      const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      const r = document.createRange();
+      for (let n = w.nextNode(); n; n = w.nextNode()) {
+        if (!n.textContent.trim() || n.parentElement.closest('.step__img')) continue;
+        r.selectNodeContents(n);
+        for (const q of r.getClientRects()) { if (q.width) { L = Math.min(L, q.left); Rt = Math.max(Rt, q.right); } }
+      }
+      if (!isFinite(L)) { const q = el.getBoundingClientRect(); L = q.left; Rt = q.right; }
+      return [L, Rt];
+    });
+  }
+  measure();
+  addEventListener('resize', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  addEventListener('load', measure);
+
+  function progress() {                       // f: 0 ~ 마지막 단계(소수 = 단계 사이), e: 마지막 단계 뒤 마무리 구간 0 ~ 1
     const mid = innerHeight * 0.5;
     const c = items.map((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; });
-    if (c[0] >= mid) return 0;
-    if (c[last] <= mid) return last;
-    for (let k = 0; k < last; k++) if (c[k + 1] >= mid) return k + (mid - c[k]) / Math.max(c[k + 1] - c[k], 1);
-    return last;
+    if (c[0] >= mid) return [0, 0];
+    if (c[last] <= mid) {
+      const h = expand ? expand.offsetHeight * 0.85 : 1;
+      return [last, expand ? clamp((mid - c[last]) / h, 0, 1) : 0];
+    }
+    for (let k = 0; k < last; k++) if (c[k + 1] >= mid) return [k + (mid - c[k]) / Math.max(c[k + 1] - c[k], 1), 0];
+    return [last, 0];
   }
-  const spot = (k) => {                       // 단계별 자리: 글 반대편 (stem.js의 is-right와 같은 규칙)
-    const x = (k % 2 ? -1 : 1) * innerWidth * 0.24;
-    const y = k === last ? innerHeight * 0.05 : 0;
-    const r = Math.min(innerWidth * 0.17, 250, innerHeight * 0.31) * (k === last ? 0.94 : 1);
-    return [S.w(x), S.w(y), S.w(r)];
+  const smallR = () => Math.min(innerWidth * 0.085, 150, innerHeight * 0.17);
+  const bigR = () => Math.min(innerWidth * 0.22, 380, innerHeight * 0.36);
+  const spot = (k) => {                       // 단계별 자리: 글 바로 옆 (왼쪽 글이면 오른쪽에, 오른쪽 글이면 왼쪽에)
+    const rc = S.renderer.domElement.getBoundingClientRect(), cx = rc.left + rc.width / 2;
+    const r = smallR(), gap = Math.max(innerWidth * 0.035, 36);
+    const e = edges[k] || [0, 0];
+    const x = k % 2 ? e[0] - gap - r : e[1] + gap + r;
+    return [S.w(x - cx), 0, S.w(r)];
   };
+  const center = () => [0, 0, S.w(bigR())];
 
-  function frame(now) {
-    if (!S.resize()) return;
-    const t = now / 1000, f = progress();
-    const k = Math.min(Math.floor(f), last - 1), raw = f - k;
-    const tt = ease5((raw - 0.15) / 0.7);     // 단계 사이 가운데 70% 구간에서 이동
-    const sc = reduce ? 0 : Math.sin(tt * Math.PI);  // 흩어짐 0 → 1 → 0
-    const a = spot(k), b = spot(k + 1);
+  // a → b로 옮겨 가는 동안 흩어졌다 뭉친다. raw: 구간 진행(0~1), 반환: 중심·반지름·흩어짐
+  function travel(list, a, b, raw, t) {
+    const tt = ease5((raw - 0.15) / 0.7);
+    const sc = reduce ? 0 : Math.sin(tt * Math.PI);
     const R = lerp(a[2], b[2], tt);
     const core = [lerp(a[0], b[0], tt), lerp(a[1], b[1], tt), 0];
     const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1;
     const nx = dx / len, ny = dy / len;
-    U.uK.value = R * (0.26 + 0.24 * sc); U.uTime.value = t; U.uWob.value = reduce ? 0 : 1 + sc;
-
-    const list = [[core[0], core[1], 0, R * (1 - 0.42 * sc)]];
-    if (sc > 0.002) SAT.forEach(([lag, side, depth, size], i) => {
+    list.push([core[0], core[1], 0, R * (1 - 0.45 * sc)]);
+    if (sc > 0.002) SAT.forEach(([lag, side, up, depth, size], i) => {
       const e = ease5((raw - 0.15 - lag * 0.5) / 0.7);          // 늦게 출발한 방울은 뒤처져 따라온다
       const px = lerp(a[0], b[0], e), py = lerp(a[1], b[1], e);
-      const wob = Math.sin(t * 1.3 + i * 2.1) * 0.15;
-      list.push([px - ny * side * R * 0.8 * sc + nx * wob * R * sc, py + nx * side * R * 0.8 * sc + Math.sin(t + i) * R * 0.1 * sc,
-        depth * R * sc, R * size * Math.sqrt(sc)]);
+      const wob = Math.sin(t * 1.3 + i * 2.1) * 0.2;
+      list.push([px - ny * side * R * 1.3 * sc + nx * wob * R * sc,
+        py + nx * side * R * 1.3 * sc + up * R * 0.9 * sc + Math.sin(t + i) * R * 0.1 * sc,
+        depth * R * sc, R * size * 1.15 * Math.sqrt(sc)]);
     });
+    return { tt, sc, R, core };
+  }
+
+  let wasFinal = false;
+  function frame(now) {
+    if (!S.resize()) return;
+    const t = now / 1000, [f, ex] = progress();
+    const list = [];
+    let st, texA, texB, rectK;
+    if (ex > 0) {                             // 마무리: 가운데로 와서 크게, 안에는 라인업
+      st = travel(list, spot(last), center(), ex * 0.92 + 0.04, t);
+      texA = tex[last]; texB = finalTex; rectK = lerp(0.5, 0.52, st.tt);
+    } else {
+      const k = Math.min(Math.floor(f), last - 1), raw = f >= last ? 1 : f - k;
+      st = travel(list, spot(k), spot(k + 1), raw, t);
+      texA = tex[k]; texB = tex[k + 1]; rectK = 0.5;
+    }
+    const { tt, sc, R, core } = st;
+    U.uK.value = R * (0.26 + 0.24 * sc); U.uTime.value = t; U.uWob.value = reduce ? 0 : 1 + sc;
     lumps(list, core, R * (1 - 0.3 * sc), t, 1 - sc);
-    tail(list, core, R, t, 1 - ease(sc / 0.3), core[0] > 0 ? Math.PI + 0.35 : -0.35);   // 화면 가운데 쪽으로
+    const side = ex > 0 ? -0.35 : (Math.round(f) % 2 ? Math.PI + 0.35 : -0.35);   // 글 반대쪽으로
+    tail(list, core, R, t, 1 - ease(sc / 0.3), side);
     const hb = hoverBall(S, core, R, hov); if (hb && sc < 0.2) list.push(hb);
     S.set(list, core);
 
-    // 사진: 흩어지는 동안 흐려졌다가 가운데에서 다음 단계 사진으로 바뀐다
-    U.uTexA.value = tex[k]; U.uTexB.value = tex[k + 1];
+    // 그림: 흩어지는 동안 흐려졌다가 가운데에서 다음 것으로 바뀐다
+    U.uTexA.value = texA; U.uTexB.value = texB;
     U.uMix.value = ease((tt - 0.42) / 0.16);
     U.uTexAlpha.value = 1 - 0.92 * ease(sc / 0.6);
-    // 제품: 물방울 지름의 약 절반 높이, 천천히 떠다니며 비스듬히 기운다
     const bob = reduce ? 0 : Math.sin(t * 0.8) * R * 0.03;
-    U.uTexRect.value.set(core[0], core[1] + bob, R * 0.58, R * 0.58);
-    U.uRot.value = reduce ? -0.2 : -0.2 + Math.sin(t * 0.45) * 0.06 + (tt - 0.5) * sc * 0.6;
+    U.uTexRect.value.set(core[0], core[1] + bob, R * rectK, R * rectK);
+    U.uRot.value = reduce ? -0.2 : lerp(-0.2, ex > 0 ? -0.06 : -0.2, tt) + Math.sin(t * 0.45) * 0.06 + (tt - 0.5) * sc * 0.6;
     U.uTexZ.value = -R * 0.2;
     S.draw();
+
+    // 마무리 구간이 끝나면 SHOP 버튼이 물방울 아래쪽 안으로 올라온다
+    const isFinal = ex > 0 && tt > 0.9;
+    if (stageEl && isFinal !== wasFinal) { stageEl.classList.toggle('is-final', isFinal); wasFinal = isFinal; }
+    if (stageEl) stageEl.style.setProperty('--shopY', Math.round(bigR() * 0.58) + 'px');
   }
   runWhenVisible(host, frame, '200px');
 }
