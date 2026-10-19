@@ -192,3 +192,9 @@
 }
 .steps__stage .steps__shop{position:absolute}
 .steps__stage .steps__shop{bottom:max(24px,calc(50% - min(17vw,250px,31vh) - 92px))}
+
+/* 5 환기용 이미지 — 왼쪽 글씨는 흰색, 기울기 없이 */
+.sys__en{font-style:normal}
+@media (min-width:861px){
+  .sys__title{color:#fff;text-shadow:0 2px 24px rgba(120,60,30,.18)}
+}
