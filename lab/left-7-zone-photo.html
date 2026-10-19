@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>왼쪽 패널 시안 6 — 부위 사진 · 번지는 그리드</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+/* 업체 제공 사진 2장(같은 구도: 기본 / 22좌표 그리드). 기본 사진 위에 그리드 사진이 잉크처럼 번져 보인다 */
+.panel.photo{background:#c7cad6;cursor:crosshair}
+/* 사진 위·아래 끝은 배경으로 부드럽게 녹인다 (끝 위치는 JS가 --t, --b로 넘김) */
+.photo .layer{position:absolute;inset:0;
+  -webkit-mask-image:linear-gradient(180deg,transparent var(--t),#000 calc(var(--t) + var(--f)),#000 calc(var(--b) - var(--f)),transparent var(--b));
+          mask-image:linear-gradient(180deg,transparent var(--t),#000 calc(var(--t) + var(--f)),#000 calc(var(--b) - var(--f)),transparent var(--b))}
+/* 어두운 인트로 배경(survey2) 위에서는 패널 배경을 비우고 사진만 떠 있게, 글자는 밝게 */
+.is-hero .panel.photo{background:transparent}
+.is-hero .photo .hud{color:#a99d92}.is-hero .photo .hud .q b{color:#F0A877}.is-hero .photo .hud .pct{color:#fff}.is-hero .photo .hud .pct small{color:#a99d92}
+.photo img.base,.photo canvas.ink{position:absolute;display:block;pointer-events:none;user-select:none}
+.photo canvas.ink{left:0;top:0;width:100%;height:100%}
+.photo .head em{color:#9a5a33}.photo .head b{color:#2B2724}.photo .head p{color:#5c534c}
+.photo .hud{color:#5c534c}.photo .hud .q b{color:#9a5a33}.photo .hud .pct{color:#2B2724}.photo .hud .pct small{color:#7a6f66}
+.photo .hint{position:absolute;right:clamp(16px,3vw,32px);top:clamp(20px,4vw,40px);z-index:5;font-size:11px;letter-spacing:.14em;color:#6d645d;
+  pointer-events:none;transition:opacity .6s}
+.photo.touched .hint{opacity:0}
+.is-embed .photo .hint,.is-mini .photo .hint{display:none}
+@media (hover:none){.photo .hint{display:none}}
+</style>
+</head>
+<body>
+<div class="panel photo">
+  <div class="layer">
+    <img class="base" src="zone-photo.jpg" alt="Aging Map 22 관리 부위 — 이마·미간·눈가·앞광대·턱·목" draggable="false">
+    <canvas class="ink" aria-hidden="true"></canvas>
+  </div>
+  <span class="hint">마우스를 올려 보세요</span>
+  <span class="tag">시안 6 · 부위 사진 · 번지는 그리드</span>
+</div>
+<script src="lab.js"></script>
+<script>
+(function () {
+  var panel = document.querySelector('.panel'), base = panel.querySelector('img.base'), cv = panel.querySelector('canvas.ink');
+  var ctx = cv.getContext('2d'), mask = document.createElement('canvas'), mx = mask.getContext('2d');
+  var grid = new Image(); grid.src = 'zone-photo-grid.jpg';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR = Math.min(2, devicePixelRatio || 1), W = 0, H = 0, R = { x: 0, y: 0, w: 0, h: 0 };
+  var IA = 1080 / 1920;
+  // 사진 속 관리 부위 자리 (사진 가로·세로 비율 0~1)
+  var AREA = { '이마': [.47, .17], '미간': [.477, .25], '눈가': [.535, .40], '눈밑': [.47, .44], '앞광대': [.545, .46],
+               '볼': [.55, .55], '팔자': [.49, .55], '입가': [.48, .60], '턱선': [.52, .665], '목': [.55, .76] };
+
+  // 사진 자리: 넓은 패널은 꽉 채우고, 세로로 긴 패널은 얼굴과 부위 이름이 함께 보이게 크게 놓는다
+  function layout() {
+    W = panel.clientWidth; H = panel.clientHeight;
+    var w = W / H >= 1.2 ? Math.max(W, H / IA) : Math.max(W * 1.7, Math.min(W * 2.4, H * 0.62 / IA));
+    var h = w * IA, x = W * 0.5 - w * 0.53, y = h > H ? H * 0.46 - h * 0.42 : (H - h) * 0.5;
+    x = Math.min(0, Math.max(W - w, x)); if (h > H) y = Math.min(0, Math.max(H - h, y));
+    R = { x: x, y: y, w: w, h: h };
+    var lay = panel.querySelector('.layer'), hero = document.documentElement.classList.contains('is-hero');
+    lay.style.setProperty('--t', (y > 0 ? y : -1) + 'px'); lay.style.setProperty('--b', (h > H ? H + 1 : y + h) + 'px');
+    lay.style.setProperty('--f', Math.round(h * (hero ? 0.22 : 0.12)) + 'px');
+    base.style.left = x + 'px'; base.style.top = y + 'px'; base.style.width = w + 'px'; base.style.height = h + 'px';
+    cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    mask.width = Math.ceil(W / 2); mask.height = Math.ceil(H / 2);
+  }
+  addEventListener('resize', layout); layout();
+
+  // 번짐 자국: 생기면 부드럽게 커지고(번짐), 시간이 지나면 옅어진다
+  var blots = [], cursor = null, full = 0, fullT = 0;
+  function blot(x, y, r, life, a) { blots.push({ x: x, y: y, r: 0, rT: r, t: 0, life: life, a: a || 1 }); if (blots.length > 60) blots.shift(); }
+  function at(name) { var p = AREA[name]; return p ? [R.x + R.w * p[0], R.y + R.h * p[1]] : null; }
+  var unit = function () { return Math.min(W, H); };
+
+  var last = null;
+  panel.addEventListener('pointermove', function (e) {
+    var b = panel.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+    panel.classList.add('touched');
+    cursor = { x: x, y: y };
+    if (!last || Math.hypot(x - last[0], y - last[1]) > unit() * 0.035) {
+      blot(x, y, unit() * (0.09 + Math.random() * 0.06), 2.6 + Math.random(), 0.95);
+      last = [x, y];
+    }
+  });
+  panel.addEventListener('pointerleave', function () { cursor = null; last = null; });
+
+  function drawMask(dt) {
+    var s = 0.5;
+    mx.clearRect(0, 0, mask.width, mask.height);
+    blots = blots.filter(function (b) { return (b.t += dt) < b.life; });
+    blots.forEach(function (b) {
+      b.r += (b.rT - b.r) * (1 - Math.exp(-dt * 2.2));                       // 천천히 번진다
+      var fade = 1 - Math.pow(b.t / b.life, 2), r = Math.max(1, b.r * s);
+      var g = mx.createRadialGradient(b.x * s, b.y * s, 0, b.x * s, b.y * s, r);
+      g.addColorStop(0, 'rgba(0,0,0,' + (b.a * fade) + ')'); g.addColorStop(0.55, 'rgba(0,0,0,' + (b.a * fade * 0.75) + ')'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      mx.fillStyle = g; mx.beginPath(); mx.arc(b.x * s, b.y * s, r, 0, 6.2832); mx.fill();
+    });
+    if (cursor) {                                                            // 커서 자리는 늘 조금 보인다
+      var r = unit() * 0.12 * s, g = mx.createRadialGradient(cursor.x * s, cursor.y * s, 0, cursor.x * s, cursor.y * s, r);
+      g.addColorStop(0, 'rgba(0,0,0,.9)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      mx.fillStyle = g; mx.beginPath(); mx.arc(cursor.x * s, cursor.y * s, r, 0, 6.2832); mx.fill();
+    }
+    full += (fullT - full) * (1 - Math.exp(-dt * 1.6));
+    if (full > 0.005) {                                                       // 결과: 얼굴 가운데서 그리드가 크게 번져 전체로
+      var c = at('앞광대'), rr = R.w * 0.9 * full * s;
+      var g2 = mx.createRadialGradient(c[0] * s, c[1] * s, 0, c[0] * s, c[1] * s, Math.max(1, rr));
+      g2.addColorStop(0, 'rgba(0,0,0,1)'); g2.addColorStop(0.7, 'rgba(0,0,0,.85)'); g2.addColorStop(1, 'rgba(0,0,0,0)');
+      mx.fillStyle = g2; mx.fillRect(0, 0, mask.width, mask.height);
+    }
+  }
+
+  var prev = 0;
+  function frame(now) {
+    var dt = Math.min(0.05, prev ? (now - prev) / 1000 : 0.016); prev = now;
+    if (reduce) { blots.forEach(function (b) { b.r = b.rT; }); }
+    drawMask(dt);
+    ctx.clearRect(0, 0, W, H);
+    if (grid.complete && grid.naturalWidth) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(grid, R.x, R.y, R.w, R.h);
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(mask, 0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // 설문 진행에 맞춰, 그 문항이 묻는 부위에서 그리드가 번진다
+  Lab.start({
+    onReset: function () { blots = []; fullT = 0; },
+    onStep: function (s) {
+      fullT = 0;
+      var p = at(s.area) || at('앞광대');
+      blot(p[0], p[1], unit() * (0.16 + Math.random() * 0.05), 3.4, 1);
+    },
+    onResult: function () { fullT = 1; }
+  });
+})();
+</script>
+</body>
+</html>

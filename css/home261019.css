@@ -226,3 +226,9 @@
 .steps__stage.is-last .steps__shop{opacity:0;transform:translate(-50%,24px)}
 .steps__stage.is-final .steps__shop{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 @media (max-width:860px){ .steps__expand{display:none} }
+
+/* 부드러운 스크롤 (Lenis) 기본 규칙 */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}

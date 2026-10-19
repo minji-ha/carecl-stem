@@ -142,7 +142,8 @@ AIFAB = ('<a class="aifab" href="survey.html" aria-label="AI 피부 진단 시�
 def tail(three=True, js=(), fab=True, mods=()):
     mod = f'<script type="module" src="js/device3d.js?v={VER}"></script>\n' if three else ""
     mod += "".join(f'<script type="module" src="{m}?v={VER}"></script>' + chr(10) for m in mods)
-    return (AIFAB if fab else "") + f"""<script src="js/led.js?v={VER}"></script>
+    return (AIFAB if fab else "") + f"""<script src="libs/lenis.min.js"></script>
+<script src="js/led.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
 {"".join(f'<script src="{j}?v={VER}"></script>' + chr(10) for j in js)}{mod}</body>
 </html>
@@ -548,6 +549,7 @@ PANEL_VARIANTS = [
     ("survey-p3.html", "lab/left-4-hologram-device.html", "홀로그램"),
     ("survey-p4.html", "lab/left-5-aurora.html", "오로라"),
     ("survey-p5.html", "lab/left-6-device-3d.html", "3D 기기"),
+    ("survey-p6.html", "lab/left-7-zone-photo.html", "부위 사진"),
 ]
 
 
@@ -581,7 +583,7 @@ def page_survey_flow():
     return out
 
 
-PAGES["survey2.html"] = page_survey_flow   # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 5개
+PAGES["survey2.html"] = page_survey_flow   # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 6개
 PAGES["report.html"] = page_report
 
 # ── AI 피부 진단 공개 여부 ──────────────────────────────

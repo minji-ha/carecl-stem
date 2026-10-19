@@ -9,6 +9,26 @@
 (function () {
   document.documentElement.classList.add('js');
 
+  /* ── 부드러운 스크롤 (전체 페이지, 마우스 휠만 — 터치는 기기 그대로) ──
+     libs/lenis.min.js. 휠이 안쪽에서 따로 굴러야 하는 곳(모바일 메뉴·좌우 넘김 목록 등)은 data-lenis-prevent */
+  (function smoothScroll() {
+    if (!window.Lenis || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var lenis = new Lenis({ duration: 1.15, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }, smoothWheel: true });
+    window.careLenis = lenis;
+    document.querySelectorAll('.mnav, [data-scroll-own]').forEach(function (el) { el.setAttribute('data-lenis-prevent', ''); });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    // 모바일 메뉴가 열려 있는 동안은 뒤 페이지가 움직이지 않게
+    new MutationObserver(function () { document.body.classList.contains('menu-open') ? lenis.stop() : lenis.start(); })
+      .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    // 같은 페이지 안 #링크도 부드럽게
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="#"]'); if (!a || a.getAttribute('href').length < 2) return;
+      var t = document.querySelector(a.getAttribute('href')); if (!t) return;
+      e.preventDefault(); lenis.scrollTo(t, { offset: -80 });
+    });
+  })();
+
   /* 서브 페이지 본문은 원고 HTML 그대로라 등장 효과 대상을 여기서 붙인다.
      카드 묶음은 묶음 대신 카드 하나하나가 차례로 올라오게 한다. */
   var GRIDS = '.typecards,.pillars,.docgrid,.points,.flow,.techrows,.trio';

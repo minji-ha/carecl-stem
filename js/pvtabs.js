@@ -1,4 +1,4 @@
-/* 왼쪽 패널 그래픽 시안 탭 (survey.html · survey-p1~5.html · survey2.html)
+/* 왼쪽 패널 그래픽 시안 탭 (survey.html · survey-p1~6.html · survey2.html)
    탭을 눌러도 페이지는 그대로 두고 왼쪽 그래픽만 바꾼다 — 설문 중이면 설문 중 그대로, 리포트면 리포트 그대로.
    · 설문 중: 그래픽이 분석 장면을 계속 반복 (embed=loop)
    · 리포트가 보이면: 분석을 한 번 돌리고 결과에서 멈춤 (embed=1)
@@ -40,7 +40,7 @@
       var on = flow && st === 'q';   // 모든 탭에서 설문하는 동안 3D 기기가 오른쪽 아래에서 돈다
       mini.hidden = !on;
       var f = mini.querySelector('iframe');
-      if (on && !f.getAttribute('src')) f.src = tabs[tabs.length - 1].dataset.src + '?embed=mini' + (ver ? '&v=' + ver : '');
+      if (on && !f.getAttribute('src')) f.src = (tabs.filter(function (t) { return /device-3d/.test(t.dataset.src); })[0] || tabs[tabs.length - 1]).dataset.src + '?embed=mini' + (ver ? '&v=' + ver : '');
     }
   }
 
