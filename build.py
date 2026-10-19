@@ -113,6 +113,9 @@ SNS = [("Instagram", "instagram", ""), ("Facebook", "facebook", ""),
 FOOTER = f"""<footer class="foot">
   <div class="wrap">
     <div class="foot__top">
+      <div class="foot__brand">
+        <a class="foot__logo" href="index.html" aria-label="careCL 홈">{LOGO}</a>
+      </div>
       <div class="foot__side">
         <h2>AI Skin Test</h2>
         <p>2분 설문으로 나의 노화 타입과<br>먼저 관리할 부위를 확인하세요.</p>

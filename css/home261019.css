@@ -137,8 +137,7 @@
 .btn-roll--solid{background:var(--ink);color:#fff;border-color:var(--ink)}
 .btn-roll--lg{height:64px;min-width:280px;font-size:clamp(14px,1.1vw,17px);box-shadow:0 20px 40px -20px rgba(51,27,15,.6)}
 
-/* 8 하부 — CARECL 롤링 · 푸터 큰 로고 삭제 */
-.foot__top{display:flex;justify-content:flex-start}
+/* 8 하부 — CARECL 롤링 삭제, 푸터는 큰 careCL은 두고 세로 글자 HOME AGING CARE만 삭제 */
 
 @media (max-width:860px){
   .core__bubble{width:min(70vw,320px)}
