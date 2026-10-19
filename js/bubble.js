@@ -276,9 +276,9 @@ function lumps(out, c, R, t, k) {
   });
 }
 /* 옆구리의 작은 방울 — 천천히 돌며 본체에 붙었다(목이 생겼다) 살짝 떨어졌다 한다 */
-function tail(out, c, R, t, k) {
+function tail(out, c, R, t, k, base = -0.35) {
   if (k <= 0.01) return;
-  const a = -0.35 + Math.sin(t * 0.21) * 0.5, d = R * (1.12 + Math.sin(t * 0.37) * 0.08);
+  const a = base + Math.sin(t * 0.21) * 0.5, d = R * (1.12 + Math.sin(t * 0.37) * 0.08);
   out.push([c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, c[2] + R * 0.05, R * 0.3 * k]);
 }
 /* 마우스 쪽 혹 */
@@ -403,7 +403,7 @@ function mountSteps(host) {
         depth * R * sc, R * size * Math.sqrt(sc)]);
     });
     lumps(list, core, R * (1 - 0.3 * sc), t, 1 - sc);
-    tail(list, core, R, t, 1 - ease(sc / 0.3));
+    tail(list, core, R, t, 1 - ease(sc / 0.3), core[0] > 0 ? Math.PI + 0.35 : -0.35);   // 화면 가운데 쪽으로
     const hb = hoverBall(S, core, R, hov); if (hb && sc < 0.2) list.push(hb);
     S.set(list, core);
 
