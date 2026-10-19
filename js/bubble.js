@@ -32,7 +32,7 @@ uniform samplerCube uEnv;
 uniform sampler2D uTexA, uTexB;
 uniform float uMix, uTexAlpha;
 uniform vec4 uTexRect;         // 안쪽 평면의 그림 위치: xy 중심, zw 반폭
-uniform float uTexZ;
+uniform float uTexZ, uRot, uGlass;
 
 float smin(float a, float b, float k){ float h = max(k - abs(a - b), 0.0) / k; return min(a, b) - h * h * k * 0.25; }
 float map(vec3 p){
@@ -91,17 +91,26 @@ void main(){
           + spec(n, v, normalize(vec3(-0.2 + sin(uTime * 0.35) * 0.1, 0.3, 0.95)), 200.0) * 0.6;
   vec3 irid = 0.55 + 0.45 * cos(6.2831 * (fr * 1.2 + vec3(0.0, 0.33, 0.67)) + uTime * 0.2);
 
-  vec3 col = vec3(1.0);
-  col = mix(col, env, rim * 0.5);
-  col = mix(col, vec3(0.34, 0.30, 0.28), outer * 0.55 + inner * 0.35 + envDark * rim * 0.25);
-  col = mix(col, irid, rim * 0.14);
-  col += vec3(1.0) * (g * 0.6 + envBright * fr * 0.15);
-  float ga = clamp(rim * 0.07 + outer * 0.34 + inner * 0.12 + envDark * rim * 0.08 + envBright * rim * 0.08 + g * 0.28, 0.0, 1.0);
+  // 비눗방울: 거의 투명한 막 + 방 풍경(창·조명)이 옅게 비침 + 가장자리 연보라 띠와 흰 안쪽 선
+  float lr = dot(textureCube(uEnv, reflect(rd, n)).rgb, vec3(0.299, 0.587, 0.114));
+  float win = smoothstep(0.30, 0.80, lr);                              // 밝은 창
+  float edgeBand = smoothstep(0.35, 0.95, fr);                         // 가장자리 쪽 넓은 띠
+  vec3 lav = vec3(0.68, 0.68, 0.86);
+  vec3 col = mix(vec3(0.78, 0.78, 0.88), vec3(1.0), win);
+  col = mix(col, lav, edgeBand * 0.6 + outer * 0.8);
+  col = mix(col, irid, edgeBand * 0.25);
+  col = mix(col, vec3(1.0), band(fr, 0.70, 0.05) * 0.8);               // 흰 안쪽 선
+  col += vec3(1.0) * g * 0.7;
+  float ga = 0.02 + (1.0 - win) * 0.07 * (0.5 + fr) + win * 0.05 * (0.3 + fr)
+           + edgeBand * 0.16 + outer * 0.38 + inner * 0.10 + band(fr, 0.70, 0.05) * 0.10 + g * 0.35;
+  ga = clamp(ga * uGlass, 0.0, 1.0);
 
   // 굴절 광선이 안쪽 평면에 닿는 자리의 그림
   vec3 r = refract(rd, n, 0.8);
   vec3 q = P + r * ((uTexZ - P.z) / min(r.z, -0.05));
-  vec2 uv = (q.xy - uTexRect.xy) / (2.0 * uTexRect.zw) + 0.5;
+  vec2 o = q.xy - uTexRect.xy;
+  o = mat2(cos(uRot), sin(uRot), -sin(uRot), cos(uRot)) * o;     // 제품이 비스듬히 떠 있다
+  vec2 uv = o / (2.0 * uTexRect.zw) + 0.5;
   float inside = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
   vec4 tc = mix(texture2D(uTexA, uv), texture2D(uTexB, uv), uMix);
   float ca = tc.a * uTexAlpha * inside * (1.0 - fr * 0.85);
@@ -162,6 +171,21 @@ function photoTexture(url) {
   });
 }
 
+function cutTexture(url) {
+  return new Promise((res) => {
+    const img = new Image();
+    img.onload = () => {
+      const S = 1024, c = document.createElement('canvas'); c.width = c.height = S;
+      const k = Math.min(S / img.naturalWidth, S / img.naturalHeight);
+      const w = img.naturalWidth * k, h = img.naturalHeight * k;
+      c.getContext('2d').drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
+      res(canvasTex(c));
+    };
+    img.onerror = () => res(blank);
+    img.src = url;
+  });
+}
+
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const ease = (x) => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
 const ease5 = (x) => { x = clamp(x, 0, 1); return x * x * x * (x * (6 * x - 15) + 10); };
@@ -183,7 +207,7 @@ function stage(host, dprMax) {
       uK: { value: 0.1 }, uTime: { value: 0 }, uWob: { value: 1 },
       uEnv: { value: getEnv(renderer) },
       uTexA: { value: blank }, uTexB: { value: blank }, uMix: { value: 0 }, uTexAlpha: { value: 0 },
-      uTexRect: { value: new THREE.Vector4(0, 0, 0.3, 0.3) }, uTexZ: { value: -0.1 }
+      uTexRect: { value: new THREE.Vector4(0, 0, 0.3, 0.3) }, uTexZ: { value: -0.1 }, uRot: { value: 0 }, uGlass: { value: 1 }
     }
   });
   const scene = new THREE.Scene();
@@ -314,7 +338,7 @@ function mountSteps(host) {
   const U = S.U;
   const hov = { s: 0, x: 1, y: 0 };
   const tex = items.map(() => blank);
-  items.forEach((el, i) => photoTexture(el.dataset.stepSrc).then((t) => { tex[i] = t; host.classList.add('is-ready'); }));
+  items.forEach((el, i) => (el.dataset.stepCut ? cutTexture(el.dataset.stepCut) : photoTexture(el.dataset.stepSrc)).then((t) => { tex[i] = t; host.classList.add('is-ready'); }));
   const last = items.length - 1;
 
   function progress() {                       // 0 ~ 마지막 단계, 소수 = 단계 사이를 지나는 중
@@ -361,8 +385,11 @@ function mountSteps(host) {
     U.uTexA.value = tex[k]; U.uTexB.value = tex[k + 1];
     U.uMix.value = ease((tt - 0.42) / 0.16);
     U.uTexAlpha.value = 1 - 0.92 * ease(sc / 0.6);
-    U.uTexRect.value.set(core[0], core[1], R * 0.86, R * 0.86);
-    U.uTexZ.value = -R * 0.35;
+    // 제품: 물방울 지름의 약 절반 높이, 천천히 떠다니며 비스듬히 기운다
+    const bob = reduce ? 0 : Math.sin(t * 0.8) * R * 0.03;
+    U.uTexRect.value.set(core[0], core[1] + bob, R * 0.58, R * 0.58);
+    U.uRot.value = reduce ? -0.2 : -0.2 + Math.sin(t * 0.45) * 0.06 + (tt - 0.5) * sc * 0.6;
+    U.uTexZ.value = -R * 0.2;
     S.draw();
   }
   runWhenVisible(host, frame, '200px');

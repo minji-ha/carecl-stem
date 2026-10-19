@@ -195,6 +195,9 @@ STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
     ("Maintain", "반복과 기록", "주 2~3회 같은 자리를 반복해 변화를 기록합니다.", "n-lineup-sq.jpg"),
 ]
 
+# 물방울 속에 띄울 누끼 제품 (tools: 흰 배경 제품컷 → 투명 PNG). 순서는 STEPS와 같다
+STEP_CUTS = ["cut-gel.png", "cut-mask.png", "cut-device.png", "cut-serum.png", "cut-lineup.png"]
+
 CONTACTS = [
     ("Global Business", "해외 사업", "수출 · 해외 유통 문의<br>support@carecl.co.kr", "contact.html"),
     ("Partnership", "유통 · 제휴", "총판 및 제휴 제안<br>support@carecl.co.kr", "partnership.html"),
@@ -232,7 +235,7 @@ def page_index():
           <em>{tag}</em><b>{name}</b><span>{desc}</span>
         </a></li>""" for tag, name, desc, img, href, alt in PRODUCTS)
 
-    step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step data-step-src="assets/img/{img}">
+    step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step data-step-src="assets/img/{img}" data-step-cut="assets/img/{STEP_CUTS[i]}">
         <div class="step__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">{i + 1:02d}</span>
         <div>
