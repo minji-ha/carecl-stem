@@ -16,7 +16,8 @@
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
   /* 설문 페이지는 답을 고르는 데 집중하도록 마우스 빛·점을 띄우지 않는다 */
-  var cursorFx = fine && !document.body.classList.contains('survey');
+  /* 수정요청 261019: 마우스 커서에 LED 색 빛이 따라다니는 효과 전체 삭제 */
+  var cursorFx = false && fine && !document.body.classList.contains('survey');
 
   var LED = {
     red:    [255, 70, 72],

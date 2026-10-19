@@ -29,6 +29,26 @@ NAV_LEFT = [("Company", "about.html", "회사 소개"),
 NAV_RIGHT = [("Products", "products.html", "디바이스 · 코스메틱"),
              ("Contact", "contact.html", "문의")]
 
+# 헤더 드롭다운 (수정요청 261019) — 마우스를 올리면 소제목이 펼쳐진다.
+# COMPANY 아래 CONTACT, TECHNOLOGY 아래 PRODUCTS · COSMETICS
+HNAV = [
+    ("Company", "about.html", [("About careCL", "about.html", "회사 소개"),
+                               ("Our Story", "greeting.html", "브랜드 스토리"),
+                               ("R&amp;D / Patent", "rnd.html", "연구개발 · 특허"),
+                               ("Awards &amp; Certification", "certification.html", "수상 · 인증"),
+                               ("Contact", "contact.html", "문의")]),
+    ("Aging Lab", "aging-types.html", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
+                                       ("Aging Map 22", "aging-map.html", "22개 관리 부위"),
+                                       ("AI Skin Test", "survey.html", "2분 노화 타입 진단")]),
+    ("Technology", "carecl-technology.html", [("careCL Technology", "carecl-technology.html", "케어클 기술"),
+                                              ("Beauty Device Technology", "technology.html", "홈뷰티 디바이스 기술"),
+                                              ("Products", "products.html", "뷰티 디바이스"),
+                                              ("Cosmetics", "cosmetics.html", "코스메틱")]),
+]
+# 오른쪽 — SHOP · LOGIN · KR/EN(작게). 공식몰·로그인 주소는 받는 대로 바꾼다.
+SHOP_HREF = "products.html"
+LOGIN_HREF = "#"
+
 
 def head(title, desc, sub=False, css=(), body_cls=""):
     subcss = f'<link rel="stylesheet" href="css/sub.css?v={VER}">\n' if sub else ""
@@ -44,6 +64,7 @@ def head(title, desc, sub=False, css=(), body_cls=""):
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="css/stem.css?v={VER}">
+<link rel="stylesheet" href="css/home261019.css?v={VER}">
 {subcss}{"".join(f'<link rel="stylesheet" href="{c}?v={VER}">' + chr(10) for c in css)}<script type="importmap">{{"imports":{{"three":"./libs/three/three.module.min.js"}}}}</script>
 </head>
 <body{(' class="' + body_cls + '"') if body_cls else ""}>
@@ -60,17 +81,28 @@ def loader():
 
 
 def header(active=""):
-    def links(items):
-        return "".join(
-            f'<a href="{h}"{" aria-current=\"page\"" if h == active else ""}>{t}</a>' for t, h, _ in items)
-    mnav = "".join(f'<a href="{h}">{t}<small>{kr}</small></a>' for t, h, kr in NAV_LEFT + NAV_RIGHT)
+    def group(t, h, subs):
+        on = active and (active == h or any(active == sh for _, sh, _ in subs))
+        sub = "".join(f'<a href="{sh}"><b>{st}</b><small>{sk}</small></a>' for st, sh, sk in subs)
+        return (f'<div class="hnav"><a class="hnav__top" href="{h}"{" aria-current=\"page\"" if on else ""}>{t}</a>'
+                f'<div class="hnav__sub"><div class="hnav__in">{sub}</div></div></div>')
+    left = "".join(group(*g) for g in HNAV)
+    mnav = "".join(
+        f'<div class="mnav__grp"><a class="mnav__top" href="{h}">{t}</a>'
+        + "".join(f'<a class="mnav__sub" href="{sh}">{st}<small>{sk}</small></a>' for st, sh, sk in subs) + '</div>'
+        for t, h, subs in HNAV)
     return f"""<header class="header">
-  <nav class="header__nav" aria-label="주 메뉴 왼쪽">{links(NAV_LEFT)}</nav>
+  <nav class="header__nav" aria-label="주 메뉴">{left}</nav>
   <a class="header__logo" href="index.html" aria-label="careCL 홈">{LOGO}</a>
-  <nav class="header__nav header__nav--right" aria-label="주 메뉴 오른쪽">{links(NAV_RIGHT)}</nav>
+  <nav class="header__nav header__nav--right header__util" aria-label="쇼핑 · 로그인 · 언어">
+    <a href="{SHOP_HREF}">Shop</a><a href="{LOGIN_HREF}">Login</a>
+    <span class="header__lang"><a href="#" aria-current="true" lang="ko">KR</a><i aria-hidden="true">/</i><a href="#" lang="en">EN</a></span>
+  </nav>
   <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
 </header>
-<nav class="mnav" aria-label="모바일 메뉴">{mnav}<a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
+<nav class="mnav" aria-label="모바일 메뉴">{mnav}
+  <div class="mnav__util"><a href="{SHOP_HREF}">Shop</a><a href="{LOGIN_HREF}">Login</a><span class="header__lang"><a href="#" aria-current="true">KR</a><i aria-hidden="true">/</i><a href="#">EN</a></span></div>
+</nav>
 """
 
 
@@ -81,10 +113,6 @@ SNS = [("Instagram", "instagram", ""), ("Facebook", "facebook", ""),
 FOOTER = f"""<footer class="foot">
   <div class="wrap">
     <div class="foot__top">
-      <div class="foot__brand">
-        <span class="foot__tag">Home Aging Care</span>
-        <a class="foot__logo" href="index.html" aria-label="careCL 홈">{LOGO}</a>
-      </div>
       <div class="foot__side">
         <h2>AI Skin Test</h2>
         <p>2분 설문으로 나의 노화 타입과<br>먼저 관리할 부위를 확인하세요.</p>
@@ -113,8 +141,9 @@ AIFAB = ('<a class="aifab" href="survey.html" aria-label="AI 피부 진단 시�
          '<span class="aifab__txt">AI 피부 진단</span></a>\n')
 
 
-def tail(three=True, js=(), fab=True):
+def tail(three=True, js=(), fab=True, mods=()):
     mod = f'<script type="module" src="js/device3d.js?v={VER}"></script>\n' if three else ""
+    mod += "".join(f'<script type="module" src="{m}?v={VER}"></script>' + chr(10) for m in mods)
     return (AIFAB if fab else "") + f"""<script src="js/led.js?v={VER}"></script>
 <script src="js/stem.js?v={VER}"></script>
 {"".join(f'<script src="{j}?v={VER}"></script>' + chr(10) for j in js)}{mod}</body>
@@ -140,12 +169,11 @@ SOLUTIONS = [
 ]
 
 CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top%)
-    ("01 Read", "6가지 노화 타입", "나는 어떤 방식으로 나이 들고 있는가", "타입 보기", "aging-types.html", 13, 16),
-    ("02 Map", "22개 관리 부위", "어디를 먼저 관리해야 하는가", "부위 보기", "aging-map.html", 87, 16),
-    ("03 Tech", "5초 스탬핑", "어떻게 전달할 것인가", "기술 보기", "carecl-technology.html", 9, 62),
-    ("04 Product", "디바이스 · 코스메틱", "무엇으로 관리할 것인가", "제품 보기", "products.html", 91, 62),
-    ("05 AI Agent", "AI 피부 진단", "2분 진단으로 나의 타입과 우선 부위 확인", "진단 시작", "survey.html", 50, 100),
-]
+    ("01 Read", "6가지 노화 타입", "나는 어떤 방식으로 나이 들고 있는가", "타입 보기", "aging-types.html", 14, 20),
+    ("02 Map", "22개 관리 부위", "어디를 먼저 관리해야 하는가", "부위 보기", "aging-map.html", 86, 20),
+    ("03 Tech", "5초 스탬핑", "어떻게 전달할 것인가", "기술 보기", "carecl-technology.html", 14, 74),
+    ("04 Product", "디바이스 · 코스메틱", "무엇으로 관리할 것인가", "제품 보기", "products.html", 86, 74),
+]   # 수정요청 261019: 다섯 가지 → 네 가지 기준 (AI 피부 진단은 아래 큰 버튼으로)
 
 PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크)
     ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html"),
@@ -173,16 +201,6 @@ CONTACTS = [
 
 
 def page_index():
-    sol = "\n".join(f"""      <a class="sol rv" href="{href}">
-        <span class="sol__tag">{tag}</span>
-        <div class="sol__txt">
-          <b class="sol__en">{en}</b>
-          <strong class="sol__kr">{kr}</strong>
-          <p>{desc}</p>
-        </div>
-        <div class="sol__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>
-      </a>""" for tag, en, kr, desc, img, href in SOLUTIONS)
-
     core = "\n".join(f"""      <div class="anno anno--core rv" data-anno style="left:{x}%;top:{y}%">
         <em class="anno__no">{no}</em>
         <h3 class="anno__title">{t}</h3>
@@ -190,13 +208,12 @@ def page_index():
         <a class="anno__link" href="{h}">{lk}</a>
       </div>""" for no, t, q, lk, h, x, y in CORE)
 
-    cov = "\n".join(
-        f'        <li class="cov__item" data-cov-item data-tag="{tag}" data-name="{name}" data-desc="{desc}" data-href="{href}">'
-        f'<a href="{href}" tabindex="-1"><img src="assets/img/{img}" alt="{name}" loading="lazy"></a></li>'
-        for tag, name, desc, img, href in PRODUCTS)
-    t0, n0, d0, _, h0 = PRODUCTS[0]
+    cards = "\n".join(f"""        <li class="pcard"><a href="{href}" draggable="false">
+          <div class="pcard__img"><img src="assets/img/{img}" alt="{name}" loading="lazy" draggable="false"></div>
+          <em>{tag}</em><b>{name}</b><span>{desc}</span>
+        </a></li>""" for tag, name, desc, img, href in PRODUCTS)
 
-    step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step>
+    step_items = "\n".join(f"""      <li class="step{" is-on" if i == 0 else ""}" data-step data-step-src="assets/img/{img}">
         <div class="step__img"><img src="assets/img/{img}" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">{i + 1:02d}</span>
         <div>
@@ -210,8 +227,6 @@ def page_index():
         <em>{en}</em><b>{kr}</b><p>{desc}</p>
       </a>""" for i, (en, kr, desc, h) in enumerate(CONTACTS))
 
-    marquee = "".join("<span>CARECL</span>" for _ in range(8))
-
     body = f"""<main>
 
   <!-- 01 상단 배너 -->
@@ -219,23 +234,11 @@ def page_index():
     <img class="hero__poster" src="assets/img/main-film-poster.jpg?v={VER}" alt="">
     <video class="hero__video" src="assets/video/main-film.mp4?v={VER}" poster="assets/img/main-film-poster.jpg?v={VER}"
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-    <div class="hero__copy">
+    <div class="hero__copy" data-merge>
       <p class="hero__eyebrow">Anti-Aging Skincare</p>
-      <h1 class="hero__title">Every face ages differently.<br>Every face deserves its own care.</h1>
+      <!-- care CLINICAL LEVEL → 화면을 내리면 careCL로 합쳐진다 (stem.js heroMerge) -->
+      <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL"><span class="mg mg--care">care</span><span class="mg mg--drop" data-mg>&nbsp;</span><span class="mg mg--cl">CL</span><span class="mg mg--drop" data-mg>INICAL&nbsp;LEVEL</span></h1>
       <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
-    </div>
-  </section>
-
-  <!-- 02 배너 설명 : careCL Solution -->
-  <section class="sols" data-led="red" aria-labelledby="sols-title">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="label rv">careCL Solution</h2>
-        <p class="sec-title rv" id="sols-title" data-d="1">케어클이 제안하는<br>세 가지 홈 에이징 케어</p>
-      </div>
-      <div class="sols__list">
-{sol}
-      </div>
     </div>
   </section>
 
@@ -251,23 +254,30 @@ def page_index():
     </div>
   </section>
 
-  <!-- 04 핵심 (가운데 9구 LED 헤드 + 주변 다섯 항목) -->
+  <!-- 04 핵심 (가운데 물방울 속 로고 + 주변 네 항목) -->
   <section class="core" data-led="green" aria-labelledby="core-title">
     <div class="wrap">
       <div class="sec-head sec-head--center">
         <h2 class="label label--center rv">How careCL Works</h2>
-        <p class="sec-title rv" id="core-title" data-d="1">케어클의 다섯 가지 기준</p>
+        <p class="sec-title rv" id="core-title" data-d="1">케어클의 네 가지 기준</p>
       </div>
     </div>
     <div class="core__stage" data-phil>
       <svg class="phil__lines" aria-hidden="true"></svg>
       <div class="core__center">
-        <div class="led9 core__head" data-led9 data-anno-target><canvas></canvas></div>
-        <span class="core__logo">{LOGO}</span>
+        <div class="bubble core__bubble" data-bubble="logo" data-anno-target data-anno-r=".4" role="img" aria-label="물방울 속 careCL 로고">
+          <span class="bubble__fallback">{LOGO}</span>
+        </div>
       </div>
 {core}
     </div>
-    <div class="core__cta"><a class="btn-line" href="survey.html">나의 Aging Type 알아보기 →</a></div>
+    <div class="core__cta">
+      <a class="aicta" href="survey.html">
+        <span class="aicta__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/><circle cx="19.4" cy="4.2" r="1.7" fill="currentColor"/></svg></span>
+        <span class="aicta__txt"><small>AI Skin Test · 2분 진단</small><b>AI 피부 진단 시작하기</b></span>
+        <span class="aicta__arr" aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 
   <!-- 05 환기용 이미지 -->
@@ -280,29 +290,25 @@ def page_index():
     </div>
   </section>
 
-  <!-- 06 콜렉션 (3D 커버플로) -->
-  <section class="coll" data-led="yellow" data-cov aria-labelledby="coll-title">
+  <!-- 06 콜렉션 (좌우 스크롤) -->
+  <section class="coll" data-led="yellow" aria-labelledby="coll-title">
     <div class="wrap">
       <div class="sec-head">
         <h2 class="label rv">Collection</h2>
         <p class="sec-title rv" id="coll-title" data-d="1">진단 결과에 맞춰<br>조합하는 제품</p>
       </div>
     </div>
-    <div class="cov" data-cov-stage>
-      <ul class="cov__list">
-{cov}
+    <div class="hscroll" data-hscroll>
+      <ul class="hscroll__list" data-hscroll-list>
+{cards}
       </ul>
     </div>
-    <div class="wrap">
-      <div class="cov__foot">
-        <button type="button" class="cov__nav" data-cov-prev aria-label="이전 제품">←</button>
-        <div class="cov__cap" aria-live="polite">
-          <em data-cov-tag>{t0}</em><b data-cov-name>{n0}</b><span data-cov-desc>{d0}</span>
-          <a class="cov__more" href="{h0}" data-cov-link>자세히 보기</a>
-        </div>
-        <button type="button" class="cov__nav" data-cov-next aria-label="다음 제품">→</button>
+    <div class="wrap hscroll__foot">
+      <div class="hscroll__bar" aria-hidden="true"><i data-hscroll-bar></i></div>
+      <div class="hscroll__btns">
+        <button type="button" class="cov__nav" data-hscroll-prev aria-label="이전 제품">←</button>
+        <button type="button" class="cov__nav" data-hscroll-next aria-label="다음 제품">→</button>
       </div>
-      <div class="cov__dots" data-cov-dots></div>
     </div>
   </section>
 
@@ -315,10 +321,9 @@ def page_index():
         <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
-        <div class="steps__stage" aria-hidden="true">
-          <span class="stage3d__glow"></span>
-          <span class="stage3d__floor"></span>
-          <div class="device3d" data-device3d></div>
+        <div class="steps__stage" data-steps-stage>
+          <div class="bubble steps__bubble" data-bubble="steps" aria-hidden="true"></div>
+          <a class="btn-roll btn-roll--solid steps__shop" href="{SHOP_HREF}" data-steps-shop><span class="btn-roll__t"><span>Shop now</span><span aria-hidden="true">Shop now</span></span><span class="btn-roll__arr" aria-hidden="true">→</span></a>
         </div>
         <ol class="steps__list" data-steps>
 {step_items}
@@ -335,12 +340,9 @@ def page_index():
         <h2 class="shop__title">Shop the Official Store</h2>
         <p class="shop__desc">진단 결과에 맞는 구성으로 담아 보세요.</p>
       </div>
-      <a class="btn-line" href="products.html">Shop 바로가기 →</a>
+      <a class="btn-roll btn-roll--solid btn-roll--lg" href="{SHOP_HREF}"><span class="btn-roll__t"><span>Shop 바로가기</span><span aria-hidden="true">Shop 바로가기</span></span><span class="btn-roll__arr" aria-hidden="true">→</span></a>
     </div>
   </section>
-
-  <!-- CARECL 롤링 -->
-  <div class="marq" aria-hidden="true"><div class="marq__track">{marquee}{marquee}</div></div>
 
   <!-- 09 문의 -->
   <section class="contact" data-led="green" aria-labelledby="contact-title">
@@ -359,7 +361,7 @@ def page_index():
 """
     return (head("careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다",
                  "얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어")
-            + loader() + header() + body + FOOTER + tail())
+            + loader() + header() + body + FOOTER + tail(three=False, mods=("js/bubble.js",)))
 
 
 PAGES = {"index.html": page_index}

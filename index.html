@@ -9,7 +9,8 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261019034902">
+<link rel="stylesheet" href="css/stem.css?v=261019174308">
+<link rel="stylesheet" href="css/home261019.css?v=261019174308">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -26,7 +27,7 @@
   <span class="loader__count" data-loader-count>00</span>
 </div>
 <header class="header">
-  <nav class="header__nav" aria-label="주 메뉴 왼쪽"><a href="about.html">Company</a><a href="aging-types.html">Aging Lab</a><a href="carecl-technology.html">Technology</a></nav>
+  <nav class="header__nav" aria-label="주 메뉴"><div class="hnav"><a class="hnav__top" href="about.html">Company</a><div class="hnav__sub"><div class="hnav__in"><a href="about.html"><b>About careCL</b><small>회사 소개</small></a><a href="greeting.html"><b>Our Story</b><small>브랜드 스토리</small></a><a href="rnd.html"><b>R&amp;D / Patent</b><small>연구개발 · 특허</small></a><a href="certification.html"><b>Awards &amp; Certification</b><small>수상 · 인증</small></a><a href="contact.html"><b>Contact</b><small>문의</small></a></div></div></div><div class="hnav"><a class="hnav__top" href="aging-types.html">Aging Lab</a><div class="hnav__sub"><div class="hnav__in"><a href="aging-types.html"><b>6 Aging Types</b><small>6가지 노화 타입</small></a><a href="aging-map.html"><b>Aging Map 22</b><small>22개 관리 부위</small></a><a href="survey.html"><b>AI Skin Test</b><small>2분 노화 타입 진단</small></a></div></div></div><div class="hnav"><a class="hnav__top" href="carecl-technology.html">Technology</a><div class="hnav__sub"><div class="hnav__in"><a href="carecl-technology.html"><b>careCL Technology</b><small>케어클 기술</small></a><a href="technology.html"><b>Beauty Device Technology</b><small>홈뷰티 디바이스 기술</small></a><a href="products.html"><b>Products</b><small>뷰티 디바이스</small></a><a href="cosmetics.html"><b>Cosmetics</b><small>코스메틱</small></a></div></div></div></nav>
   <a class="header__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
 <path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
 <path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
@@ -35,60 +36,27 @@
 <path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
 <path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
 </svg></a>
-  <nav class="header__nav header__nav--right" aria-label="주 메뉴 오른쪽"><a href="products.html">Products</a><a href="contact.html">Contact</a></nav>
+  <nav class="header__nav header__nav--right header__util" aria-label="쇼핑 · 로그인 · 언어">
+    <a href="products.html">Shop</a><a href="#">Login</a>
+    <span class="header__lang"><a href="#" aria-current="true" lang="ko">KR</a><i aria-hidden="true">/</i><a href="#" lang="en">EN</a></span>
+  </nav>
   <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
 </header>
-<nav class="mnav" aria-label="모바일 메뉴"><a href="about.html">Company<small>회사 소개</small></a><a href="aging-types.html">Aging Lab<small>6가지 노화 타입 · 22개 관리 부위</small></a><a href="carecl-technology.html">Technology<small>케어클 기술</small></a><a href="products.html">Products<small>디바이스 · 코스메틱</small></a><a href="contact.html">Contact<small>문의</small></a><a href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></nav>
+<nav class="mnav" aria-label="모바일 메뉴"><div class="mnav__grp"><a class="mnav__top" href="about.html">Company</a><a class="mnav__sub" href="about.html">About careCL<small>회사 소개</small></a><a class="mnav__sub" href="greeting.html">Our Story<small>브랜드 스토리</small></a><a class="mnav__sub" href="rnd.html">R&amp;D / Patent<small>연구개발 · 특허</small></a><a class="mnav__sub" href="certification.html">Awards &amp; Certification<small>수상 · 인증</small></a><a class="mnav__sub" href="contact.html">Contact<small>문의</small></a></div><div class="mnav__grp"><a class="mnav__top" href="aging-types.html">Aging Lab</a><a class="mnav__sub" href="aging-types.html">6 Aging Types<small>6가지 노화 타입</small></a><a class="mnav__sub" href="aging-map.html">Aging Map 22<small>22개 관리 부위</small></a><a class="mnav__sub" href="survey.html">AI Skin Test<small>2분 노화 타입 진단</small></a></div><div class="mnav__grp"><a class="mnav__top" href="carecl-technology.html">Technology</a><a class="mnav__sub" href="carecl-technology.html">careCL Technology<small>케어클 기술</small></a><a class="mnav__sub" href="technology.html">Beauty Device Technology<small>홈뷰티 디바이스 기술</small></a><a class="mnav__sub" href="products.html">Products<small>뷰티 디바이스</small></a><a class="mnav__sub" href="cosmetics.html">Cosmetics<small>코스메틱</small></a></div>
+  <div class="mnav__util"><a href="products.html">Shop</a><a href="#">Login</a><span class="header__lang"><a href="#" aria-current="true">KR</a><i aria-hidden="true">/</i><a href="#">EN</a></span></div>
+</nav>
 <main>
 
   <!-- 01 상단 배너 -->
   <section class="hero" aria-label="메인 영상">
-    <img class="hero__poster" src="assets/img/main-film-poster.jpg?v=261019034902" alt="">
-    <video class="hero__video" src="assets/video/main-film.mp4?v=261019034902" poster="assets/img/main-film-poster.jpg?v=261019034902"
+    <img class="hero__poster" src="assets/img/main-film-poster.jpg?v=261019174308" alt="">
+    <video class="hero__video" src="assets/video/main-film.mp4?v=261019174308" poster="assets/img/main-film-poster.jpg?v=261019174308"
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-    <div class="hero__copy">
+    <div class="hero__copy" data-merge>
       <p class="hero__eyebrow">Anti-Aging Skincare</p>
-      <h1 class="hero__title">Every face ages differently.<br>Every face deserves its own care.</h1>
+      <!-- care CLINICAL LEVEL → 화면을 내리면 careCL로 합쳐진다 (stem.js heroMerge) -->
+      <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL"><span class="mg mg--care">care</span><span class="mg mg--drop" data-mg>&nbsp;</span><span class="mg mg--cl">CL</span><span class="mg mg--drop" data-mg>INICAL&nbsp;LEVEL</span></h1>
       <p class="hero__kr">노화는 저마다 다릅니다. 그래서 관리도 달라야 합니다.</p>
-    </div>
-  </section>
-
-  <!-- 02 배너 설명 : careCL Solution -->
-  <section class="sols" data-led="red" aria-labelledby="sols-title">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="label rv">careCL Solution</h2>
-        <p class="sec-title rv" id="sols-title" data-d="1">케어클이 제안하는<br>세 가지 홈 에이징 케어</p>
-      </div>
-      <div class="sols__list">
-      <a class="sol rv" href="products.html">
-        <span class="sol__tag">Device</span>
-        <div class="sol__txt">
-          <b class="sol__en">Device Solution</b>
-          <strong class="sol__kr">정해진 자리에 머무르는 스탬핑 디바이스</strong>
-          <p>문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.</p>
-        </div>
-        <div class="sol__img"><img src="assets/img/c-techfit-case.jpg" alt="" loading="lazy"></div>
-      </a>
-      <a class="sol rv" href="cosmetics.html">
-        <span class="sol__tag">Cosmetics</span>
-        <div class="sol__txt">
-          <b class="sol__en">Beauty Solution</b>
-          <strong class="sol__kr">디바이스와 함께 쓰는 전용 코스메틱</strong>
-          <p>그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.</p>
-        </div>
-        <div class="sol__img"><img src="assets/img/c-gel-drop.jpg" alt="" loading="lazy"></div>
-      </a>
-      <a class="sol rv" href="aging-map.html">
-        <span class="sol__tag">Aging Map 22</span>
-        <div class="sol__txt">
-          <b class="sol__en">Care Solution</b>
-          <strong class="sol__kr">얼굴과 목 · 바디를 22개 부위로</strong>
-          <p>나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.</p>
-        </div>
-        <div class="sol__img"><img src="assets/img/n-mask-glass-wide.jpg" alt="" loading="lazy"></div>
-      </a>
-      </div>
     </div>
   </section>
 
@@ -104,19 +72,19 @@
     </div>
   </section>
 
-  <!-- 04 핵심 (가운데 9구 LED 헤드 + 주변 다섯 항목) -->
+  <!-- 04 핵심 (가운데 물방울 속 로고 + 주변 네 항목) -->
   <section class="core" data-led="green" aria-labelledby="core-title">
     <div class="wrap">
       <div class="sec-head sec-head--center">
         <h2 class="label label--center rv">How careCL Works</h2>
-        <p class="sec-title rv" id="core-title" data-d="1">케어클의 다섯 가지 기준</p>
+        <p class="sec-title rv" id="core-title" data-d="1">케어클의 네 가지 기준</p>
       </div>
     </div>
     <div class="core__stage" data-phil>
       <svg class="phil__lines" aria-hidden="true"></svg>
       <div class="core__center">
-        <div class="led9 core__head" data-led9 data-anno-target><canvas></canvas></div>
-        <span class="core__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
+        <div class="bubble core__bubble" data-bubble="logo" data-anno-target data-anno-r=".4" role="img" aria-label="물방울 속 careCL 로고">
+          <span class="bubble__fallback"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
 <path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
 <path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
 <path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
@@ -124,79 +92,94 @@
 <path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
 <path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
 </svg></span>
+        </div>
       </div>
-      <div class="anno anno--core rv" data-anno style="left:13%;top:16%">
+      <div class="anno anno--core rv" data-anno style="left:14%;top:20%">
         <em class="anno__no">01 Read</em>
         <h3 class="anno__title">6가지 노화 타입</h3>
         <p class="anno__desc">나는 어떤 방식으로 나이 들고 있는가</p>
         <a class="anno__link" href="aging-types.html">타입 보기</a>
       </div>
-      <div class="anno anno--core rv" data-anno style="left:87%;top:16%">
+      <div class="anno anno--core rv" data-anno style="left:86%;top:20%">
         <em class="anno__no">02 Map</em>
         <h3 class="anno__title">22개 관리 부위</h3>
         <p class="anno__desc">어디를 먼저 관리해야 하는가</p>
         <a class="anno__link" href="aging-map.html">부위 보기</a>
       </div>
-      <div class="anno anno--core rv" data-anno style="left:9%;top:62%">
+      <div class="anno anno--core rv" data-anno style="left:14%;top:74%">
         <em class="anno__no">03 Tech</em>
         <h3 class="anno__title">5초 스탬핑</h3>
         <p class="anno__desc">어떻게 전달할 것인가</p>
         <a class="anno__link" href="carecl-technology.html">기술 보기</a>
       </div>
-      <div class="anno anno--core rv" data-anno style="left:91%;top:62%">
+      <div class="anno anno--core rv" data-anno style="left:86%;top:74%">
         <em class="anno__no">04 Product</em>
         <h3 class="anno__title">디바이스 · 코스메틱</h3>
         <p class="anno__desc">무엇으로 관리할 것인가</p>
         <a class="anno__link" href="products.html">제품 보기</a>
       </div>
-      <div class="anno anno--core rv" data-anno style="left:50%;top:100%">
-        <em class="anno__no">05 AI Agent</em>
-        <h3 class="anno__title">AI 피부 진단</h3>
-        <p class="anno__desc">2분 진단으로 나의 타입과 우선 부위 확인</p>
-        <a class="anno__link" href="survey.html">진단 시작</a>
-      </div>
     </div>
-    <div class="core__cta"><a class="btn-line" href="survey.html">나의 Aging Type 알아보기 →</a></div>
+    <div class="core__cta">
+      <a class="aicta" href="survey.html">
+        <span class="aicta__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/><circle cx="19.4" cy="4.2" r="1.7" fill="currentColor"/></svg></span>
+        <span class="aicta__txt"><small>AI Skin Test · 2분 진단</small><b>AI 피부 진단 시작하기</b></span>
+        <span class="aicta__arr" aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 
   <!-- 05 환기용 이미지 -->
   <section class="sys" data-led="yellow" aria-labelledby="sys-title">
     <div class="sys__img">
-      <img src="assets/img/m-model.jpg?v=261019034902" alt="고개를 돌려 미소 짓는 케어클 모델" loading="lazy" width="2400" height="1405" data-zoom>
+      <img src="assets/img/m-model.jpg?v=261019174308" alt="고개를 돌려 미소 짓는 케어클 모델" loading="lazy" width="2400" height="1405" data-zoom>
       <div class="sys__copy">
         <p class="sys__title rv" id="sys-title"><span class="sys__en">Clinic-level care,</span><span class="sys__kr">집 안의 리추얼로</span></p>
       </div>
     </div>
   </section>
 
-  <!-- 06 콜렉션 (3D 커버플로) -->
-  <section class="coll" data-led="yellow" data-cov aria-labelledby="coll-title">
+  <!-- 06 콜렉션 (좌우 스크롤) -->
+  <section class="coll" data-led="yellow" aria-labelledby="coll-title">
     <div class="wrap">
       <div class="sec-head">
         <h2 class="label rv">Collection</h2>
         <p class="sec-title rv" id="coll-title" data-d="1">진단 결과에 맞춰<br>조합하는 제품</p>
       </div>
     </div>
-    <div class="cov" data-cov-stage>
-      <ul class="cov__list">
-        <li class="cov__item" data-cov-item data-tag="Device" data-name="TechFit" data-desc="5초 스탬핑 고주파 디바이스" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-techfit.jpg" alt="TechFit" loading="lazy"></a></li>
-        <li class="cov__item" data-cov-item data-tag="Device" data-name="CLB" data-desc="고주파 마사지기" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-clb.jpg" alt="CLB" loading="lazy"></a></li>
-        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Collagen Booster Gel" data-desc="콜라겐 부스터 젤" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-gel.jpg" alt="Collagen Booster Gel" loading="lazy"></a></li>
-        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Grid Mask" data-desc="그리드 마스크" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-mask.jpg" alt="Grid Mask" loading="lazy"></a></li>
-        <li class="cov__item" data-cov-item data-tag="Cosmetic" data-name="Toning Serum" data-desc="라이트 토닝 세럼" data-href="cosmetics.html"><a href="cosmetics.html" tabindex="-1"><img src="assets/img/p-serum.jpg" alt="Toning Serum" loading="lazy"></a></li>
-        <li class="cov__item" data-cov-item data-tag="Accessory" data-name="Firenze Bag" data-desc="케어클 피렌체 백 · 디바이스 전용 가죽 케이스" data-href="products.html"><a href="products.html" tabindex="-1"><img src="assets/img/p-case.jpg" alt="Firenze Bag" loading="lazy"></a></li>
+    <div class="hscroll" data-hscroll>
+      <ul class="hscroll__list" data-hscroll-list>
+        <li class="pcard"><a href="products.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-techfit.jpg" alt="TechFit" loading="lazy" draggable="false"></div>
+          <em>Device</em><b>TechFit</b><span>5초 스탬핑 고주파 디바이스</span>
+        </a></li>
+        <li class="pcard"><a href="products.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-clb.jpg" alt="CLB" loading="lazy" draggable="false"></div>
+          <em>Device</em><b>CLB</b><span>고주파 마사지기</span>
+        </a></li>
+        <li class="pcard"><a href="cosmetics.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-gel.jpg" alt="Collagen Booster Gel" loading="lazy" draggable="false"></div>
+          <em>Cosmetic</em><b>Collagen Booster Gel</b><span>콜라겐 부스터 젤</span>
+        </a></li>
+        <li class="pcard"><a href="cosmetics.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-mask.jpg" alt="Grid Mask" loading="lazy" draggable="false"></div>
+          <em>Cosmetic</em><b>Grid Mask</b><span>그리드 마스크</span>
+        </a></li>
+        <li class="pcard"><a href="cosmetics.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-serum.jpg" alt="Toning Serum" loading="lazy" draggable="false"></div>
+          <em>Cosmetic</em><b>Toning Serum</b><span>라이트 토닝 세럼</span>
+        </a></li>
+        <li class="pcard"><a href="products.html" draggable="false">
+          <div class="pcard__img"><img src="assets/img/p-case.jpg" alt="Firenze Bag" loading="lazy" draggable="false"></div>
+          <em>Accessory</em><b>Firenze Bag</b><span>케어클 피렌체 백 · 디바이스 전용 가죽 케이스</span>
+        </a></li>
       </ul>
     </div>
-    <div class="wrap">
-      <div class="cov__foot">
-        <button type="button" class="cov__nav" data-cov-prev aria-label="이전 제품">←</button>
-        <div class="cov__cap" aria-live="polite">
-          <em data-cov-tag>Device</em><b data-cov-name>TechFit</b><span data-cov-desc>5초 스탬핑 고주파 디바이스</span>
-          <a class="cov__more" href="products.html" data-cov-link>자세히 보기</a>
-        </div>
-        <button type="button" class="cov__nav" data-cov-next aria-label="다음 제품">→</button>
+    <div class="wrap hscroll__foot">
+      <div class="hscroll__bar" aria-hidden="true"><i data-hscroll-bar></i></div>
+      <div class="hscroll__btns">
+        <button type="button" class="cov__nav" data-hscroll-prev aria-label="이전 제품">←</button>
+        <button type="button" class="cov__nav" data-hscroll-next aria-label="다음 제품">→</button>
       </div>
-      <div class="cov__dots" data-cov-dots></div>
     </div>
   </section>
 
@@ -209,13 +192,12 @@
         <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
       </div>
       <div class="steps__body">
-        <div class="steps__stage" aria-hidden="true">
-          <span class="stage3d__glow"></span>
-          <span class="stage3d__floor"></span>
-          <div class="device3d" data-device3d></div>
+        <div class="steps__stage" data-steps-stage>
+          <div class="bubble steps__bubble" data-bubble="steps" aria-hidden="true"></div>
+          <a class="btn-roll btn-roll--solid steps__shop" href="products.html" data-steps-shop><span class="btn-roll__t"><span>Shop now</span><span aria-hidden="true">Shop now</span></span><span class="btn-roll__arr" aria-hidden="true">→</span></a>
         </div>
         <ol class="steps__list" data-steps>
-      <li class="step is-on" data-step>
+      <li class="step is-on" data-step data-step-src="assets/img/p-gel.jpg">
         <div class="step__img"><img src="assets/img/p-gel.jpg" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">01</span>
         <div>
@@ -224,7 +206,7 @@
           <p class="step__desc">잔여물을 정리해 다음 단계가 제대로 전달되도록 준비합니다.</p>
         </div>
       </li>
-      <li class="step" data-step>
+      <li class="step" data-step data-step-src="assets/img/s-mask-glass.jpg">
         <div class="step__img"><img src="assets/img/s-mask-glass.jpg" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">02</span>
         <div>
@@ -233,7 +215,7 @@
           <p class="step__desc">오늘 먼저 관리할 부위를 Aging Map 22 기준으로 확인합니다.</p>
         </div>
       </li>
-      <li class="step" data-step>
+      <li class="step" data-step data-step-src="assets/img/p-techfit.jpg">
         <div class="step__img"><img src="assets/img/p-techfit.jpg" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">03</span>
         <div>
@@ -242,7 +224,7 @@
           <p class="step__desc">한 부위에 머무르며 수직으로 전달합니다.</p>
         </div>
       </li>
-      <li class="step" data-step>
+      <li class="step" data-step data-step-src="assets/img/p-serum.jpg">
         <div class="step__img"><img src="assets/img/p-serum.jpg" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">04</span>
         <div>
@@ -251,7 +233,7 @@
           <p class="step__desc">전용 코스메틱으로 전달 직후의 피부를 안정시킵니다.</p>
         </div>
       </li>
-      <li class="step" data-step>
+      <li class="step" data-step data-step-src="assets/img/n-lineup-sq.jpg">
         <div class="step__img"><img src="assets/img/n-lineup-sq.jpg" alt="" loading="lazy"></div>
         <span class="step__num" aria-hidden="true">05</span>
         <div>
@@ -267,18 +249,15 @@
 
   <!-- 08 샵 링크 (스크롤하면 높이가 화면 가득) -->
   <section class="shop" data-shop data-led="red">
-    <div class="shop__bg"><img src="assets/img/m-model-set.jpg?v=261019034902" alt="TechFit 풀세트와 디바이스를 든 모델" loading="lazy"></div>
+    <div class="shop__bg"><img src="assets/img/m-model-set.jpg?v=261019174308" alt="TechFit 풀세트와 디바이스를 든 모델" loading="lazy"></div>
     <div class="wrap shop__inner">
       <div>
         <h2 class="shop__title">Shop the Official Store</h2>
         <p class="shop__desc">진단 결과에 맞는 구성으로 담아 보세요.</p>
       </div>
-      <a class="btn-line" href="products.html">Shop 바로가기 →</a>
+      <a class="btn-roll btn-roll--solid btn-roll--lg" href="products.html"><span class="btn-roll__t"><span>Shop 바로가기</span><span aria-hidden="true">Shop 바로가기</span></span><span class="btn-roll__arr" aria-hidden="true">→</span></a>
     </div>
   </section>
-
-  <!-- CARECL 롤링 -->
-  <div class="marq" aria-hidden="true"><div class="marq__track"><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span><span>CARECL</span></div></div>
 
   <!-- 09 문의 -->
   <section class="contact" data-led="green" aria-labelledby="contact-title">
@@ -308,17 +287,6 @@
 <footer class="foot">
   <div class="wrap">
     <div class="foot__top">
-      <div class="foot__brand">
-        <span class="foot__tag">Home Aging Care</span>
-        <a class="foot__logo" href="index.html" aria-label="careCL 홈"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.82 132.97" role="img" aria-label="careCL">
-<path fill="currentColor" fill-rule="nonzero" d="M72.82 111.66 L80.49 114.40 C79.09 116.34 77.51 118.19 75.73 119.97 C67.06 128.64 56.59 132.97 44.32 132.97 C32.10 132.97 21.66 128.64 13.00 119.97 C4.33 111.31 0.00 100.84 0.00 88.57 C0.00 76.35 4.33 65.91 13.00 57.24 C21.66 48.58 32.10 44.24 44.32 44.24 C56.59 44.24 67.06 48.58 75.73 57.24 C77.51 59.02 79.09 60.85 80.49 62.73 L72.82 65.56 C72.01 64.59 71.15 63.62 70.24 62.65 C63.08 55.55 54.44 51.99 44.32 51.99 C34.26 51.99 25.65 55.56 18.49 62.69 C11.33 69.82 7.75 78.45 7.75 88.57 C7.75 98.68 11.33 107.32 18.49 114.48 C25.65 121.64 34.26 125.22 44.32 125.22 C54.44 125.22 63.08 121.64 70.24 114.48 C71.15 113.57 72.01 112.62 72.82 111.66"/>
-<path fill="currentColor" fill-rule="nonzero" d="M178.18 95.83 L178.18 81.46 C176.83 74.36 173.47 68.11 168.09 62.73 C160.93 55.57 152.29 51.99 142.17 51.99 C132.05 51.99 123.41 55.57 116.26 62.73 C109.10 69.89 105.52 78.53 105.52 88.64 C105.52 98.76 109.10 107.39 116.26 114.52 C123.41 121.65 132.05 125.22 142.17 125.22 C152.29 125.22 160.93 121.64 168.09 114.48 C173.47 109.10 176.83 102.88 178.18 95.83 M185.45 130.71 L178.18 130.71 L178.18 114.56 C176.78 116.45 175.25 118.25 173.58 119.97 C164.91 128.64 154.45 132.97 142.17 132.97 C129.95 132.97 119.51 128.64 110.85 119.97 C102.18 111.31 97.85 100.86 97.85 88.64 C97.85 76.37 102.18 65.91 110.85 57.24 C119.51 48.57 129.95 44.24 142.17 44.24 C154.45 44.24 164.91 48.57 173.58 57.24 C175.25 58.96 176.78 60.77 178.18 62.65 L178.18 51.43 L185.45 51.43 L185.45 130.71"/>
-<path fill="currentColor" fill-rule="nonzero" d="M209.67 51.43 L216.93 51.43 L216.93 65.88 C218.44 63.73 220.19 61.65 222.18 59.66 C228.58 53.26 235.15 49.89 241.88 49.57 L241.88 57.48 C237.30 57.70 232.57 60.26 227.67 65.15 C220.78 71.99 217.20 80.20 216.93 89.78 L216.93 130.71 L209.67 130.71 L209.67 51.43"/>
-<path fill="currentColor" fill-rule="nonzero" d="M319.14 59.26 C312.84 54.41 305.52 51.99 297.18 51.99 C287.12 51.99 278.50 55.56 271.35 62.69 C264.19 69.82 260.61 78.45 260.61 88.57 C260.61 96.91 263.03 104.23 267.87 110.52 L319.14 59.26 M272.80 115.85 C279.63 122.10 287.76 125.22 297.18 125.22 C307.30 125.22 315.94 121.64 323.10 114.48 C324.01 113.57 324.87 112.62 325.68 111.66 L333.35 114.40 C331.95 116.34 330.36 118.19 328.59 119.97 C319.92 128.64 309.45 132.97 297.18 132.97 C284.96 132.97 274.52 128.64 265.86 119.97 C257.19 111.31 252.86 100.84 252.86 88.57 C252.86 76.35 257.19 65.91 265.86 57.24 C274.52 48.58 284.96 44.24 297.18 44.24 C307.68 44.24 316.85 47.39 324.71 53.69 C326.00 54.77 327.30 55.95 328.59 57.24 C329.07 57.72 329.53 58.21 329.96 58.69 L324.47 64.18 L272.80 115.85"/>
-<path fill="currentColor" fill-rule="nonzero" d="M455.82 110.12 L461.31 115.05 C448.72 126.51 433.89 132.24 416.83 132.24 C398.53 132.24 382.93 125.80 370.05 112.91 C357.15 100.02 350.71 84.42 350.71 66.12 C350.71 47.88 357.15 32.29 370.05 19.38 C382.93 6.46 398.53 0.00 416.83 0.00 C433.89 0.00 448.72 5.73 461.31 17.20 L455.82 22.20 C444.74 12.35 431.74 7.43 416.83 7.43 C400.63 7.43 386.80 13.16 375.33 24.62 C363.87 36.09 358.14 49.92 358.14 66.12 C358.14 82.38 363.87 96.23 375.33 107.70 C386.80 119.16 400.63 124.89 416.83 124.89 C431.74 124.89 444.74 119.97 455.82 110.12"/>
-<path fill="currentColor" fill-rule="nonzero" d="M481.50 130.71 L481.50 1.53 L488.76 1.53 L488.76 123.44 L538.82 123.44 L538.82 130.71 L481.50 130.71"/>
-</svg></a>
-      </div>
       <div class="foot__side">
         <h2>AI Skin Test</h2>
         <p>2분 설문으로 나의 노화 타입과<br>먼저 관리할 부위를 확인하세요.</p>
@@ -339,8 +307,8 @@
   </div>
 </footer>
 <a class="aifab" href="survey.html" aria-label="AI 피부 진단 시작하기"><span class="aifab__ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.2 14 8.4 20.2 10.4 14 12.4 12 18.6 10 12.4 3.8 10.4 10 8.4Z" fill="currentColor"/><circle cx="19.4" cy="4.2" r="1.7" fill="currentColor" opacity=".9"/><circle cx="4.8" cy="18.4" r="1.2" fill="currentColor" opacity=".7"/></svg></span><span class="aifab__txt">AI 피부 진단</span></a>
-<script src="js/led.js?v=261019034902"></script>
-<script src="js/stem.js?v=261019034902"></script>
-<script type="module" src="js/device3d.js?v=261019034902"></script>
+<script src="js/led.js?v=261019174308"></script>
+<script src="js/stem.js?v=261019174308"></script>
+<script type="module" src="js/bubble.js?v=261019174308"></script>
 </body>
 </html>

@@ -100,7 +100,7 @@
       var db = drop.getBoundingClientRect();
       var cx = db.left + db.width / 2 - sb.left;
       var cy = db.top + db.height / 2 - sb.top;
-      var R = db.width * 0.5;                                  // 헤드 가장자리
+      var R = db.width * (parseFloat(drop.dataset.annoR) || 0.5);   // 물방울(헤드) 가장자리
 
       annos.forEach(function (a) {
         var ab = a.getBoundingClientRect();
@@ -142,11 +142,17 @@
     var imgs = [].slice.call(document.querySelectorAll('[data-step-img]'));
     var current = -1;
 
+    var stage = document.querySelector('[data-steps-stage]');
     function set(i) {
       if (i === current) return;
       current = i;
       items.forEach(function (el, k) { el.classList.toggle('is-on', k === i); });
       imgs.forEach(function (im) { im.classList.toggle('is-on', +im.dataset.stepImg === i); });
+      // 물방울 속 사진 교체 (js/bubble.js) · 마지막 단계에서 SHOP 버튼이 물방울 아래로 올라온다
+      if (stage) {
+        stage.classList.toggle('is-last', i === items.length - 1);
+        stage.dispatchEvent(new CustomEvent('stepchange', { detail: { index: i, src: items[i].dataset.stepSrc } }));
+      }
     }
 
     function update() {
@@ -165,6 +171,77 @@
     }, { passive: true });
     window.addEventListener('resize', update);
     update();
+  })();
+
+  /* ── 히어로 — care CLINICAL LEVEL이 화면을 내리면 careCL로 합쳐진다 (수정요청 261019) ── */
+  (function heroMerge() {
+    var box = document.querySelector('[data-merge]');
+    if (!box) return;
+    var hero = box.closest('.hero'), drops = [].slice.call(box.querySelectorAll('[data-mg]')), widths = [];
+    function measure() {
+      drops.forEach(function (d) { d.style.width = 'auto'; });
+      widths = drops.map(function (d) { return d.getBoundingClientRect().width; });
+      update();
+    }
+    function update() {
+      var h = hero.offsetHeight || innerHeight;
+      // 첫 화면 1/6을 내릴 때부터 시작해 화면 절반쯤에서 완전히 careCL
+      var p = reduce ? 0 : Math.max(0, Math.min(1, (scrollY - h * 0.06) / (h * 0.36)));
+      var e = p * p * (3 - 2 * p);
+      drops.forEach(function (d, i) {
+        d.style.width = (widths[i] * (1 - e)).toFixed(1) + 'px';
+        d.style.opacity = String(Math.max(0, 1 - e * 1.6));
+      });
+      box.classList.toggle('is-merged', e > 0.98);
+    }
+    var raf = 0;
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; update(); }); }, { passive: true });
+    addEventListener('resize', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    measure();
+  })();
+
+  /* ── 콜렉션 — 좌우로 넘겨 보는 제품 줄 (마우스로 끌어도 넘어간다) ── */
+  (function hscroll() {
+    var box = document.querySelector('[data-hscroll]');
+    if (!box) return;
+    var list = box.querySelector('[data-hscroll-list]'), bar = document.querySelector('[data-hscroll-bar]');
+    function step() { var c = list.querySelector('.pcard'); return c ? c.getBoundingClientRect().width + 24 : 300; }
+    var prev = document.querySelector('[data-hscroll-prev]'), next = document.querySelector('[data-hscroll-next]');
+    if (prev) prev.addEventListener('click', function () { list.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { list.scrollBy({ left: step(), behavior: 'smooth' }); });
+    function sync() {
+      if (!bar) return;
+      var max = list.scrollWidth - list.clientWidth, vis = list.clientWidth / list.scrollWidth;
+      bar.style.width = (vis * 100).toFixed(1) + '%';
+      bar.style.transform = 'translateX(' + (max > 0 ? list.scrollLeft / max * (1 / vis - 1) * 100 : 0).toFixed(1) + '%)';
+    }
+    list.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+    // 마우스 끌기 — 조금이라도 끌었으면 카드 링크는 눌리지 않게
+    var x0 = null, s0 = 0, moved = false;
+    list.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      x0 = e.clientX; s0 = list.scrollLeft; moved = false;
+    });
+    addEventListener('pointermove', function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0;
+      if (!moved && Math.abs(dx) > 5) { moved = true; list.classList.add('is-drag'); }
+      if (moved) list.scrollLeft = s0 - dx;
+    });
+    addEventListener('pointerup', function () {
+      if (x0 === null) return;
+      x0 = null;
+      if (moved) {
+        list.classList.remove('is-drag');
+        // 손을 떼면 가장 가까운 카드에 맞춘다
+        var w = step(), at = Math.round(list.scrollLeft / w);
+        list.scrollTo({ left: at * w, behavior: 'smooth' });
+      }
+    });
+    list.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
   })();
 
   /* ── 콜렉션 3D 커버플로 ─────────────────────── */
