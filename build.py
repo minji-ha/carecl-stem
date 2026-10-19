@@ -22,28 +22,23 @@ def read(p):
 # ── 로고 (벡터, currentColor) ─────────────────────────────
 LOGO = re.sub(r"<title>.*?</title>\s*", "", read("assets/img/carecl-logo.svg"), flags=re.S).strip()
 
-# ── 메뉴 (1뎁스 · 링크 · 한글) ───────────────────────────
-NAV_LEFT = [("Company", "about.html", "회사 소개"),
-            ("Aging Lab", "aging-types.html", "6가지 노화 타입 · 22개 관리 부위"),
-            ("Technology", "carecl-technology.html", "케어클 기술")]
-NAV_RIGHT = [("Products", "products.html", "디바이스 · 코스메틱"),
-             ("Contact", "contact.html", "문의")]
-
-# 헤더 드롭다운 (수정요청 261019) — 마우스를 올리면 소제목이 펼쳐진다.
-# COMPANY 아래 CONTACT, TECHNOLOGY 아래 PRODUCTS · COSMETICS
+# ── 메뉴 — 노션 '케어클 홈페이지 구성' 메뉴 구조 그대로 (COMPANY / AGING LAB / TECHNOLOGY / PRODUCTS / CONTACT)
+# 헤더 드롭다운·모바일 메뉴·푸터가 모두 이 표를 쓴다. 서브 페이지 탭(MENU)도 같은 순서.
 HNAV = [
     ("Company", "about.html", [("About careCL", "about.html", "회사 소개"),
                                ("Our Story", "greeting.html", "브랜드 스토리"),
                                ("R&amp;D / Patent", "rnd.html", "연구개발 · 특허"),
-                               ("Awards &amp; Certification", "certification.html", "수상 · 인증"),
-                               ("Contact", "contact.html", "문의")]),
+                               ("Awards &amp; Certification", "certification.html", "수상 · 인증")]),
     ("Aging Lab", "aging-types.html", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
-                                       ("Aging Map 22", "aging-map.html", "22개 관리 부위"),
-                                       ("AI Skin Test", "survey.html", "2분 노화 타입 진단")]),
-    ("Technology", "carecl-technology.html", [("careCL Technology", "carecl-technology.html", "케어클 기술"),
-                                              ("Beauty Device Technology", "technology.html", "홈뷰티 디바이스 기술"),
-                                              ("Products", "products.html", "뷰티 디바이스"),
-                                              ("Cosmetics", "cosmetics.html", "코스메틱")]),
+                                       ("Aging Map 22", "aging-map.html", "22개 관리 부위")]),
+    ("Technology", "technology.html", [("Beauty Device Technology", "technology.html", "홈뷰티 디바이스 기술"),
+                                       ("careCL Technology", "carecl-technology.html", "케어클 기술")]),
+    ("Products", "products.html", [("Beauty Device", "products.html", "뷰티 디바이스"),
+                                   ("Cosmetics", "cosmetics.html", "코스메틱")]),
+    ("Contact", "contact.html", [("Global Business", "contact.html", "해외 사업 문의"),
+                                 ("Distributor / Partnership", "partnership.html", "유통 · 제휴 문의"),
+                                 ("Media / PR", "press.html", "미디어 문의"),
+                                 ("General Inquiry", "inquiry.html", "일반 문의")]),
 ]
 # 오른쪽 — SHOP · LOGIN · KR/EN(작게). 공식몰·로그인 주소는 받는 대로 바꾼다.
 SHOP_HREF = "products.html"
@@ -95,8 +90,8 @@ def header(active=""):
   <nav class="header__nav" aria-label="주 메뉴">{left}</nav>
   <a class="header__logo" href="index.html" aria-label="careCL 홈">{LOGO}</a>
   <nav class="header__nav header__nav--right header__util" aria-label="쇼핑 · 로그인 · 언어">
-    <a href="{SHOP_HREF}">Shop</a><a href="{LOGIN_HREF}">Login</a>
     <span class="header__lang"><a href="#" aria-current="true" lang="ko">KR</a><i aria-hidden="true">/</i><a href="#" lang="en">EN</a></span>
+    <a href="{SHOP_HREF}">Shop</a><a href="{LOGIN_HREF}">Login</a>
   </nav>
   <button class="header__menu" type="button" data-menu aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
 </header>
@@ -124,7 +119,7 @@ FOOTER = f"""<footer class="foot">
     </div>
     <div class="foot__row">
       <nav class="foot__nav" aria-label="푸터 메뉴">
-        {"".join(f'<a href="{h}">{t}</a>' for t, h, _ in NAV_LEFT + NAV_RIGHT)}
+        {"".join(f'<a href="{h}">{t}</a>' for t, h, _ in HNAV)}
       </nav>
       <div class="foot__sns">{"".join(f'<a href="#" aria-label="{t}"><img{c} src="assets/img/sns/{f}.svg" alt=""></a>' for t, f, c in SNS)}</div>
     </div>
@@ -413,7 +408,7 @@ HEAD_VISUAL = {"Company": ("C", "letter"),
                "Products": ("h-package.jpg", "photo photo--pkg"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
                "Aging Lab": ("h-model.jpg", "photo")}
-GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "carecl-technology.html",
+GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "technology.html",
               "Products": "products.html", "Contact": "contact.html"}
 
 # 기존 사진 → 새 사진 (사람 모델이 나온 사진은 제품·정물 컷으로)

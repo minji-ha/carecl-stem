@@ -208,3 +208,10 @@
 /* 넓은 화면에서 물방울이 무대(최대 1280px) 가장자리에서 잘리지 않게 — 캔버스는 화면 폭 전체, 가운데는 무대 가운데에 맞춘다 */
 .steps{overflow-x:clip}
 .steps__stage .steps__bubble{left:50%;right:auto;width:100vw;translate:-50% 0}
+/* 메뉴가 노션 구조(5개)로 늘어서, 로고와 겹치기 시작하는 1080px 이하는 햄버거 메뉴로 */
+@media (max-width:1080px){
+  .header{grid-template-columns:40px 1fr 40px}
+  .header__nav{display:none}
+  .header__logo{grid-column:2;justify-self:center}
+  .header__menu{display:block;grid-column:3;justify-self:end}
+}
