@@ -90,19 +90,26 @@ void main(){
           + spec(n, v, normalize(vec3(-0.2 + sin(uTime * 0.35) * 0.1, 0.3, 0.95)), 200.0) * 0.6;
   vec3 irid = 0.55 + 0.45 * cos(6.2831 * (fr * 1.2 + vec3(0.0, 0.33, 0.67)) + uTime * 0.2);
 
-  // 비눗방울: 거의 투명한 막 + 방 풍경(창·조명)이 옅게 비침 + 가장자리 연보라 띠와 흰 안쪽 선
-  float lr = dot(textureCube(uEnv, reflect(rd, n)).rgb, vec3(0.299, 0.587, 0.114));
-  float win = smoothstep(0.40, 0.75, lr);                              // 밝은 창
-  float edgeBand = smoothstep(0.35, 0.95, fr);                         // 가장자리 쪽 넓은 띠
-  vec3 lav = vec3(0.68, 0.68, 0.86);
-  vec3 col = mix(vec3(0.55, 0.55, 0.68), vec3(1.0), win);
-  col = mix(col, lav, edgeBand * 0.6 + outer * 0.8);
-  col = mix(col, irid, edgeBand * 0.25);
-  col = mix(col, vec3(1.0), band(fr, 0.70, 0.05) * 0.8);               // 흰 안쪽 선
-  col += vec3(1.0) * g * 0.7;
-  float ga = (1.0 - win) * 0.14 * (0.3 + fr) + win * 0.03 * fr
-           + edgeBand * 0.12 + outer * 0.34 + inner * 0.10 + band(fr, 0.70, 0.05) * 0.10 + g * 0.35;
-  ga = clamp(ga * uGlass, 0.0, 1.0);
+  // 콜라겐 젤: 속은 맑게 비우되 살짝 채워진 듯한 두께감, 아이보리·피치·라일락 펄,
+  // 방의 밝은 곳은 넓은 흰 빛으로, 가장자리와 아래쪽 안쪽에 부드러운 명암 띠
+  vec3 rr = reflect(rd, n);
+  vec3 soft = (textureCube(uEnv, rr).rgb + textureCube(uEnv, normalize(rr + vec3(0.08, 0.0, 0.0))).rgb
+             + textureCube(uEnv, normalize(rr + vec3(0.0, 0.08, 0.0))).rgb) / 3.0;
+  float sl = dot(soft, vec3(0.299, 0.587, 0.114));
+  float f2 = pow(1.0 - ndv, 1.35);
+  float light = smoothstep(0.82, 1.0, sl) * smoothstep(0.15, 0.6, f2 + 0.2), shade = 1.0 - smoothstep(0.25, 0.75, sl);
+  float edge = band(f2, 0.86, 0.07);
+  float under = band(f2, 0.56, 0.085) * smoothstep(-0.1, 0.85, -n.y);
+  float body = pow(ndv, 0.65);
+  vec3 pearl = mix(vec3(0.97, 0.76, 0.62), vec3(0.80, 0.76, 0.96), n.y * 0.5 + 0.5);
+  vec3 col = mix(vec3(0.99, 0.97, 0.94), pearl, 0.30 + f2 * 0.38);
+  col = mix(col, vec3(0.96, 0.78, 0.66), body * 0.30);                 // 속이 차 있는 느낌
+  col = mix(col, vec3(0.58, 0.50, 0.66), clamp(shade * (0.08 + f2 * 0.20) + edge * 0.45 + under * 0.32, 0.0, 1.0));
+  col = mix(col, irid, edge * 0.12);
+  col = mix(col, vec3(1.0), clamp(light * 0.72 + g * 0.95, 0.0, 1.0));
+  float ga = 0.03 + body * 0.07 + f2 * 0.26 + edge * 0.42 + under * 0.28 + shade * f2 * 0.14
+           + light * (0.10 + f2 * 0.30) + g * 0.50;
+  ga = clamp(ga * uGlass, 0.0, 0.82);
 
   // 굴절 광선이 안쪽 평면에 닿는 자리의 그림
   vec3 r = refract(rd, n, 0.8);
@@ -281,17 +288,36 @@ function tail(out, c, R, t, k, base = -0.35) {
   const a = base + Math.sin(t * 0.21) * 0.5, d = R * (1.12 + Math.sin(t * 0.37) * 0.08);
   out.push([c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, c[2] + R * 0.05, R * 0.3 * k]);
 }
-/* 마우스 쪽 혹 */
-function hoverBall(S, c, R, st) {
+/* 마우스 쪽 혹 — 마우스가 다가오면 그쪽으로 늘어나고, 들어오거나 빠질 때 주변에 작은 방울이 튄다 */
+function hoverBall(S, c, R, st, out) {
   const rc = S.renderer.domElement.getBoundingClientRect();
   const hx = S.w(mouse.x - rc.left) - S.W / S.H, hy = 1 - S.w(mouse.y - rc.top);
   const dx = hx - c[0], dy = hy - c[1], d = Math.hypot(dx, dy);
   const on = d < R * 1.9 ? 1 : 0;
+  const now = performance.now() / 1000, dt = Math.min(0.05, st.t ? now - st.t : 0.016); st.t = now;
+  if (st.on !== undefined && on !== st.on && !reduce && out) splash(st, on ? Math.atan2(dy, dx) : Math.atan2(st.y, st.x), R);
+  st.on = on;
   st.s += (on - st.s) * 0.08;
   if (d > 1e-4 && on) { st.x += (dx / d - st.x) * 0.1; st.y += (dy / d - st.y) * 0.1; }
+  if (out && st.p) {
+    st.p = st.p.filter((q) => (q.a += dt) < q.life);
+    st.p.forEach((q) => {
+      const k = q.a / q.life, e = 1 - Math.pow(1 - k, 3);      // 빠르게 튀었다가 느려진다
+      out.push([c[0] + Math.cos(q.ang) * R * (0.9 + q.dist * e), c[1] + Math.sin(q.ang) * R * (0.9 + q.dist * e) - q.fall * k * k * R,
+        c[2] + q.z * R, R * q.r * Math.sin(Math.PI * Math.min(1, k * 1.4 + 0.15))]);
+    });
+  }
   if (st.s < 0.01) return null;
   const reach = clamp(d / R, 0.6, 1.25);
   return [c[0] + st.x * R * 0.5 * reach, c[1] + st.y * R * 0.5 * reach, c[2] + R * 0.1, R * 0.42 * st.s];
+}
+function splash(st, ang, R) {
+  st.p = (st.p || []).slice(-3);
+  const n = 5 + ((Math.random() * 3) | 0);
+  for (let i = 0; i < n; i++) st.p.push({
+    ang: ang + (Math.random() - 0.5) * 1.5, dist: 0.22 + Math.random() * 0.38, z: (Math.random() - 0.5) * 0.3,
+    r: 0.10 + Math.random() * 0.09, fall: 0.10 + Math.random() * 0.15, life: 1.5 + Math.random() * 0.8, a: 0
+  });
 }
 
 function runWhenVisible(el, draw, margin) {
@@ -339,7 +365,7 @@ function mountLogo(host) {
         list.length = 1;
         lumps(list, core, R, t, 1);
         tail(list, core, R, t, 1);
-        const hb = hoverBall(S, core, R, hov); if (hb) list.push(hb);
+        const hb = hoverBall(S, core, R, hov, list); if (hb) list.push(hb);
       }
       U.uTexAlpha.value = ease((T - 2.3) / 1.0);
     }
@@ -455,7 +481,7 @@ function mountSteps(host) {
     lumps(list, core, R * (1 - 0.3 * sc), t, 1 - sc);
     const side = ex > 0 ? -0.35 : (Math.round(f) % 2 ? Math.PI + 0.35 : -0.35);   // 글 반대쪽으로
     tail(list, core, R, t, 1 - ease(sc / 0.3), side);
-    const hb = hoverBall(S, core, R, hov); if (hb && sc < 0.2) list.push(hb);
+    const hb = hoverBall(S, core, R, hov, sc < 0.2 ? list : null); if (hb && sc < 0.2) list.push(hb);
     S.set(list, core);
 
     // 그림: 흩어지는 동안 흐려졌다가 가운데에서 다음 것으로 바뀐다
