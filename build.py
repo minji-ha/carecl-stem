@@ -218,6 +218,11 @@ def hero_merge():
             + gap + '<span class="mg mg--cl">L</span>' + word("EVEL"))
 
 
+# 메인 물방울(네 가지 기준 로고 물방울 · 데일리 루틴 물방울) — False면 숨김(2026-10-20 사용자 요청).
+# 숨김 중: 네 가지 기준은 가운데 careCL 로고만, 데일리 루틴은 단계별 사진(원형)이 글 옆에 지그재그. True로 바꾸면 그대로 복구.
+MAIN_BUBBLES = False
+
+
 def page_index():
     HERO_MERGE = hero_merge()
     core = "\n".join(f"""      <div class="anno anno--core rv" data-anno style="left:{x}%;top:{y}%">
@@ -328,7 +333,7 @@ def page_index():
   </section>
 
   <!-- 07 5 STEP -->
-  <section class="steps" data-led="purple" aria-labelledby="steps-title">
+  <section class="steps{"" if MAIN_BUBBLES else " steps--still"}" data-led="purple" aria-labelledby="steps-title">
     <div class="wrap">
       <div class="sec-head">
         <h2 class="label rv">Daily Routine</h2>
@@ -377,7 +382,7 @@ def page_index():
 """
     return (head("careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다",
                  "얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어")
-            + loader() + header() + body + FOOTER + tail(three=False, mods=("js/bubble.js",)))
+            + loader() + header() + body + FOOTER + tail(three=False, mods=("js/bubble.js",) if MAIN_BUBBLES else ()))
 
 
 PAGES = {"index.html": page_index}
