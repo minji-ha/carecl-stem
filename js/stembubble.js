@@ -319,7 +319,7 @@ function createBubble(canvas, initialState = {}, opts = {}) {
       imgPlanes.forEach((m, k) => {
         const it = pair[k], asp = imgAspect[it.index] || 1;
         m.material.uniforms.uMap.value = imgTex[it.index]; m.material.uniforms.uAspect.value = asp;
-        m.material.uniforms.uAlpha.value = (opts.imageOpacity || .26) * state.alpha * ir * it.alpha * fade;
+        m.material.uniforms.uAlpha.value = (opts.imageOpacity || .26) * state.alpha * ir * it.alpha * fade * (state.imageAlpha ?? 1);
         const depth = (camera.position.z - m.position.z) / camera.position.z;   // 원근 보정: 방울 중심과 같은 자리에 보이게
         m.position.x = (state.x + (opts.imageOffsetX || 0) + .08 * relX * hover + fx * scrub) * depth;
         m.position.y = (state.y + (opts.imageOffsetY || 0) + .05 * relY * hover + fy * scrub) * depth;
@@ -448,7 +448,7 @@ function initSteps() {
   const canvas = document.createElement('canvas'); canvas.className = 'sb-canvas sb-canvas--steps';
   host.appendChild(canvas);
   const BASE = .84, EXPAND_START = .22;
-  const isMobile = () => window.innerWidth <= 1100;
+  const isMobile = () => window.innerWidth <= 860;
   const q = (e) => e * e * e * (e * (6 * e - 15) + 10);
   const images = blocks.map((b) => b.dataset.stepCut).concat(stage.dataset.finalCut ? [stage.dataset.finalCut] : []);
 
@@ -472,6 +472,11 @@ function initSteps() {
     const cx = host.getBoundingClientRect().left + cw / 2, cy = stageTop + ch / 2;
     const line = stageTop + ch / 2, vw = document.documentElement.clientWidth;
     const toWorld = (sx, sy) => ({ x: (sx - cx) / (cw / 2) * HALF_H * a, y: -(sy - cy) / (ch / 2) * HALF_H });
+    if (isMobile()) {                                                         // 모바일: 방울은 화면 위쪽 가운데
+      const t = blocks.map(() => toWorld(vw / 2, stageTop + ch * .34));
+      t.push({ x: 0, y: .03 });
+      return t;
+    }
     const t = blocks.map((b) => {
       const r = textOf(b).getBoundingClientRect();
       const box = b.getBoundingClientRect();
@@ -492,22 +497,22 @@ function initSteps() {
     trigger: section, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true,
     onRefresh() {
       const t = targets();
-      bubble.setState({ x: t[0].x, y: t[0].y, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: BASE, rotateX: 0, rotateY: 0 }); setShop(0);
+      bubble.setState({ x: t[0].x, y: t[0].y, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: isMobile() ? 1.45 : BASE, rotateX: 0, rotateY: 0, imageScale: isMobile() ? .58 : undefined }); setShop(0);
     },
     onUpdate() {
       const T = targets();
       const stepProgress = (() => {
-        const line = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight / 2;
+        const line = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight * (isMobile() ? .72 : .5);
         const tops = blocks.map((b) => { const r = textOf(b).getBoundingClientRect(); return r.top + r.height / 2; });
         if (tops[0] >= line) return 0; if (tops[tops.length - 1] <= line) return tops.length - 1;
         for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] >= line) { const d = tops[i + 1] - tops[i]; return d <= 0 ? i + 1 : i + clamp((line - tops[i]) / d, 0, 1); }
         return tops.length - 1;
       })();
       const expandProgress = (() => {
-        const line = window.innerHeight * .82;
-        const lr = lastBlock.getBoundingClientRect(); const anchor = lr.bottom;
+        const m = isMobile(); const line = window.innerHeight * (m ? .78 : .82);
+        const lr = lastBlock.getBoundingClientRect(); const anchor = m ? lr.top + .5 * lr.height : lr.bottom;
         const er = expand.getBoundingClientRect();
-        const r = clamp((line - anchor) / Math.max(er.height, window.innerHeight * .58, 1), 0, 1);
+        const r = clamp((line - anchor) / Math.max(er.height, window.innerHeight * (m ? .92 : .58), 1), 0, 1);
         return anchor >= line ? 0 : er.bottom <= line ? 1 : clamp((r - EXPAND_START) / .78, 0, 1);
       })();
       const last = blocks.length - 1;
@@ -518,18 +523,29 @@ function initSteps() {
       const isLast = i === T.length - 2;
       const E = q(clamp((y - .2) / .75, 0, 1));
       const L = isLast ? lerp(1.24, 2.1, q(clamp((y - 10.03) / .44, 0, 1))) : 1;
-      const scale = isLast ? lerp(BASE, 2.05, q(clamp((y - .01) / .99, 0, 1))) : BASE;
+      const base = isMobile() ? 1.45 : BASE;
+      const scale = isLast ? lerp(base, 2.05, q(clamp((y - .01) / .99, 0, 1))) : base;
       const pulse = isLast ? .06 * S + .035 * q(clamp((y - .68) / .22, 0, 1)) : .035 * S;
       const rotY = isLast ? lerp(0, 2.18 * Math.PI, E) : 0;
       const rotX = isLast ? lerp(0, -.18, E) : 0;
       const flowX = (B.x - A.x) * S * 1.15 * L, flowY = (B.y - A.y) * S * 1.15 * L;
       const R = isLast ? q(clamp((y - .02) / 2, 0, 1)) : 0;
       const flowZ = isLast ? 1.85 * Math.sin(y * Math.PI * 2) * L * R : 0;
-      bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0 });
+      bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0, imageScale: isMobile() ? .58 : undefined, imageAlpha: 1 });
       blocks.forEach((b, k) => b.classList.toggle('is-on', k === Math.round(Math.min(pos, last))));
+      /* 모바일: 단계 글은 제자리(화면 아래쪽 줄) 근처에서만 보이고, 위로 올라가 방울과 겹치기 전에 사라진다 */
+      if (isMobile()) {
+        const lineY = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight * .72;
+        blocks.forEach((b) => { const r = textOf(b).getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - lineY) / window.innerHeight;
+          b.style.opacity = String(1 - smoothRange(.06, .2, d)); });
+      } else blocks.forEach((b) => { b.style.opacity = ''; });
       if (isLast) {
-        const e = clamp(expandProgress / .78, 0, 1); const tt = q(clamp((e - .10) / .26, 0, 1));   // 풀세트로 일찍 바뀌게 (원본 .32~.56)
-        if (e < .04) { bubble.setImageTransition(last, last, 0); setShop(0); } else { bubble.setImageTransition(last, last + 1, tt); setShop(y); }
+        /* 마지막: 케이스 사진은 방울이 가운데로 출발할 때 사라지고, 방울이 다 커져 선명해지는 순간(.80~.87)
+           풀세트가 빠르게 페이드인 → 그다음 SHOP */
+        const ep = expandProgress;
+        if (ep < .8) { bubble.setImageTransition(last, last, 0); bubble.setState({ imageAlpha: 1 - smoothRange(.02, .16, ep) }); }
+        else { bubble.setImageTransition(last + 1, last + 1, 0); bubble.setState({ imageAlpha: smoothRange(.80, .87, ep) }); }
+        setShop(.72 + .18 * clamp((ep - .86) / .1, 0, 1));
         return;
       }
       const idx = v > .5 ? clamp(i + 1, 0, last) : i;

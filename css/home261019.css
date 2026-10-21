@@ -277,3 +277,13 @@ html.lenis,html.lenis body{height:auto}
   [data-sb-core] .core__center{min-height:min(118vw,480px);justify-content:center}
 }
 [data-sb-steps] .steps__stage .steps__shop{top:auto;bottom:clamp(24px,5vh,60px)}
+/* 모바일 데일리 루틴도 물방울 — 원본처럼 방울은 화면 위쪽 가운데, 단계 글은 아래에서 차례로 */
+@media (max-width:860px){
+  [data-sb-steps] .steps__stage{display:block}
+  [data-sb-steps] .steps__list{margin-top:calc(-100svh + var(--head))}
+  [data-sb-steps] .step,[data-sb-steps] .step:nth-child(even){min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 0 12svh;border-top:0;opacity:0}
+  [data-sb-steps] .step.is-on{opacity:1}
+  [data-sb-steps] .step__img{display:none}
+  [data-sb-steps] .steps__expand{display:block;height:130svh}
+}
