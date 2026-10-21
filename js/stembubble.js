@@ -519,12 +519,15 @@ function initSteps() {
         for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] >= line) { const d = tops[i + 1] - tops[i]; return d <= 0 ? i + 1 : i + clamp((line - tops[i]) / d, 0, 1); }
         return tops.length - 1;
       })();
+      /* 마무리 진행도: 마지막 단계 글이 기준선을 지난 순간 0 → 섹션 끝(빈 칸 아래가 화면 아래에 닿을 때) 1.
+         원본 계산은 모바일에서 끝에 도착해도 0.7대에 머물러 풀세트가 안 보였다 → 끝에서 항상 1이 되게 */
       const expandProgress = (() => {
         const m = isMobile(); const line = window.innerHeight * (m ? .78 : .82);
         const lr = lastBlock.getBoundingClientRect(); const anchor = m ? lr.top + .5 * lr.height : lr.bottom;
-        const er = expand.getBoundingClientRect();
-        const r = clamp((line - anchor) / Math.max(er.height, window.innerHeight * (m ? .92 : .58), 1), 0, 1);
-        return anchor >= line ? 0 : er.bottom <= line ? 1 : clamp((r - EXPAND_START) / .78, 0, 1);
+        const d0 = anchor - line;                                            // 시작까지 남은 거리
+        const d1 = expand.getBoundingClientRect().bottom - window.innerHeight; // 끝까지 남은 거리
+        if (d0 >= 0) return 0; if (d1 <= 0) return 1;
+        return clamp(-d0 / (d1 - d0), 0, 1);
       })();
       const last = blocks.length - 1;
       const pos = expandProgress > 0 ? last + expandProgress : stepProgress;
@@ -551,9 +554,10 @@ function initSteps() {
         /* 마지막: 케이스 사진은 방울이 가운데로 출발할 때 사라지고, 방울이 다 커져 선명해지는 순간(.80~.87)
            풀세트가 빠르게 페이드인 → 그다음 SHOP */
         const ep = expandProgress;
-        if (ep < .8) { bubble.setImageTransition(last, last, 0); bubble.setState({ imageAlpha: 1 - smoothRange(.02, .16, ep) }); }
-        else { bubble.setImageTransition(last + 1, last + 1, 0); bubble.setState({ imageAlpha: smoothRange(.80, .87, ep) }); }
-        setShop(.72 + .18 * clamp((ep - .86) / .1, 0, 1));
+        const IN = isMobile() ? .30 : .80;                                   // 모바일은 방울이 제자리라 비는 시간을 짧게
+        if (ep < IN) { bubble.setImageTransition(last, last, 0); bubble.setState({ imageAlpha: 1 - smoothRange(.02, .16, ep) }); }
+        else { bubble.setImageTransition(last + 1, last + 1, 0); bubble.setState({ imageAlpha: smoothRange(IN, IN + .07, ep) }); }
+        setShop(.72 + .18 * clamp((ep - (IN + .06)) / .1, 0, 1));
         return;
       }
       if (isMobile()) { bubble.setImageTransition(i, clamp(i + 1, 0, last), smoothRange(.4, .6, v)); setShop(0); return; }   // 모바일: 제품만 부드럽게 교차
