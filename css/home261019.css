@@ -281,9 +281,18 @@ html.lenis,html.lenis body{height:auto}
 @media (max-width:860px){
   [data-sb-steps] .steps__stage{display:block}
   [data-sb-steps] .steps__list{margin-top:calc(-100svh + var(--head))}
-  [data-sb-steps] .step,[data-sb-steps] .step:nth-child(even){min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
-    padding:0 0 12svh;border-top:0;opacity:0}
-  [data-sb-steps] .step.is-on{opacity:1}
+  /* 단계 목록은 스크롤 길이만 만들고 보이지 않는다 — 글은 방울 아래 고정 자리(.sb-cap)에서 한 단계씩 바뀐다 */
+  [data-sb-steps] .step,[data-sb-steps] .step:nth-child(even),[data-sb-steps] .step.is-on{min-height:90svh;padding:0;border-top:0;opacity:0!important;pointer-events:none}
+  [data-sb-steps] .sb-cap{display:block}
   [data-sb-steps] .step__img{display:none}
   [data-sb-steps] .steps__expand{display:block;height:130svh}
 }
+
+/* 모바일 데일리 루틴 고정 글 자리 (js/stembubble.js가 단계 글을 복제해 넣는다) */
+.sb-cap{display:none;position:absolute;left:var(--gut);right:var(--gut);top:66%;z-index:2}
+.sb-cap__item{position:absolute;left:0;right:0;top:0;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+.sb-cap__item.is-on{opacity:1;transform:none}
+.sb-cap__item .step__num{display:block;font-family:var(--f-ui);font-weight:200;font-style:italic;font-size:44px;line-height:1;color:var(--pale)}
+.sb-cap__item .step__title{margin:6px 0 0;font-family:var(--f-title);font-weight:500;font-size:22px;text-transform:uppercase;letter-spacing:.02em;color:var(--ink)}
+.sb-cap__item .step__kr{display:block;margin-top:4px;font-size:13px;font-weight:600;color:var(--ink)}
+.sb-cap__item .step__desc{margin:10px 0 0;font-size:14px;line-height:1.75;color:var(--ink-2);word-break:keep-all}

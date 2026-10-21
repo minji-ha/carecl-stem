@@ -447,6 +447,16 @@ function initSteps() {
   const lastBlock = blocks[blocks.length - 1];
   const canvas = document.createElement('canvas'); canvas.className = 'sb-canvas sb-canvas--steps';
   host.appendChild(canvas);
+  /* 모바일 전용: 방울 아래 고정 글 자리 — 각 단계의 번호·글을 복제해 두고 한 단계씩 보여준다 (PC에선 CSS로 숨김) */
+  const capBox = document.createElement('div'); capBox.className = 'sb-cap'; capBox.setAttribute('aria-hidden', 'true');
+  const caps = blocks.map((b) => {
+    const it = document.createElement('div'); it.className = 'sb-cap__item';
+    const num = b.querySelector('.step__num'); if (num) it.appendChild(num.cloneNode(true));
+    const tx = (b.querySelector('.step__title') || b).parentElement; if (tx) it.appendChild(tx.cloneNode(true));
+    capBox.appendChild(it); return it;
+  });
+  caps[0] && caps[0].classList.add('is-on');
+  stage.appendChild(capBox);
   const BASE = .84, EXPAND_START = .22;
   const MOBILE_STEP_SCALE = 1.7;   // 모바일 방울 크기 (원본 1.45 → 조금 더 크게)
   const isMobile = () => window.innerWidth <= 860;
@@ -533,13 +543,10 @@ function initSteps() {
       const R = isLast ? q(clamp((y - .02) / 2, 0, 1)) : 0;
       const flowZ = isLast ? 1.85 * Math.sin(y * Math.PI * 2) * L * R : 0;
       bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0, imageScale: isMobile() ? .58 : undefined, imageAlpha: 1 });
-      blocks.forEach((b, k) => b.classList.toggle('is-on', k === Math.round(Math.min(pos, last))));
-      /* 모바일: 단계 글은 제자리(화면 아래쪽 줄) 근처에서만 보이고, 위로 올라가 방울과 겹치기 전에 사라진다 */
-      if (isMobile()) {
-        const lineY = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight * .72;
-        blocks.forEach((b) => { const r = textOf(b).getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - lineY) / window.innerHeight;
-          b.style.opacity = String(1 - smoothRange(.06, .2, d)); });
-      } else blocks.forEach((b) => { b.style.opacity = ''; });
+      const active = clamp(Math.round(Math.min(pos, last)), 0, last);
+      blocks.forEach((b, k) => b.classList.toggle('is-on', k === active));
+      /* 모바일: 방울 아래 고정 자리의 글을 한 단계씩 바꾼다 */
+      caps.forEach((c, k) => c.classList.toggle('is-on', k === active && expandProgress < .05));   // 마지막 큰 방울 구간에선 숨김
       if (isLast) {
         /* 마지막: 케이스 사진은 방울이 가운데로 출발할 때 사라지고, 방울이 다 커져 선명해지는 순간(.80~.87)
            풀세트가 빠르게 페이드인 → 그다음 SHOP */
@@ -549,6 +556,7 @@ function initSteps() {
         setShop(.72 + .18 * clamp((ep - .86) / .1, 0, 1));
         return;
       }
+      if (isMobile()) { bubble.setImageTransition(i, clamp(i + 1, 0, last), smoothRange(.4, .6, v)); setShop(0); return; }   // 모바일: 제품만 부드럽게 교차
       const idx = v > .5 ? clamp(i + 1, 0, last) : i;
       bubble.setImageTransition(idx, idx, 0); setShop(0);
     },
