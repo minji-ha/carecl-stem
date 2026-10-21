@@ -405,7 +405,7 @@ function initCore() {
   const stage = document.querySelector('[data-sb-core]'); if (!stage) return;
   const canvas = document.createElement('canvas'); canvas.className = 'sb-canvas sb-canvas--core';
   stage.insertBefore(canvas, stage.firstChild);
-  const mobileScale = window.innerWidth <= 768 ? 2.5 : 1;
+  const mobileScale = window.innerWidth <= 768 ? 2.8 : 1;   // 모바일 크기 (원본 2.5 → 조금 더 크게)
   const holder = stage.querySelector('.core__bubble');
   const svg = holder && holder.querySelector('svg');
 
@@ -448,6 +448,7 @@ function initSteps() {
   const canvas = document.createElement('canvas'); canvas.className = 'sb-canvas sb-canvas--steps';
   host.appendChild(canvas);
   const BASE = .84, EXPAND_START = .22;
+  const MOBILE_STEP_SCALE = 1.7;   // 모바일 방울 크기 (원본 1.45 → 조금 더 크게)
   const isMobile = () => window.innerWidth <= 860;
   const q = (e) => e * e * e * (e * (6 * e - 15) + 10);
   const images = blocks.map((b) => b.dataset.stepCut).concat(stage.dataset.finalCut ? [stage.dataset.finalCut] : []);
@@ -497,7 +498,7 @@ function initSteps() {
     trigger: section, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true,
     onRefresh() {
       const t = targets();
-      bubble.setState({ x: t[0].x, y: t[0].y, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: isMobile() ? 1.45 : BASE, rotateX: 0, rotateY: 0, imageScale: isMobile() ? .58 : undefined }); setShop(0);
+      bubble.setState({ x: t[0].x, y: t[0].y, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: isMobile() ? MOBILE_STEP_SCALE : BASE, rotateX: 0, rotateY: 0, imageScale: isMobile() ? .58 : undefined }); setShop(0);
     },
     onUpdate() {
       const T = targets();
@@ -523,7 +524,7 @@ function initSteps() {
       const isLast = i === T.length - 2;
       const E = q(clamp((y - .2) / .75, 0, 1));
       const L = isLast ? lerp(1.24, 2.1, q(clamp((y - 10.03) / .44, 0, 1))) : 1;
-      const base = isMobile() ? 1.45 : BASE;
+      const base = isMobile() ? MOBILE_STEP_SCALE : BASE;
       const scale = isLast ? lerp(base, 2.05, q(clamp((y - .01) / .99, 0, 1))) : base;
       const pulse = isLast ? .06 * S + .035 * q(clamp((y - .68) / .22, 0, 1)) : .035 * S;
       const rotY = isLast ? lerp(0, 2.18 * Math.PI, E) : 0;
