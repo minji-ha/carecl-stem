@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>케어클 결과지 개선 시안</title>
+<title>케어클 AI 피부 진단 시안</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{
@@ -37,8 +37,8 @@ p{word-break:keep-all}
 /* 두 화면 모두 최신 결과 리포트를 틀 안에 띄운다 (예전 10/18 정적 시안 내용은 숨김) */
 body > *:not(.mock-bar):not(.rpt-frame):not(script){display:none!important}
 .rpt-frame{display:block}
-body.mode-report .seg--new{display:none}
-body.mode-survey .seg--types,body.mode-survey [aria-label="보기 상태"]{display:none}
+.seg--types{display:none}
+body.is-report .seg--types{display:inline-flex}
 .seg button{white-space:nowrap}
 @media (max-width:640px){.seg--types{max-width:100%;overflow-x:auto;scrollbar-width:none}.seg--types::-webkit-scrollbar{display:none}}
 
@@ -285,30 +285,34 @@ body.mode-survey .seg--types,body.mode-survey [aria-label="보기 상태"]{displ
 
 <div class="mock-bar">
   <div class="in">
-    <span><b>결과지 개선 시안</b> · 설문 시안 A/B의 설문·결과 화면 (아래 탭 6개로 왼쪽 그래픽 비교)</span>
+    <span><b>AI 피부 진단 시안</b> · 화면 4단계 × 시안 12가지 (A·B 2가지 × 왼쪽 그래픽 6가지)</span>
     <span style="display:flex;gap:10px;flex-wrap:wrap">
       <span class="seg" role="group" aria-label="화면">
-        <button type="button" data-mode="survey" aria-pressed="false">설문</button>
-        <button type="button" data-mode="new" aria-pressed="true">결과지 개선안</button>
-        <button type="button" data-mode="report" aria-pressed="false">진단 결과 리포트</button>
+        <button type="button" data-screen="intro">1 설문 시작</button>
+        <button type="button" data-screen="q">2 설문 중</button>
+        <button type="button" data-screen="guest">3 비회원 리포트</button>
+        <button type="button" data-screen="member">4 회원 리포트</button>
       </span>
-      <span class="seg seg--new" role="group" aria-label="설문 시안">
-        <button type="button" data-variant="a" aria-pressed="true">A · 흰 배경</button>
-        <button type="button" data-variant="b" aria-pressed="false">B · 검정 화면</button>
+      <span class="seg" role="group" aria-label="시안">
+        <button type="button" data-variant="a">A · 흰 배경</button>
+        <button type="button" data-variant="b">B · 검정 화면</button>
+      </span>
+      <span class="seg" role="group" aria-label="왼쪽 그래픽">
+        <button type="button" data-g="1">1 입자 얼굴</button>
+        <button type="button" data-g="2">2 터미널</button>
+        <button type="button" data-g="3">3 홀로그램</button>
+        <button type="button" data-g="4">4 오로라</button>
+        <button type="button" data-g="5">5 3D 기기</button>
+        <button type="button" data-g="6">6 부위 사진</button>
       </span>
       <span class="seg seg--types" role="group" aria-label="노화 유형">
-        <button type="button" data-rtype="early" aria-pressed="false">초기 노화</button>
-        <button type="button" data-rtype="tired" aria-pressed="false">피로</button>
-        <button type="button" data-rtype="fine" aria-pressed="false">잔주름</button>
-        <button type="button" data-rtype="sag" aria-pressed="false">변형·처짐</button>
-        <button type="button" data-rtype="muscle" aria-pressed="false">근육</button>
-        <button type="button" data-rtype="mixed" aria-pressed="true">혼합</button>
+        <button type="button" data-rtype="early">초기 노화</button>
+        <button type="button" data-rtype="tired">피로</button>
+        <button type="button" data-rtype="fine">잔주름</button>
+        <button type="button" data-rtype="sag">변형·처짐</button>
+        <button type="button" data-rtype="muscle">근육</button>
+        <button type="button" data-rtype="mixed">혼합</button>
       </span>
-      <span class="seg seg--new" role="group" aria-label="보기 상태">
-        <button type="button" data-view="guest" aria-pressed="true">비회원</button>
-        <button type="button" data-view="member" aria-pressed="false">회원</button>
-      </span>
-      
     </span>
   </div>
 </div>
@@ -604,32 +608,35 @@ if(nb)nb.addEventListener('click',()=>{const on=nb.getAttribute('aria-pressed')!
 </script>
 <iframe class="rpt-frame" title="진단 결과 리포트" data-rpt-frame></iframe>
 <script>
-/* 결과지 개선안 ↔ 진단 결과 리포트 전환. 둘 다 최신 결과 리포트(개발 화면 내용)를 메뉴·푸터 없이(embed=1) 띄운다
-   · 결과지 개선안 : 설문 시안 A(survey.html) / B(survey2.html)의 결과 화면 — 탭 6개로 왼쪽 그래픽 비교, 비회원/회원
-   · 진단 결과 리포트 : report.html */
+/* AI 피부 진단 시안 — 화면 4단계 × (A/B × 왼쪽 그래픽 6) = 12가지
+   · A(왼쪽 검정 + 오른쪽 흰 배경) : survey-p{그래픽}.html
+   · B(전체 검정 화면)            : survey2.html?g={그래픽}
+   · 1 설문 시작 / 2 설문 중(?q=5) / 3 비회원 리포트(?view=guest) / 4 회원 리포트(?view=member)
+   메뉴·푸터 없이(embed=1) 같은 틀 안에 띄운다. 주소 끝(#)에 상태를 남겨 새로고침해도 그대로 */
 (function(){
   var frame=document.querySelector('[data-rpt-frame]'), pre=(window.CL_AI_PREFIX||'');
-  var st={mode:'new',view:'guest',type:'mixed',variant:'a'};
-  function press(sel,attr,val){document.querySelectorAll(sel).forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset[attr]===val))})}
+  var st={screen:'intro',variant:'a',g:'1',type:'mixed'};
+  function press(attr,val){document.querySelectorAll('[data-'+attr+']').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-'+attr)===val))})}
   function load(){
-    document.body.classList.toggle('mode-report',st.mode==='report');
-    press('[data-mode]','mode',st.mode); press('[data-view]','view',st.view); press('[data-rtype]','rtype',st.type); press('[data-variant]','variant',st.variant);
-    var sv = pre+(st.variant==='b'?'survey2.html':'survey.html');
-    frame.src = st.mode==='report' ? pre+'report.html?type='+st.type+'&embed=1'
-              : st.mode==='survey' ? sv+'?embed=1'                                    // 설문 시작 페이지부터
-                                   : sv+'?view='+st.view+'&type='+st.type+'&embed=1';
-    document.body.classList.toggle('mode-survey',st.mode==='survey');
-    try{history.replaceState(null,'','#'+st.mode+'-'+st.view+'-'+st.type+'-'+st.variant)}catch(e){}
+    press('screen',st.screen); press('variant',st.variant); press('g',st.g); press('rtype',st.type);
+    var rep=st.screen==='guest'||st.screen==='member';
+    document.body.classList.toggle('is-report',rep);
+    var q=[];
+    if(st.screen==='q') q.push('q=5');
+    if(rep) q.push('view='+st.screen,'type='+st.type);
+    if(st.variant==='b') q.push('g='+st.g);
+    q.push('embed=1');
+    frame.src=pre+(st.variant==='a'?'survey-p'+st.g+'.html':'survey2.html')+'?'+q.join('&');
+    try{history.replaceState(null,'','#'+[st.screen,st.variant,st.g,st.type].join('-'))}catch(e){}
   }
-  document.querySelectorAll('[data-mode]').forEach(function(b){b.addEventListener('click',function(){st.mode=b.dataset.mode;load()})});
-  document.querySelectorAll('[data-view]').forEach(function(b){b.addEventListener('click',function(){st.view=b.dataset.view;load()})});
-  document.querySelectorAll('[data-rtype]').forEach(function(b){b.addEventListener('click',function(){st.type=b.dataset.rtype;load()})});
-  document.querySelectorAll('[data-variant]').forEach(function(b){b.addEventListener('click',function(){st.variant=b.dataset.variant;load()})});
+  ['screen','variant','g','rtype'].forEach(function(attr){
+    document.querySelectorAll('[data-'+attr+']').forEach(function(b){b.addEventListener('click',function(){st[attr==='rtype'?'type':attr]=b.getAttribute('data-'+attr);load()})});
+  });
   var h=location.hash.slice(1).split('-');
-  if(h[0]==='new'||h[0]==='report'||h[0]==='survey') st.mode=h[0];
-  if(h[1]==='guest'||h[1]==='member') st.view=h[1];
-  if(/^(early|tired|fine|sag|muscle|mixed)$/.test(h[2]||'')) st.type=h[2];
-  if(h[3]==='a'||h[3]==='b') st.variant=h[3];
+  if(/^(intro|q|guest|member)$/.test(h[0]||'')) st.screen=h[0];
+  if(h[1]==='a'||h[1]==='b') st.variant=h[1];
+  if(/^[1-6]$/.test(h[2]||'')) st.g=h[2];
+  if(/^(early|tired|fine|sag|muscle|mixed)$/.test(h[3]||'')) st.type=h[3];
   load();
 })();
 </script>

@@ -302,5 +302,8 @@
   });
 
   if (PREVIEW) step = TOTAL;
+  /* 시안 확인용: ?q=5 → 5번 문항(설문 중 화면)부터 */
+  var QJUMP = +((location.search.match(/[?&]q=(\d+)/) || [])[1] || 0);
+  if (!PREVIEW && QJUMP > 0) step = Math.min(QJUMP, TOTAL) - 1;
   render();
 })();

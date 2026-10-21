@@ -179,4 +179,5 @@ body.survey .foot{margin-top:0}
 .is-embed .header,.is-embed .mnav,.is-embed .foot,.is-embed .aifab,.is-embed .loader,.is-embed .led-glow,.is-embed .led-dot{display:none!important}
 /* 메뉴를 숨긴 만큼 비워 두던 위쪽 여백(검정 띠)도 없앤다 */
 html.is-embed{--head:0px}
+.is-embed .pvtabs{display:none!important}   /* 그래픽은 시안 페이지 위쪽 바에서 고른다 */
 .is-embed .sv{padding-top:0;margin-top:0}
