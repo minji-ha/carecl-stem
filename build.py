@@ -597,7 +597,10 @@ PAGES["report.html"] = page_report
 # False: 진단(survey.html) · 리포트(report.html)로 가는 링크를 모든 페이지에서 뗀다.
 #        두 페이지 파일은 그대로 만들되 검색에 안 잡히게 한다(주소를 아는 사람만 열 수 있음).
 # True : 작업이 끝나면 이 값만 바꾸면 버튼 · 메뉴 · 푸터 · 본문 링크가 모두 다시 붙는다.
-AI_TEST_PUBLIC = True
+AI_TEST_PUBLIC = False
+# 비공개 동안 진단·리포트 화면은 이 접두어가 붙은 주소로만 만든다 (예: lab-410bf9f9c6-survey.html)
+# survey.html · report.html 같은 짐작 가능한 주소는 지워서 열리지 않게 한다.
+AI_SECRET = "lab-410bf9f9c6"
 
 
 def hide_ai_test(html):
@@ -609,7 +612,35 @@ def hide_ai_test(html):
     return html
 
 
+def is_ai_page(name):
+    return name.startswith("survey") or name.startswith("report")
+
+
+def secret_links(html):
+    """비공개 화면끼리 거는 링크를 비밀 주소로 바꾸고, 스크립트가 만드는 링크에도 접두어를 알려준다."""
+    html = re.sub(r'(href=")((?:survey|report)[\w-]*\.html)', lambda m: m.group(1) + AI_SECRET + "-" + m.group(2), html)
+    return html.replace("</head>", f'<script>window.CL_AI_PREFIX="{AI_SECRET}-";</script>\n</head>', 1)
+
+
+def ai_cleanup():
+    """공개 여부에 맞지 않는 진단 파일을 지운다 (비공개: 원래 주소, 공개: 비밀 주소)."""
+    for f in os.listdir(ROOT):
+        if not f.endswith(".html"):
+            continue
+        secret = f.startswith(AI_SECRET + "-")
+        if (not AI_TEST_PUBLIC and is_ai_page(f)) or (AI_TEST_PUBLIC and secret):
+            os.remove(os.path.join(ROOT, f))
+
+
 if __name__ == "__main__":
+    preview = os.path.join(ROOT, "report-preview.html")          # 빌드 목록에 없는 예전 미리보기 파일도 함께 옮긴다
+    keep_preview = io.open(preview, encoding="utf-8").read() if os.path.exists(preview) else None
+    ai_cleanup()
+    if keep_preview is not None:
+        if AI_TEST_PUBLIC:
+            io.open(preview, "w", encoding="utf-8").write(keep_preview)
+        else:
+            io.open(os.path.join(ROOT, AI_SECRET + "-report-preview.html"), "w", encoding="utf-8").write(secret_links(keep_preview))
     for name, fn in PAGES.items():
         out = fn()
         if name.startswith("survey-p") or name == "survey2.html":   # 왼쪽 그래픽 비교용 시안 페이지는 공개 후에도 검색에서 뺀다
@@ -619,6 +650,9 @@ if __name__ == "__main__":
                 out = out.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n<meta name="robots" content="noindex, nofollow">', 1)
             else:
                 out = hide_ai_test(out)
+        if not AI_TEST_PUBLIC and is_ai_page(name):
+            out = secret_links(out)
+            name = AI_SECRET + "-" + name
         io.open(os.path.join(ROOT, name), "w", encoding="utf-8").write(out)
         print("built", name)
     print("v=" + VER)

@@ -179,7 +179,7 @@
   }
   function actions(opts) {
     return '<div class="cku-result-actions">' +
-      (opts.restart ? '<button type="button" class="cku-btn cku-btn-primary cku-retry" data-restart>다시 하기</button>' : '<a class="cku-btn cku-btn-primary cku-retry" href="survey.html">다시 하기</a>') +
+      (opts.restart ? '<button type="button" class="cku-btn cku-btn-primary cku-retry" data-restart>다시 하기</button>' : '<a class="cku-btn cku-btn-primary cku-retry" href="' + (window.CL_AI_PREFIX || '') + 'survey.html">다시 하기</a>') +
     '</div>';
   }
   function wrap(inner) { return '<div class="checkup" data-rpt><div class="cku-result">' + inner + '</div></div>'; }
