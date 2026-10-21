@@ -404,7 +404,10 @@ function initCore() {
   const holder = stage.querySelector('.core__bubble');
   const svg = holder && holder.querySelector('svg');
 
-  const bubble = createBubble(canvas, { reveal: 0, collect: 0, alpha: 0, scale: .92 * mobileScale, y: 0 }, {
+  /* 캔버스를 위아래 1.6배로 키웠으니 방울도 같은 비율로 줄여 화면상 크기는 원본과 같게 */
+  const CANVAS_GROW = 1.6;
+  const baseScale = (window.innerWidth <= 768 ? 2.58 : 4) / CANVAS_GROW;
+  const bubble = createBubble(canvas, { reveal: 0, collect: 0, alpha: 0, scale: .92 * mobileScale, y: 0, baseScale }, {
     desktopResolution: 132, mobileResolution: 80, maxPolyCount: 30e4, pixelRatioLimit: 2, frameRate: 100, visibilityMargin: '360px',
     logoTexture: logoTexture(svg), pointerTarget: stage,
     logoScale: .2, logoOpacity: .7, logoRevealStart: .55, logoZ: -.24, logoMaskRadius: 2, logoMaskSoftness: .9, logoTint: 0x3b312c,
@@ -414,7 +417,7 @@ function initCore() {
   ScrollTrigger.create({
     trigger: stage, start: 'top 90%', once: true,
     onEnter() {
-      const dur = 4, s = { reveal: 0, collect: 0, alpha: 0, scale: .92 * mobileScale, y: 0, pulse: 0 };
+      const dur = 4, s = { reveal: 0, collect: 0, alpha: 0, scale: .92 * mobileScale, y: 0, pulse: 0, baseScale };
       const push = () => bubble.setState(s); push();
       gsap.timeline({ onUpdate: push })
         .to(s, { reveal: 1, alpha: 1, duration: .28 * dur, ease: 'sine.out' }, 0)
@@ -454,13 +457,23 @@ function initSteps() {
     if (!shop) return; const t = clamp((p - .72) / .18, 0, 1); const y = lerp(24, 0, q(t));
     shop.style.opacity = `${t}`; shop.style.transform = `translate(-50%, ${y}px)`; shop.style.pointerEvents = t > .98 ? 'auto' : 'none';
   }
-  /* 단계마다 방울 자리: 글 반대편 · 마지막은 가운데 */
+  /* 단계마다 방울 자리 — 그 단계 글이 '켜지는 순간'(글 윗변이 화면 45% 줄에 닿을 때) 글의 세로 가운데,
+     가로는 글 반대편 빈 공간의 한가운데. 마지막은 가운데. 화면 좌표 → 카메라 평면(월드) 좌표로 바꾼다 */
+  const HALF_H = 5.2 * Math.tan(19 * Math.PI / 180);
+  const textOf = (b) => (b.querySelector('.step__title') || b).parentElement || b;   // 단계의 글 묶음 (제목·한글·설명)
   function targets() {
-    const a = canvas.clientWidth / Math.max(canvas.clientHeight, 1);
-    const mid = window.innerWidth / 2;
+    const cw = canvas.clientWidth || 1, ch = canvas.clientHeight || 1, a = cw / ch;
+    const stageTop = parseFloat(getComputedStyle(stage).top) || 0;          // 고정(sticky)된 무대의 위치
+    const cx = host.getBoundingClientRect().left + cw / 2, cy = stageTop + ch / 2;
+    const line = stageTop + ch / 2, vw = document.documentElement.clientWidth;
+    const toWorld = (sx, sy) => ({ x: (sx - cx) / (cw / 2) * HALF_H * a, y: -(sy - cy) / (ch / 2) * HALF_H });
     const t = blocks.map((b) => {
-      const r = b.getBoundingClientRect();
-      return { x: (r.left + r.width / 2 < mid ? .5 : -.5) * a, y: 0 };
+      const r = textOf(b).getBoundingClientRect();
+      const box = b.getBoundingClientRect();
+      const left = box.left + box.width / 2 < vw / 2;                     // 글이 왼쪽이면 방울은 오른쪽 빈 공간
+      const sx = left ? (Math.max(r.right, box.right) + vw) / 2 : Math.min(r.left, box.left) / 2;
+      const sy = line;                                                     // 글 가운데가 이 줄에 올 때 방울도 같은 높이
+      return toWorld(sx, sy);
     });
     t.push({ x: 0, y: .03 });
     return t;
@@ -479,8 +492,8 @@ function initSteps() {
     onUpdate() {
       const T = targets();
       const stepProgress = (() => {
-        const line = window.innerHeight * .45;
-        const tops = blocks.map((b) => b.getBoundingClientRect().top);
+        const line = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight / 2;
+        const tops = blocks.map((b) => { const r = textOf(b).getBoundingClientRect(); return r.top + r.height / 2; });
         if (tops[0] >= line) return 0; if (tops[tops.length - 1] <= line) return tops.length - 1;
         for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] >= line) { const d = tops[i + 1] - tops[i]; return d <= 0 ? i + 1 : i + clamp((line - tops[i]) / d, 0, 1); }
         return tops.length - 1;
