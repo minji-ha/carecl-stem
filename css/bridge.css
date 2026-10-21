@@ -177,3 +177,6 @@ body.survey .foot{margin-top:0}
 
 /* 결과지 개선 시안 안에서 띄울 때(?embed=1) — 사이트 메뉴·푸터만 숨긴다. 왼쪽 그래픽 탭 6개는 그대로 */
 .is-embed .header,.is-embed .mnav,.is-embed .foot,.is-embed .aifab,.is-embed .loader,.is-embed .led-glow,.is-embed .led-dot{display:none!important}
+/* 메뉴를 숨긴 만큼 비워 두던 위쪽 여백(검정 띠)도 없앤다 */
+html.is-embed{--head:0px}
+.is-embed .sv{padding-top:0;margin-top:0}
