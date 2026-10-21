@@ -38,6 +38,15 @@ p{word-break:keep-all}
 body > *:not(.mock-bar):not(.rpt-frame):not(script){display:none!important}
 .rpt-frame{display:block}
 .seg--types{display:none}
+/* 모바일: 버튼 줄마다 한 줄로 두고 옆으로 밀어 본다 (잘리지 않게), 바 높이는 낮게 */
+@media (max-width:640px){
+  .mock-bar .in{padding:6px 10px;gap:6px}
+  .mock-bar .in > span:first-child{font-size:11px;line-height:1.4}
+  .mock-bar .in > span:last-child{gap:6px!important;width:100%}
+  .seg{max-width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .seg::-webkit-scrollbar{display:none}
+  .seg button{flex:none;font-size:12px;padding:5px 11px}
+}
 body.is-report .seg--types{display:inline-flex}
 .seg button{white-space:nowrap}
 @media (max-width:640px){.seg--types{max-width:100%;overflow-x:auto;scrollbar-width:none}.seg--types::-webkit-scrollbar{display:none}}
