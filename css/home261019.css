@@ -260,3 +260,15 @@ html.lenis,html.lenis body{height:auto}
   .gel{top:0;transform:translateX(-50%);width:100%;height:min(118vw,480px)}
   [data-gel] .core__center{min-height:min(118vw,480px);justify-content:center}
 }
+
+/* 메인 물방울 (js/stembubble.js, build.py MAIN_STEM_BUBBLE) — 물방울구현.html 이식
+   · 네 가지 기준: 캔버스 중심을 가운데 careCL 자리(44%)에 맞추고 글자·선 아래에 깐다
+   · 데일리 루틴: 고정 무대(.steps__bubble) 전체를 채운다 */
+.sb-canvas{display:block;pointer-events:none}
+.sb-canvas--core{position:absolute;left:0;top:-6%;width:100%;height:100%;z-index:0}
+.sb-canvas--steps{position:absolute;inset:0;width:100%;height:100%}
+@media (max-width:860px){
+  .sb-canvas--core{top:0;height:min(118vw,480px)}
+  [data-sb-core] .core__center{min-height:min(118vw,480px);justify-content:center}
+}
+[data-sb-steps] .steps__stage .steps__shop{top:auto;bottom:clamp(24px,5vh,60px)}

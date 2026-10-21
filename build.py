@@ -222,7 +222,9 @@ def hero_merge():
 # 숨김 중: 네 가지 기준은 가운데 careCL 로고만, 데일리 루틴은 단계별 사진(원형)이 글 옆에 지그재그. True로 바꾸면 그대로 복구.
 MAIN_BUBBLES = False
 # 네 가지 기준 가운데 — 사용자 제공 데모(carecl-bubble.html)의 투명 콜라겐 젤 방울 (js/gel.js)
-MAIN_GEL = True
+MAIN_GEL = False
+# 메인 물방울 — 사용자 제공 물방울구현.html(STEM식 엔진, 주황 빛) : 네 가지 기준 가운데 + 데일리 루틴 (js/stembubble.js)
+MAIN_STEM_BUBBLE = True
 
 
 def page_index():
@@ -284,7 +286,7 @@ def page_index():
         <p class="sec-title rv" id="core-title" data-d="1">케어클의 네 가지 기준</p>
       </div>
     </div>
-    <div class="core__stage" data-phil{" data-gel" if MAIN_GEL else ""}>
+    <div class="core__stage" data-phil{" data-gel" if MAIN_GEL else ""}{" data-sb-core" if MAIN_STEM_BUBBLE else ""}>
       <svg class="phil__lines" aria-hidden="true"></svg>
       <div class="core__center">
         <div class="bubble core__bubble" data-bubble="logo" data-anno-target data-anno-r=".4" role="img" aria-label="물방울 속 careCL 로고">
@@ -335,7 +337,7 @@ def page_index():
   </section>
 
   <!-- 07 5 STEP -->
-  <section class="steps{"" if MAIN_BUBBLES else " steps--still"}" data-led="purple" aria-labelledby="steps-title">
+  <section class="steps{"" if (MAIN_BUBBLES or MAIN_STEM_BUBBLE) else " steps--still"}"{" data-sb-steps" if MAIN_STEM_BUBBLE else ""} data-led="purple" aria-labelledby="steps-title">
     <div class="wrap">
       <div class="sec-head">
         <h2 class="label rv">Daily Routine</h2>
@@ -384,7 +386,7 @@ def page_index():
 """
     return (head("careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다",
                  "얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어")
-            + loader() + header() + body + FOOTER + tail(three=False, mods=(("js/bubble.js",) if MAIN_BUBBLES else ()) + (("js/gel.js",) if MAIN_GEL else ())))
+            + loader() + header() + body + FOOTER + tail(three=False, js=("libs/gsap.min.js", "libs/ScrollTrigger.min.js") if MAIN_STEM_BUBBLE else (), mods=(("js/bubble.js",) if MAIN_BUBBLES else ()) + (("js/gel.js",) if MAIN_GEL else ()) + (("js/stembubble.js",) if MAIN_STEM_BUBBLE else ())))
 
 
 PAGES = {"index.html": page_index}
