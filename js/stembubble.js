@@ -299,7 +299,8 @@ function createBubble(canvas, initialState = {}, opts = {}) {
     if (logo) {
       const ls = opts.logoScale || 1;
       const lr = smooth(clamp((collect - (opts.logoRevealStart || .58)) / .3, 0, 1));
-      logo.position.x = state.x + .1 * relX * hover; logo.position.y = state.y + .06 * relY * hover;
+      const ld = (camera.position.z - logo.position.z) / camera.position.z;
+      logo.position.x = (state.x + .1 * relX * hover) * ld; logo.position.y = (state.y + .06 * relY * hover) * ld;
       logo.rotation.y = .28 * -blob.rotation.y; logo.rotation.x = .22 * -blob.rotation.x;
       logo.scale.set(ls * logoAspect * state.scale, ls * state.scale, 1);
       logo.material.uniforms.uAlpha.value = (opts.logoOpacity || .18) * state.alpha * lr * (state.logoAlpha ?? 1);
@@ -310,14 +311,18 @@ function createBubble(canvas, initialState = {}, opts = {}) {
       const a = clamp(imgTrans.from, 0, imgTex.length - 1), b = clamp(imgTrans.to, 0, imgTex.length - 1);
       const pr = smooth(clamp(imgTrans.progress, 0, 1));
       const pair = [{ index: a, alpha: 1 - pr }, { index: b, alpha: pr }];
-      const fade = travelScatter ? 1 - smoothRange(.02, .14, flowMag2) : 1;
+      /* 원본은 조금만 움직여도 사진을 숨겨 늦게 떴다 → 크게 흩어질 때만 숨기고, 마지막 구간(imageHold)은 계속 보이게 */
+      /* 이동 진행도로 판단: 방울이 실제로 흩어지는 한가운데(약 40~60%)에서만 숨기고 그 전후엔 보인다 */
+      const midScatter = smoothRange(.26, .42, travel) * (1 - smoothRange(.58, .74, travel)) * smoothRange(.05, .2, flowMag2);
+      const fade = travelScatter ? 1 - midScatter * (1 - (state.imageHold || 0)) : 1;
       const scrub = travelScatter ? (1 - fade) * (opts.imageScrub || .28) : 0;
       imgPlanes.forEach((m, k) => {
         const it = pair[k], asp = imgAspect[it.index] || 1;
         m.material.uniforms.uMap.value = imgTex[it.index]; m.material.uniforms.uAspect.value = asp;
         m.material.uniforms.uAlpha.value = (opts.imageOpacity || .26) * state.alpha * ir * it.alpha * fade;
-        m.position.x = state.x + (opts.imageOffsetX || 0) + .08 * relX * hover + fx * scrub;
-        m.position.y = state.y + (opts.imageOffsetY || 0) + .05 * relY * hover + fy * scrub;
+        const depth = (camera.position.z - m.position.z) / camera.position.z;   // 원근 보정: 방울 중심과 같은 자리에 보이게
+        m.position.x = (state.x + (opts.imageOffsetX || 0) + .08 * relX * hover + fx * scrub) * depth;
+        m.position.y = (state.y + (opts.imageOffsetY || 0) + .05 * relY * hover + fy * scrub) * depth;
         m.rotation.y = -blob.rotation.y * (opts.imageRotateYFactor ?? .22);
         m.rotation.x = -blob.rotation.x * (opts.imageRotateXFactor ?? .18);
         m.scale.set(is * asp * state.scale, is * state.scale, 1);
@@ -520,11 +525,11 @@ function initSteps() {
       const flowX = (B.x - A.x) * S * 1.15 * L, flowY = (B.y - A.y) * S * 1.15 * L;
       const R = isLast ? q(clamp((y - .02) / 2, 0, 1)) : 0;
       const flowZ = isLast ? 1.85 * Math.sin(y * Math.PI * 2) * L * R : 0;
-      bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY });
+      bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0 });
       blocks.forEach((b, k) => b.classList.toggle('is-on', k === Math.round(Math.min(pos, last))));
       if (isLast) {
-        const e = clamp(expandProgress / .78, 0, 1); const tt = q(clamp((e - .32) / .24, 0, 1));
-        if (e < .12) { bubble.setImageTransition(last, last, 0); setShop(0); } else { bubble.setImageTransition(last, last + 1, tt); setShop(y); }
+        const e = clamp(expandProgress / .78, 0, 1); const tt = q(clamp((e - .10) / .26, 0, 1));   // 풀세트로 일찍 바뀌게 (원본 .32~.56)
+        if (e < .04) { bubble.setImageTransition(last, last, 0); setShop(0); } else { bubble.setImageTransition(last, last + 1, tt); setShop(y); }
         return;
       }
       const idx = v > .5 ? clamp(i + 1, 0, last) : i;

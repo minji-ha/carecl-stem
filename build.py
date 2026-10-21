@@ -193,7 +193,7 @@ STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
 
 # 물방울 속에 띄울 누끼 제품 (tools: 흰 배경 제품컷 → 투명 PNG). 순서는 STEPS와 같다
 STEP_CUTS = ["cut-gel.png", "cut-mask.png", "cut-device.png", "cut-serum.png", "cut-case.png"]
-STEP_FINAL_CUT = "cut-lineup.png"   # 마지막 단계 뒤 가운데 큰 물방울 속
+STEP_FINAL_CUT = "cut-fullset.webp"   # 마지막 단계 뒤 가운데 큰 물방울 속
 
 CONTACTS = [
     ("Global Business", "해외 사업", "수출 · 해외 유통 문의<br>support@carecl.co.kr", "contact.html"),
