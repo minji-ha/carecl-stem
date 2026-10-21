@@ -500,71 +500,79 @@ function initSteps() {
     return t;
   }
 
-  const t0 = targets();
-  bubble.setState({ x: t0[0].x, y: t0[0].y });
-  bubble.setImageTransition(0, 1, 0);
+  /* 화면 높이 — 폰 주소창 때문에 계속 바뀌는 innerHeight 대신 고정된 무대(100svh 기준) 높이를 쓴다 */
+  const viewH = () => (parseFloat(getComputedStyle(stage).top) || 0) + (canvas.clientHeight || window.innerHeight);
 
+  function update() {
+    const T = targets();
+    const mob = isMobile(), VH = viewH();
+    if (mob) T[T.length - 1] = T[0];                                   // 모바일: 마지막도 같은 자리 (움직이지 않음)
+    const stepProgress = (() => {
+      const line = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight * (mob ? .72 : .5);
+      const tops = blocks.map((b) => { const r = textOf(b).getBoundingClientRect(); return r.top + r.height / 2; });
+      if (tops[0] >= line) return 0; if (tops[tops.length - 1] <= line) return tops.length - 1;
+      for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] >= line) { const d = tops[i + 1] - tops[i]; return d <= 0 ? i + 1 : i + clamp((line - tops[i]) / d, 0, 1); }
+      return tops.length - 1;
+    })();
+    /* 마무리 진행도: 마지막 단계 글이 기준선을 지난 순간 0 → 섹션 끝(빈 칸 아래가 화면 아래에 닿을 때) 1. 끝에서 항상 1 */
+    const expandProgress = (() => {
+      const line = VH * (mob ? .78 : .82);
+      const lr = lastBlock.getBoundingClientRect(); const anchor = mob ? lr.top + .5 * lr.height : lr.bottom;
+      const d0 = anchor - line;                                          // 시작까지 남은 거리
+      const d1 = expand.getBoundingClientRect().bottom - VH;             // 끝까지 남은 거리
+      if (d0 >= 0) return 0; if (d1 <= 0) return 1;
+      return clamp(-d0 / (d1 - d0), 0, 1);
+    })();
+    const last = blocks.length - 1;
+    const pos = expandProgress > 0 ? last + expandProgress : stepProgress;
+    const i = clamp(Math.floor(pos), 0, T.length - 2), v = clamp(pos - i, 0, 1), y = q(v);
+    const A = T[i], B = T[i + 1];
+    const x = lerp(A.x, B.x, y), yy = lerp(A.y, B.y, y), S = Math.sin(y * Math.PI);
+    const isLast = i === T.length - 2;
+    const active = clamp(Math.round(Math.min(pos, last)), 0, last);
+    blocks.forEach((b, k) => b.classList.toggle('is-on', k === active));
+    caps.forEach((c, k) => c.classList.toggle('is-on', k === active && expandProgress < .05));   // 모바일 고정 글 (마지막 구간에선 숨김)
+
+    if (mob) {
+      /* 모바일: 방울은 늘 같은 자리·같은 크기, 효과 없이 안의 제품만 바뀐다. 마지막은 풀세트가 담긴 방울 + SHOP */
+      bubble.setState({ x, y: yy, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: MOBILE_STEP_SCALE, rotateX: 0, rotateY: 0,
+        imageHold: 1, imageScale: .58, imageAlpha: 1 });
+      if (isLast) { bubble.setImageTransition(last, last + 1, smoothRange(.02, .2, expandProgress)); setShop(.72 + .18 * clamp((expandProgress - .2) / .12, 0, 1)); }
+      else { bubble.setImageTransition(i, clamp(i + 1, 0, last), smoothRange(.4, .6, v)); setShop(0); }
+      return;
+    }
+
+    const E = q(clamp((y - .2) / .75, 0, 1));
+    const L = isLast ? lerp(1.24, 2.1, q(clamp((y - 10.03) / .44, 0, 1))) : 1;
+    const scale = isLast ? lerp(BASE, 2.05, q(clamp((y - .01) / .99, 0, 1))) : BASE;
+    const pulse = isLast ? .06 * S + .035 * q(clamp((y - .68) / .22, 0, 1)) : .035 * S;
+    const rotY = isLast ? lerp(0, 2.18 * Math.PI, E) : 0;
+    const rotX = isLast ? lerp(0, -.18, E) : 0;
+    const flowX = (B.x - A.x) * S * 1.15 * L, flowY = (B.y - A.y) * S * 1.15 * L;
+    const R = isLast ? q(clamp((y - .02) / 2, 0, 1)) : 0;
+    const flowZ = isLast ? 1.85 * Math.sin(y * Math.PI * 2) * L * R : 0;
+    bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0, imageScale: undefined, imageAlpha: 1 });
+    if (isLast) {
+      /* PC 마지막: 케이스는 방울이 가운데로 출발할 때 사라지고, 다 커져 선명해지는 순간(.80~.87) 풀세트가 빠르게 페이드인 → SHOP */
+      const ep = expandProgress;
+      if (ep < .8) { bubble.setImageTransition(last, last, 0); bubble.setState({ imageAlpha: 1 - smoothRange(.02, .16, ep) }); }
+      else { bubble.setImageTransition(last + 1, last + 1, 0); bubble.setState({ imageAlpha: smoothRange(.8, .87, ep) }); }
+      setShop(.72 + .18 * clamp((ep - .86) / .1, 0, 1));
+      return;
+    }
+    const idx = v > .5 ? clamp(i + 1, 0, last) : i;
+    bubble.setImageTransition(idx, idx, 0); setShop(0);
+  }
+
+  bubble.setImageTransition(0, 1, 0);
+  /* 폰 주소창이 줄었다 늘 때(높이만 바뀔 때)는 다시 계산하지 않고, 다시 계산하더라도 초기화 없이 지금 위치로 다시 그린다
+     (예전엔 다시 계산할 때마다 첫 단계 상태로 되돌려 방울이 떨리고, 끝에 도착해도 제품이 사라졌다) */
+  ScrollTrigger.config({ ignoreMobileResize: true });
   ScrollTrigger.create({
     trigger: section, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true,
-    onRefresh() {
-      const t = targets();
-      bubble.setState({ x: t[0].x, y: t[0].y, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: isMobile() ? MOBILE_STEP_SCALE : BASE, rotateX: 0, rotateY: 0, imageScale: isMobile() ? .58 : undefined }); setShop(0);
-    },
-    onUpdate() {
-      const T = targets();
-      const stepProgress = (() => {
-        const line = (parseFloat(getComputedStyle(stage).top) || 0) + canvas.clientHeight * (isMobile() ? .72 : .5);
-        const tops = blocks.map((b) => { const r = textOf(b).getBoundingClientRect(); return r.top + r.height / 2; });
-        if (tops[0] >= line) return 0; if (tops[tops.length - 1] <= line) return tops.length - 1;
-        for (let i = 0; i < tops.length - 1; i++) if (tops[i + 1] >= line) { const d = tops[i + 1] - tops[i]; return d <= 0 ? i + 1 : i + clamp((line - tops[i]) / d, 0, 1); }
-        return tops.length - 1;
-      })();
-      /* 마무리 진행도: 마지막 단계 글이 기준선을 지난 순간 0 → 섹션 끝(빈 칸 아래가 화면 아래에 닿을 때) 1.
-         원본 계산은 모바일에서 끝에 도착해도 0.7대에 머물러 풀세트가 안 보였다 → 끝에서 항상 1이 되게 */
-      const expandProgress = (() => {
-        const m = isMobile(); const line = window.innerHeight * (m ? .78 : .82);
-        const lr = lastBlock.getBoundingClientRect(); const anchor = m ? lr.top + .5 * lr.height : lr.bottom;
-        const d0 = anchor - line;                                            // 시작까지 남은 거리
-        const d1 = expand.getBoundingClientRect().bottom - window.innerHeight; // 끝까지 남은 거리
-        if (d0 >= 0) return 0; if (d1 <= 0) return 1;
-        return clamp(-d0 / (d1 - d0), 0, 1);
-      })();
-      const last = blocks.length - 1;
-      const pos = expandProgress > 0 ? last + expandProgress : stepProgress;
-      const i = clamp(Math.floor(pos), 0, T.length - 2), v = clamp(pos - i, 0, 1), y = q(v);
-      const A = T[i], B = T[i + 1];
-      const x = lerp(A.x, B.x, y), yy = lerp(A.y, B.y, y), S = Math.sin(y * Math.PI);
-      const isLast = i === T.length - 2;
-      const E = q(clamp((y - .2) / .75, 0, 1));
-      const L = isLast ? lerp(1.24, 2.1, q(clamp((y - 10.03) / .44, 0, 1))) : 1;
-      const base = isMobile() ? MOBILE_STEP_SCALE : BASE;
-      const scale = isLast ? lerp(base, 2.05, q(clamp((y - .01) / .99, 0, 1))) : base;
-      const pulse = isLast ? .06 * S + .035 * q(clamp((y - .68) / .22, 0, 1)) : .035 * S;
-      const rotY = isLast ? lerp(0, 2.18 * Math.PI, E) : 0;
-      const rotX = isLast ? lerp(0, -.18, E) : 0;
-      const flowX = (B.x - A.x) * S * 1.15 * L, flowY = (B.y - A.y) * S * 1.15 * L;
-      const R = isLast ? q(clamp((y - .02) / 2, 0, 1)) : 0;
-      const flowZ = isLast ? 1.85 * Math.sin(y * Math.PI * 2) * L * R : 0;
-      bubble.setState({ x, y: yy, travel: y, flowX, flowY, flowZ, pulse, scale, rotateX: rotX, rotateY: rotY, imageHold: isLast ? 1 : 0, imageScale: isMobile() ? .58 : undefined, imageAlpha: 1 });
-      const active = clamp(Math.round(Math.min(pos, last)), 0, last);
-      blocks.forEach((b, k) => b.classList.toggle('is-on', k === active));
-      /* 모바일: 방울 아래 고정 자리의 글을 한 단계씩 바꾼다 */
-      caps.forEach((c, k) => c.classList.toggle('is-on', k === active && expandProgress < .05));   // 마지막 큰 방울 구간에선 숨김
-      if (isLast) {
-        /* 마지막: 케이스 사진은 방울이 가운데로 출발할 때 사라지고, 방울이 다 커져 선명해지는 순간(.80~.87)
-           풀세트가 빠르게 페이드인 → 그다음 SHOP */
-        const ep = expandProgress;
-        const IN = isMobile() ? .30 : .80;                                   // 모바일은 방울이 제자리라 비는 시간을 짧게
-        if (ep < IN) { bubble.setImageTransition(last, last, 0); bubble.setState({ imageAlpha: 1 - smoothRange(.02, .16, ep) }); }
-        else { bubble.setImageTransition(last + 1, last + 1, 0); bubble.setState({ imageAlpha: smoothRange(IN, IN + .07, ep) }); }
-        setShop(.72 + .18 * clamp((ep - (IN + .06)) / .1, 0, 1));
-        return;
-      }
-      if (isMobile()) { bubble.setImageTransition(i, clamp(i + 1, 0, last), smoothRange(.4, .6, v)); setShop(0); return; }   // 모바일: 제품만 부드럽게 교차
-      const idx = v > .5 ? clamp(i + 1, 0, last) : i;
-      bubble.setImageTransition(idx, idx, 0); setShop(0);
-    },
+    onRefresh: update, onUpdate: update,
   });
+  update();
   let lastW = window.innerWidth;
   window.addEventListener('resize', () => { const w = window.innerWidth; if (Math.abs(w - lastW) > 1) { lastW = w; ScrollTrigger.refresh(); } });
 }
