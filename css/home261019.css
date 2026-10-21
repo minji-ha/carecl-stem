@@ -249,3 +249,14 @@ html.lenis,html.lenis body{height:auto}
   .steps--still .step__img{display:block;grid-area:img;justify-self:center;align-self:center;width:min(100%,340px);aspect-ratio:1/1;border-radius:50%;overflow:hidden}
   .steps--still .step__img img{width:100%;height:100%;object-fit:cover}
 }
+
+/* 네 가지 기준 가운데 — 투명 콜라겐 젤 방울 (js/gel.js, build.py MAIN_GEL)
+   데모와 같은 크기가 나오도록 높이 560px 무대, 중심은 가운데 careCL 로고에 맞춘다.
+   캔버스는 글자·선 아래에 두고 클릭을 막지 않는다. */
+.gel{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:min(100%,1200px);height:560px;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.gel.is-ready{opacity:1}
+.gel canvas{display:block;width:100%;height:100%}
+@media (max-width:860px){
+  .gel{top:0;transform:translateX(-50%);width:100%;height:min(118vw,480px)}
+  [data-gel] .core__center{min-height:min(118vw,480px);justify-content:center}
+}

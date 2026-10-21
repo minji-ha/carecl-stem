@@ -221,6 +221,8 @@ def hero_merge():
 # 메인 물방울(네 가지 기준 로고 물방울 · 데일리 루틴 물방울) — False면 숨김(2026-10-20 사용자 요청).
 # 숨김 중: 네 가지 기준은 가운데 careCL 로고만, 데일리 루틴은 단계별 사진(원형)이 글 옆에 지그재그. True로 바꾸면 그대로 복구.
 MAIN_BUBBLES = False
+# 네 가지 기준 가운데 — 사용자 제공 데모(carecl-bubble.html)의 투명 콜라겐 젤 방울 (js/gel.js)
+MAIN_GEL = True
 
 
 def page_index():
@@ -282,7 +284,7 @@ def page_index():
         <p class="sec-title rv" id="core-title" data-d="1">케어클의 네 가지 기준</p>
       </div>
     </div>
-    <div class="core__stage" data-phil>
+    <div class="core__stage" data-phil{" data-gel" if MAIN_GEL else ""}>
       <svg class="phil__lines" aria-hidden="true"></svg>
       <div class="core__center">
         <div class="bubble core__bubble" data-bubble="logo" data-anno-target data-anno-r=".4" role="img" aria-label="물방울 속 careCL 로고">
@@ -382,7 +384,7 @@ def page_index():
 """
     return (head("careCL 케어클 — 정밀하게 읽고, 부위별로 되돌리다",
                  "얼굴을 22개 부위로 나누어 읽고, 먼저 관리해야 할 곳부터 제안하는 홈 에이징 케어")
-            + loader() + header() + body + FOOTER + tail(three=False, mods=("js/bubble.js",) if MAIN_BUBBLES else ()))
+            + loader() + header() + body + FOOTER + tail(three=False, mods=(("js/bubble.js",) if MAIN_BUBBLES else ()) + (("js/gel.js",) if MAIN_GEL else ())))
 
 
 PAGES = {"index.html": page_index}
