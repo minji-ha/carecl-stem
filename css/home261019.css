@@ -296,3 +296,8 @@ html.lenis,html.lenis body{height:auto}
 .sb-cap__item .step__title{margin:6px 0 0;font-family:var(--f-title);font-weight:500;font-size:22px;text-transform:uppercase;letter-spacing:.02em;color:var(--ink)}
 .sb-cap__item .step__kr{display:block;margin-top:4px;font-size:13px;font-weight:600;color:var(--ink)}
 .sb-cap__item .step__desc{margin:10px 0 0;font-size:14px;line-height:1.75;color:var(--ink-2);word-break:keep-all}
+/* 모바일 데일리 루틴은 효과 없이 — 글·SHOP도 바로 바뀐다 */
+@media (max-width:860px){
+  [data-sb-steps] .sb-cap__item{transition:none;transform:none}
+  [data-sb-steps] .steps__stage .steps__shop{transition:none}
+}

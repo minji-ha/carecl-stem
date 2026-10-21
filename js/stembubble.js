@@ -292,8 +292,9 @@ function createBubble(canvas, initialState = {}, opts = {}) {
     blob.reset();
     blob.scale.setScalar((state.baseScale || (window.innerWidth <= 768 ? 2.58 : 4)) * state.scale);
     blob.position.x = state.x; blob.position.y = state.y;
-    blob.rotation.y = .14 * Math.sin(.34 * t) * (.35 + collect) + .28 * relX * hover + (state.rotateY || 0);
-    blob.rotation.x = .07 * Math.sin(.27 * t) - .18 * relY * hover + (state.rotateX || 0);
+    const live = state.still ? 0 : 1;                                          // still: 효과 없이 그냥 떠 있는 방울 (모바일 데일리 루틴)
+    blob.rotation.y = (.14 * Math.sin(.34 * t) * (.35 + collect) + .28 * relX * hover) * live + (state.rotateY || 0);
+    blob.rotation.x = (.07 * Math.sin(.27 * t) - .18 * relY * hover) * live + (state.rotateX || 0);
     bubbleMat.uniforms.uTime.value = t; bubbleMat.uniforms.uAlpha.value = state.alpha; bubbleMat.uniforms.uHover.value = hover;
 
     if (logo) {
@@ -376,7 +377,7 @@ function createBubble(canvas, initialState = {}, opts = {}) {
     const shrink = travelScatter && collect > .95 ? 1 - .42 * smoothRange(.12, .88, scatterLevel) : 1;
     blob.addBall(
       .5 - fx * k * cf + fx * j * cf,
-      lerp(.12, .5, coreRise) + .006 * Math.sin(.5 * t) * core - fy * k * cf + fy * j * cf,
+      lerp(.12, .5, coreRise) + .006 * Math.sin(.5 * t) * core * (state.still ? 0 : 1) - fy * k * cf + fy * j * cf,
       .5 + fz * j * cf + .04 * j,
       core * (.18 + core * (.58 + .04 * state.pulse)) * (1 - .08 * flowMag) * shrink,
       lerp(18, 13.2, core) + .42 * flowMag, new THREE.Color(0xffffff));
@@ -534,13 +535,14 @@ function initSteps() {
     caps.forEach((c, k) => c.classList.toggle('is-on', k === active && expandProgress < .05));   // 모바일 고정 글 (마지막 구간에선 숨김)
 
     if (mob) {
-      /* 모바일: 방울은 늘 같은 자리·같은 크기, 효과 없이 안의 제품만 바뀐다. 마지막은 풀세트가 담긴 방울 + SHOP */
+      /* 모바일: 효과 없이 그냥 떠 있는 방울. 단계가 바뀌면 제품만 바로 바뀌고, 마지막 구간에 들어서면 바로 풀세트 + SHOP */
       bubble.setState({ x, y: yy, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, scale: MOBILE_STEP_SCALE, rotateX: 0, rotateY: 0,
-        imageHold: 1, imageScale: .58, imageAlpha: 1 });
-      if (isLast) { bubble.setImageTransition(last, last + 1, smoothRange(.02, .2, expandProgress)); setShop(.72 + .18 * clamp((expandProgress - .2) / .12, 0, 1)); }
-      else { bubble.setImageTransition(i, clamp(i + 1, 0, last), smoothRange(.4, .6, v)); setShop(0); }
+        imageHold: 1, imageScale: .58, imageAlpha: 1, still: true });
+      if (isLast) { const fin = expandProgress > .05; bubble.setImageTransition(fin ? last + 1 : last, fin ? last + 1 : last, 0); setShop(fin ? 1 : 0); }
+      else { const idx = v > .5 ? clamp(i + 1, 0, last) : i; bubble.setImageTransition(idx, idx, 0); setShop(0); }
       return;
     }
+    bubble.setState({ still: false });
 
     const E = q(clamp((y - .2) / .75, 0, 1));
     const L = isLast ? lerp(1.24, 2.1, q(clamp((y - 10.03) / .44, 0, 1))) : 1;
