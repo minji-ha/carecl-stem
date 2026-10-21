@@ -531,7 +531,8 @@ def page_survey():
 
 
 def page_report():
-    body = """<main class="sub">
+    body = """<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add('is-embed')</script>
+<main class="sub">
   <section class="subhead" data-led="purple">
     <div class="wrap">
       <p class="label">Aging Lab</p>
@@ -635,14 +636,13 @@ def ai_cleanup():
 
 
 if __name__ == "__main__":
-    preview = os.path.join(ROOT, "report-preview.html")          # 빌드 목록에 없는 예전 미리보기 파일도 함께 옮긴다
-    keep_preview = io.open(preview, encoding="utf-8").read() if os.path.exists(preview) else None
+    # 결과지 개선 시안 — 원본은 content/report-preview.src. 비공개면 비밀 주소로, 공개면 report-preview.html로 만든다
     ai_cleanup()
-    if keep_preview is not None:
-        if AI_TEST_PUBLIC:
-            io.open(preview, "w", encoding="utf-8").write(keep_preview)
-        else:
-            io.open(os.path.join(ROOT, AI_SECRET + "-report-preview.html"), "w", encoding="utf-8").write(secret_links(keep_preview))
+    preview_src = io.open(os.path.join(ROOT, "content", "report-preview.src"), encoding="utf-8").read()
+    if AI_TEST_PUBLIC:
+        io.open(os.path.join(ROOT, "report-preview.html"), "w", encoding="utf-8").write(preview_src)
+    else:
+        io.open(os.path.join(ROOT, AI_SECRET + "-report-preview.html"), "w", encoding="utf-8").write(secret_links(preview_src))
     for name, fn in PAGES.items():
         out = fn()
         if name.startswith("survey-p") or name == "survey2.html":   # 왼쪽 그래픽 비교용 시안 페이지는 공개 후에도 검색에서 뺀다

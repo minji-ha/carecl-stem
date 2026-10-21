@@ -32,6 +32,15 @@ p{word-break:keep-all}
 .fix{display:inline-flex;align-items:center;margin-left:8px;font-size:11px;font-weight:600;color:#1f6feb;background:#e8f0fe;border-radius:6px;padding:3px 8px;vertical-align:middle;letter-spacing:0;text-transform:none;white-space:nowrap}
 .slot{display:inline-flex;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--ink-3);border:1px dashed var(--ink-3);border-radius:6px;padding:2px 7px;margin-left:8px;vertical-align:middle;white-space:nowrap}
 .hide-notes .fix,.hide-notes .slot{display:none}
+/* 화면 전환 — 진단 결과 리포트(기존 리포트 페이지)를 같은 안내 바 아래에서 본다 */
+.rpt-frame{display:none;width:100%;border:0;height:calc(100vh - var(--mock));background:#fff}
+body.mode-report > *:not(.mock-bar):not(.rpt-frame):not(script){display:none!important}
+body.mode-report .rpt-frame{display:block}
+.seg--types{display:none}
+body.mode-report .seg--types{display:inline-flex}
+body.mode-report .seg--new{display:none}
+.seg button{white-space:nowrap}
+@media (max-width:640px){body.mode-report .seg--types{max-width:100%;overflow-x:auto;scrollbar-width:none}.seg--types::-webkit-scrollbar{display:none}}
 
 /* 헤더 (개발 화면 헤더 자리) */
 .hd{background:#fff;border-bottom:1px solid var(--hair)}
@@ -278,11 +287,23 @@ p{word-break:keep-all}
   <div class="in">
     <span><b>결과지 개선 시안</b> · 내용은 개발 화면·「결과지_혼합형_예시A」 원고 그대로, 왼쪽 얼굴 자리만 레이더로</span>
     <span style="display:flex;gap:10px;flex-wrap:wrap">
-      <span class="seg" role="group" aria-label="보기 상태">
+      <span class="seg" role="group" aria-label="화면">
+        <button type="button" data-mode="new" aria-pressed="true">결과지 개선안</button>
+        <button type="button" data-mode="report" aria-pressed="false">진단 결과 리포트</button>
+      </span>
+      <span class="seg seg--types" role="group" aria-label="노화 유형">
+        <button type="button" data-rtype="early" aria-pressed="false">초기 노화</button>
+        <button type="button" data-rtype="tired" aria-pressed="false">피로</button>
+        <button type="button" data-rtype="fine" aria-pressed="false">잔주름</button>
+        <button type="button" data-rtype="sag" aria-pressed="true">변형·처짐</button>
+        <button type="button" data-rtype="muscle" aria-pressed="false">근육</button>
+        <button type="button" data-rtype="mixed" aria-pressed="false">혼합</button>
+      </span>
+      <span class="seg seg--new" role="group" aria-label="보기 상태">
         <button type="button" data-view="guest" aria-pressed="true">비회원</button>
         <button type="button" data-view="member" aria-pressed="false">회원</button>
       </span>
-      <span class="seg"><button type="button" data-notes aria-pressed="true">주석 보기</button></span>
+      <span class="seg seg--new"><button type="button" data-notes aria-pressed="true">주석 보기</button></span>
     </span>
   </div>
 </div>
@@ -585,6 +606,26 @@ document.querySelector('[data-unlock]').addEventListener('click',()=>setView('me
 if(location.hash==='#member')setView('member');
 const nb=document.querySelector('[data-notes]');
 nb.addEventListener('click',()=>{const on=nb.getAttribute('aria-pressed')!=='true';nb.setAttribute('aria-pressed',on);body.classList.toggle('hide-notes',!on)});
+</script>
+<iframe class="rpt-frame" title="진단 결과 리포트" data-rpt-frame></iframe>
+<script>
+/* 결과지 개선안 ↔ 진단 결과 리포트 전환. 리포트는 기존 리포트 페이지를 메뉴·푸터 없이(embed=1) 띄운다 */
+(function(){
+  var frame=document.querySelector('[data-rpt-frame]'), type='sag', base=(window.CL_AI_PREFIX||'')+'report.html';
+  function load(){ frame.src=base+'?type='+type+'&embed=1'; }
+  function mode(m){
+    document.body.classList.toggle('mode-report',m==='report');
+    document.querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===m))});
+    if(m==='report'&&!frame.src) load();
+    try{history.replaceState(null,'',m==='report'?'#report-'+type:'#')}catch(e){}
+  }
+  document.querySelectorAll('[data-mode]').forEach(function(b){b.addEventListener('click',function(){mode(b.dataset.mode)})});
+  document.querySelectorAll('[data-rtype]').forEach(function(b){b.addEventListener('click',function(){
+    type=b.dataset.rtype; document.querySelectorAll('[data-rtype]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))}); load(); mode('report');
+  })});
+  var h=(location.hash.match(/^#report-([a-z]+)/)||[])[1];
+  if(h){ type=h; document.querySelectorAll('[data-rtype]').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.rtype===h))}); mode('report'); }
+})();
 </script>
 </body>
 </html>
