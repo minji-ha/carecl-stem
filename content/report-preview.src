@@ -284,11 +284,15 @@ body.mode-report .seg--new{display:none}
 
 <div class="mock-bar">
   <div class="in">
-    <span><b>결과지 개선 시안</b> · 내용은 개발 화면(최신 결과 리포트) 그대로, 디자인만 개선</span>
+    <span><b>결과지 개선 시안</b> · 설문 시안 A/B의 결과 화면 (아래 탭 6개로 왼쪽 그래픽 비교)</span>
     <span style="display:flex;gap:10px;flex-wrap:wrap">
       <span class="seg" role="group" aria-label="화면">
         <button type="button" data-mode="new" aria-pressed="true">결과지 개선안</button>
         <button type="button" data-mode="report" aria-pressed="false">진단 결과 리포트</button>
+      </span>
+      <span class="seg seg--new" role="group" aria-label="설문 시안">
+        <button type="button" data-variant="a" aria-pressed="true">A · 흰 배경</button>
+        <button type="button" data-variant="b" aria-pressed="false">B · 검정 화면</button>
       </span>
       <span class="seg seg--types" role="group" aria-label="노화 유형">
         <button type="button" data-rtype="early" aria-pressed="false">초기 노화</button>
@@ -599,26 +603,28 @@ if(nb)nb.addEventListener('click',()=>{const on=nb.getAttribute('aria-pressed')!
 <iframe class="rpt-frame" title="진단 결과 리포트" data-rpt-frame></iframe>
 <script>
 /* 결과지 개선안 ↔ 진단 결과 리포트 전환. 둘 다 최신 결과 리포트(개발 화면 내용)를 메뉴·푸터 없이(embed=1) 띄운다
-   · 결과지 개선안 : report-view.html (왼쪽 Aging Map 레이더 + 오른쪽 결과지, 비회원/회원)
+   · 결과지 개선안 : 설문 시안 A(survey.html) / B(survey2.html)의 결과 화면 — 탭 6개로 왼쪽 그래픽 비교, 비회원/회원
    · 진단 결과 리포트 : report.html */
 (function(){
   var frame=document.querySelector('[data-rpt-frame]'), pre=(window.CL_AI_PREFIX||'');
-  var st={mode:'new',view:'guest',type:'mixed'};
+  var st={mode:'new',view:'guest',type:'mixed',variant:'a'};
   function press(sel,attr,val){document.querySelectorAll(sel).forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset[attr]===val))})}
   function load(){
     document.body.classList.toggle('mode-report',st.mode==='report');
-    press('[data-mode]','mode',st.mode); press('[data-view]','view',st.view); press('[data-rtype]','rtype',st.type);
+    press('[data-mode]','mode',st.mode); press('[data-view]','view',st.view); press('[data-rtype]','rtype',st.type); press('[data-variant]','variant',st.variant);
     frame.src = st.mode==='report' ? pre+'report.html?type='+st.type+'&embed=1'
-                                   : pre+'report-view.html?view='+st.view+'&type='+st.type+'&embed=1';
-    try{history.replaceState(null,'','#'+st.mode+'-'+st.view+'-'+st.type)}catch(e){}
+                                   : pre+(st.variant==='b'?'survey2.html':'survey.html')+'?view='+st.view+'&type='+st.type+'&embed=1';
+    try{history.replaceState(null,'','#'+st.mode+'-'+st.view+'-'+st.type+'-'+st.variant)}catch(e){}
   }
   document.querySelectorAll('[data-mode]').forEach(function(b){b.addEventListener('click',function(){st.mode=b.dataset.mode;load()})});
   document.querySelectorAll('[data-view]').forEach(function(b){b.addEventListener('click',function(){st.view=b.dataset.view;load()})});
   document.querySelectorAll('[data-rtype]').forEach(function(b){b.addEventListener('click',function(){st.type=b.dataset.rtype;load()})});
+  document.querySelectorAll('[data-variant]').forEach(function(b){b.addEventListener('click',function(){st.variant=b.dataset.variant;load()})});
   var h=location.hash.slice(1).split('-');
   if(h[0]==='new'||h[0]==='report') st.mode=h[0];
   if(h[1]==='guest'||h[1]==='member') st.view=h[1];
   if(/^(early|tired|fine|sag|muscle|mixed)$/.test(h[2]||'')) st.type=h[2];
+  if(h[3]==='a'||h[3]==='b') st.variant=h[3];
   load();
 })();
 </script>

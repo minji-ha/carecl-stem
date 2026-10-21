@@ -175,10 +175,5 @@ body.survey .foot{margin-top:0}
 .sv--flow.is-hero.is-full .sv__intro .caution{margin-top:18px;font-size:13px}
 @media (max-width:640px){.sv--flow.is-hero.is-full .sv__form{padding:28px 18px}.sv--flow.is-hero.is-full .sv__intro .label i{display:none}.sv--flow.is-hero.is-full .sv__intro .label span{font-size:10px;letter-spacing:.06em}}
 
-/* 결과지 개선안 화면(report-view.html) — 왼쪽 패널에 레이더, 로그인 전엔 안내만 */
-.sv--view .sv__radar--mirror{width:min(92%,440px)}
-.sv--view .sv__radar--mirror svg{display:block;width:100%;height:auto;overflow:visible}
-.sv__lnote{display:none}
-.sv--view.is-locked .sv__lnote{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;padding:14px 22px;border-radius:14px;
-  background:rgba(28,25,22,.86);border:1px solid rgba(255,255,255,.12);color:#efe7df;font-size:13px;line-height:1.6;text-align:center}
-.is-embed .header,.is-embed .mnav,.is-embed .foot,.is-embed .aifab,.is-embed .loader,.is-embed .led-glow,.is-embed .led-dot,.is-embed .pvtabs{display:none!important}
+/* 결과지 개선 시안 안에서 띄울 때(?embed=1) — 사이트 메뉴·푸터만 숨긴다. 왼쪽 그래픽 탭 6개는 그대로 */
+.is-embed .header,.is-embed .mnav,.is-embed .foot,.is-embed .aifab,.is-embed .loader,.is-embed .led-glow,.is-embed .led-dot{display:none!important}

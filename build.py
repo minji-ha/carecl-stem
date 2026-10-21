@@ -508,7 +508,8 @@ for _g, _led, _items in MENU:
 #  AI 피부 진단 설문 · 결과 리포트
 # ═══════════════════════════════════════════════════════════
 def page_survey():
-    body = """<main class="sv sv--stem" data-led="red">
+    body = """<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add('is-embed')</script>
+<main class="sv sv--stem" data-led="red">
   <aside class="sv__panel">
     <div class="sv__dots" data-dotfield></div>
     <div class="sv__stick">
@@ -594,33 +595,6 @@ def page_survey_flow():
 
 
 PAGES["survey2.html"] = page_survey_flow
-
-def page_report_view():
-    """report-view.html — 결과지 개선 시안의 '결과지 개선안' 화면.
-    내용은 개발 화면 그대로인 최신 결과 리포트(설문 결과와 같은 report.js),
-    디자인은 시안처럼 왼쪽 Aging Map 패널에 노화 신호 레이더(커버 오각형을 크게 비춘다).
-    주소: ?view=guest|member&type=유형&embed=1 (embed면 사이트 메뉴·푸터 없이)"""
-    out = page_survey()
-    out = out.replace('<div class="sv__orbwrap"><div class="sv__orb" data-orb aria-hidden="true"><canvas></canvas></div></div>',
-                      '<div class="sv__orbwrap"><div class="sv__radar sv__radar--mirror" data-lradar aria-hidden="true">'
-                      '<svg viewBox="-215 -205 430 410"></svg></div>'
-                      '<p class="sv__lnote" data-lnote>로그인하면<br>내 노화 신호 분포가 보여요</p></div>', 1)
-    out = out.replace('<main class="sv sv--stem"', "<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add('is-embed')</script>\n"
-                      '<main class="sv sv--stem sv--view"', 1)
-    mirror = """<script>
-/* 커버 오각형(최신 리포트)이 그려지면 왼쪽 패널 레이더에 그대로 비춘다 */
-(function(){
-  var left=document.querySelector('[data-lradar] svg'); if(!left) return;
-  function copy(){ var c=document.querySelector('.cku-cover-radar svg'); if(c) left.innerHTML=c.innerHTML; }
-  new MutationObserver(copy).observe(document.getElementById('svForm'),{childList:true,subtree:true,attributes:true});
-  setInterval(copy,500); copy();
-})();
-</script>
-"""
-    return out.replace('</body>', mirror + '</body>', 1)
-
-
-PAGES["report-view.html"] = page_report_view
    # 시안 확인용 사이트 — 기본 설문에도 그래픽 탭 6개
 PAGES["report.html"] = page_report
 
