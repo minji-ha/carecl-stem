@@ -9,10 +9,10 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261102015234">
-<link rel="stylesheet" href="css/home261019.css?v=261102015234">
-<link rel="stylesheet" href="css/sub.css?v=261102015234">
-<link rel="stylesheet" href="css/detail.css?v=261102015234">
+<link rel="stylesheet" href="css/stem.css?v=261102015430">
+<link rel="stylesheet" href="css/home261019.css?v=261102015430">
+<link rel="stylesheet" href="css/sub.css?v=261102015430">
+<link rel="stylesheet" href="css/detail.css?v=261102015430">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -38,7 +38,7 @@
 <main class="sub">
   <section class="subhead subhead--vis" data-led="red">
     <div class="subhead__top">
-      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102015234" alt="" decoding="async"></div>
+      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102015430" alt="" decoding="async"></div>
       <div class="wrap">
         <p class="label">Technology</p>
         <h1 class="subhead__title">careCL<br>Technology</h1>
@@ -230,13 +230,19 @@
   </div>
 </section>
 
-<section data-led="red" class="dp-band dp-band--rev">
-  <figure class="dp-band__img rv"><img src="assets/img/e-techfit-stand2.jpg" alt="careCL TECH FIT" loading="lazy" style="object-position:50% 30%"></figure>
-  <div class="dp-band__copy rv">
-    <p class="dp-band__t">어디에, 얼마 동안,<br>얼마나 일정하게.</p>
-    <p>어디부터 시작할지는 내 노화 타입이 알려줍니다.</p>
-    <div class="dp-cta" style="margin-top:28px"><a href="aging-types.html" class="btn-line">내 노화 타입 알아보기 →</a><a href="products.html" class="btn-line">TECH FIT 보기 →</a></div>
+<!-- 마무리 CTA (261102) — 점등 사진의 어두운 배경과 이어지는 밴드 -->
+<section class="tcta">
+  <div class="tcta__copy">
+    <p class="tcta__label rv">Start with your type</p>
+    <h2 class="tcta__t rv">
+      <span>어디에,<small>22 Zones</small></span>
+      <span>얼마 동안,<small>5 Sec</small></span>
+      <span>얼마나 일정하게.<small>주 3회</small></span>
+    </h2>
+    <p class="tcta__sub rv">어디부터 시작할지는 내 노화 타입이 알려줍니다.</p>
+    <div class="tcta__btns rv"><a href="aging-types.html" class="tcta__btn tcta__btn--fill">내 노화 타입 알아보기 <i aria-hidden="true">→</i></a><a href="products.html" class="tcta__btn">TECH FIT 보기 <i aria-hidden="true">→</i></a></div>
   </div>
+  <figure class="tcta__vis rv"><img src="assets/img/m-lit-face.jpg" alt="빨간 LED가 켜진 careCL TECH FIT 헤드" loading="lazy"></figure>
 </section>
 
   </div>
@@ -269,7 +275,7 @@
   </div>
 </footer>
 <script src="libs/lenis.min.js"></script>
-<script src="js/led.js?v=261102015234"></script>
-<script src="js/stem.js?v=261102015234"></script>
+<script src="js/led.js?v=261102015430"></script>
+<script src="js/stem.js?v=261102015430"></script>
 </body>
 </html>
