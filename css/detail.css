@@ -614,3 +614,17 @@
   .tcta--model .tcta__vis img{-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
   .tcta--model .tcta__copy{padding:10px var(--gut) 64px}
 }
+
+/* 마무리 CTA — 사진 통으로 위, 글은 아래 가운데 (261102) */
+.tcta--stack{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;padding-top:clamp(60px,6vw,110px)}
+.tcta--stack .tcta__vis{order:-1;align-self:auto;min-height:0;width:min(860px,100% - 2 * var(--gut));aspect-ratio:860/930;border-radius:20px;overflow:hidden}
+.tcta--stack .tcta__vis img{-webkit-mask-image:none;mask-image:none;object-position:50% 50%}
+.tcta--stack .tcta__copy{padding:clamp(40px,4vw,70px) var(--gut) clamp(70px,8vw,140px);max-width:900px}
+.tcta--stack .tcta__label{justify-content:center}
+.tcta--stack .tcta__t span{justify-content:center}
+.tcta--stack .tcta__btns{justify-content:center}
+@media (max-width:860px){
+  .tcta--stack{padding-top:0}
+  .tcta--stack .tcta__vis{width:100%;border-radius:0}
+  .tcta--stack .tcta__copy{padding:36px var(--gut) 64px}
+}
