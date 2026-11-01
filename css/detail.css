@@ -647,3 +647,26 @@
 .mpanel--ems .mpanel__vis{background:radial-gradient(55% 55% at 50% 50%,#F8EFE8,#EFEDEA 75%)}
 .mpanel__led{width:min(58%,360px)}
 .mpanel__vis figcaption{background:rgba(255,255,255,.8);color:var(--ink)}
+
+/* 마무리 CTA — 흰 배경, 사진 왼쪽 · 글 오른쪽 왼쪽 정렬 (261102) */
+.tcta--split{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);background:#fff;color:var(--ink);gap:clamp(20px,3vw,60px);padding:clamp(60px,6vw,120px) 0}
+.tcta--split::before{display:none}
+.tcta--split .tcta__vis{order:0;align-self:center;min-height:0;aspect-ratio:1200/1080}
+.tcta--split .tcta__vis img{-webkit-mask-image:none;mask-image:none;object-fit:contain}
+.tcta--split .tcta__copy{padding:0 var(--gut) 0 0}
+.tcta--split .tcta__label{color:var(--ink-2)}
+.tcta--split .tcta__label::before{background:var(--accent);box-shadow:none}
+.tcta--split .tcta__t{color:var(--ink)}
+.tcta--split .tcta__t small{border-color:color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 7%,#fff);color:var(--accent)}
+.tcta--split .tcta__sub{color:var(--ink-2)}
+.tcta--split .tcta__btn{border-color:var(--ink);color:var(--ink)}
+.tcta--split .tcta__btn:hover{background:var(--ink);color:#fff}
+.tcta--split .tcta__btn--fill{background:var(--accent);border-color:var(--accent);color:#fff}
+.tcta--split .tcta__btn--fill:hover{background:var(--ink);border-color:var(--ink)}
+@media (max-width:860px){
+  .tcta--split{grid-template-columns:minmax(0,1fr);padding:40px 0 64px}
+  .tcta--split .tcta__vis{order:0}
+  .tcta--split .tcta__copy{padding:24px var(--gut) 0}
+}
+.tcta--split .tcta__vis{order:-1}
+@media (max-width:860px){.tcta--split .tcta__vis{order:-1}}
