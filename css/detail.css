@@ -537,3 +537,10 @@
 .dp-tall--stack .dp-tall__notes:has(p + p){padding-bottom:0}
 .dp-tall--stack .dp-tall__img{min-height:0;aspect-ratio:16/9;order:0}
 .dp-tall--stack .dp-tall__img img{object-position:50% 50%}
+
+/* 6 Aging Types 대표 고민 (261102) — 한눈에 보이게 뱃지로 */
+.dp-item .dp-tags{display:flex;flex-wrap:wrap;gap:8px}
+.dp-item .dp-tags b{flex:0 0 100%;margin-bottom:4px}
+.dp-item .dp-tags span{display:inline-flex;align-items:center;padding:6px 13px;border-radius:30px;
+  background:color-mix(in srgb,var(--accent) 9%,#fff);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent);
+  font-size:13.5px;font-weight:500;line-height:1.2;color:var(--accent);white-space:nowrap}
