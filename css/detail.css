@@ -513,3 +513,10 @@
 @keyframes litCycle{0%{opacity:0}6%,25%{opacity:1}31%,100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.mpanel__cycle img{animation:none}.mpanel__cycle img:first-child{opacity:1}}
 @media (max-width:860px){.mpanel__vis{aspect-ratio:4/3}}
+
+/* 임상 수치 (261102) — 화면에 들어오면 막대가 게이지처럼 차오른다 */
+.js .tres__bar i{transform:scaleX(0);transform-origin:left center;transition:transform 1.8s cubic-bezier(.22,1,.36,1) .25s}
+.js .tres__list li.is-in .tres__bar i{transform:none}
+.js .tres__list li[data-d="1"] .tres__bar i{transition-delay:.4s}
+.js .tres__list li[data-d="2"] .tres__bar i{transition-delay:.55s}
+@media (prefers-reduced-motion:reduce){.js .tres__bar i{transform:none;transition:none}}

@@ -103,6 +103,28 @@
     rvs.forEach(function (el) { el.classList.add('is-in'); });
   }
 
+  /* ── 임상 수치 — 막대가 차는 동안 숫자도 0에서 올라간다 ── */
+  var counts = document.querySelectorAll('[data-count]');
+  if (counts.length && 'IntersectionObserver' in window && !reduce) {
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        var el = e.target, to = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length;
+        var unit = el.querySelector('small'), t0 = null, dur = 1800;
+        var li = el.closest('li'), delay = 250 + (li && li.dataset.d ? +li.dataset.d * 150 : 0);
+        function frame(t) {
+          if (t0 === null) t0 = t;
+          var p = Math.min(Math.max((t - t0 - delay) / dur, 0), 1), k = 1 - Math.pow(1 - p, 3);
+          el.firstChild.nodeValue = '+' + (to * k).toFixed(dec);
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        if (unit && el.firstChild.nodeType === 3) requestAnimationFrame(frame);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    counts.forEach(function (el) { cio.observe(el); });
+  }
+
   /* ── 철학 섹션 — 주석에서 물방울 가장자리로 선을 긋는다 ── */
   (function annoLines() {
     var stage = document.querySelector('[data-phil]');
