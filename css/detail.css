@@ -525,3 +525,7 @@
 .patx__stack--cert{aspect-ratio:1/.6}
 .patx__stack--cert img{left:calc(var(--i) * 13.2%);width:34%;z-index:var(--i);transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s}
 .patx__stack--cert img:hover{z-index:10;transform:translateY(-6%) scale(1.06);box-shadow:0 30px 60px -24px rgba(51,27,15,.55),0 0 0 1px rgba(51,27,15,.08)}
+
+/* How to Use 영상 (261102) — 화면 폭에 꽉 차게, 섹션 끝에 붙여서 */
+.vid--full{margin-top:clamp(50px,5vw,90px);border-radius:0}
+.dp--vidend{padding-bottom:0}
