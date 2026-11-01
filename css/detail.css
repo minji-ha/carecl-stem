@@ -520,3 +520,8 @@
 .js .tres__list li[data-d="1"] .tres__bar i{transition-delay:.4s}
 .js .tres__list li[data-d="2"] .tres__bar i{transition-delay:.55s}
 @media (prefers-reduced-motion:reduce){.js .tres__bar i{transform:none;transition:none}}
+
+/* 인증 페이지 (261102) — R&D와 같은 수평 겹침, 마우스를 올린 인증서가 앞으로 */
+.patx__stack--cert{aspect-ratio:1/.6}
+.patx__stack--cert img{left:calc(var(--i) * 13.2%);width:34%;z-index:var(--i);transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s}
+.patx__stack--cert img:hover{z-index:10;transform:translateY(-6%) scale(1.06);box-shadow:0 30px 60px -24px rgba(51,27,15,.55),0 0 0 1px rgba(51,27,15,.08)}

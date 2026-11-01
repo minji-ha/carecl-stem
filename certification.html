@@ -9,10 +9,10 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261102013549">
-<link rel="stylesheet" href="css/home261019.css?v=261102013549">
-<link rel="stylesheet" href="css/sub.css?v=261102013549">
-<link rel="stylesheet" href="css/detail.css?v=261102013549">
+<link rel="stylesheet" href="css/stem.css?v=261102013714">
+<link rel="stylesheet" href="css/home261019.css?v=261102013714">
+<link rel="stylesheet" href="css/sub.css?v=261102013714">
+<link rel="stylesheet" href="css/detail.css?v=261102013714">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -59,7 +59,16 @@
         <p class="dp-lead">특허청 · 인증기관에서 발급한<br>인증서 원본입니다.</p>
       </div>
     </div>
-    <div class="docgrid docgrid--4 rv"><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-ce.jpg" alt="CE" loading="lazy"></span><figcaption class="doccard__txt"><b>CE</b><span class="doccard__desc">Declaration of Conformity · EMC 2014/30/EU</span></figcaption></figure><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-fcc.jpg" alt="FCC" loading="lazy"></span><figcaption class="doccard__txt"><b>FCC</b><span class="doccard__desc">Supplier's Declaration of Conformity · CFR47 Part 15 Subpart B</span></figcaption></figure><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-iso9001-en.jpg" alt="ISO 9001:2015" loading="lazy"></span><figcaption class="doccard__txt"><b>ISO 9001:2015</b><span class="doccard__desc">Quality Management System · TQCSI</span></figcaption></figure><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-iso14001-en.jpg" alt="ISO 14001:2015" loading="lazy"></span><figcaption class="doccard__txt"><b>ISO 14001:2015</b><span class="doccard__desc">Environmental Management System · TQCSI</span></figcaption></figure><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-iso9001-kr.jpg" alt="ISO 9001:2015" loading="lazy"></span><figcaption class="doccard__txt"><b>ISO 9001:2015</b><span class="doccard__desc">품질경영시스템 인증서 · TQCSI</span></figcaption></figure><figure class="doccard"><span class="doccard__img"><img src="assets/img/doc/cert-iso14001-kr.jpg" alt="ISO 14001:2015" loading="lazy"></span><figcaption class="doccard__txt"><b>ISO 14001:2015</b><span class="doccard__desc">환경경영시스템 인증서 · TQCSI</span></figcaption></figure></div>
+    <!-- 목록형 카드 대신 R&D처럼 이름 목록 + 인증서 수평 겹침 (261102) -->
+    <div class="patx">
+      <ol class="patx__list">
+        <li class="rv"><em>EU · EMC 2014/30/EU</em><b>CE</b><p>Declaration of Conformity</p></li>
+        <li class="rv" data-d="1"><em>USA · CFR47 Part 15 Subpart B</em><b>FCC</b><p>Supplier's Declaration of Conformity</p></li>
+        <li class="rv" data-d="2"><em>품질경영시스템 · TQCSI</em><b>ISO 9001<i>:2015</i></b><p>Quality Management System · 국문 · 영문 인증서</p></li>
+        <li class="rv"><em>환경경영시스템 · TQCSI</em><b>ISO 14001<i>:2015</i></b><p>Environmental Management System · 국문 · 영문 인증서</p></li>
+      </ol>
+      <div class="patx__stack patx__stack--cert rv"><img src="assets/img/doc/cert-ce.jpg" alt="CE Declaration of Conformity" loading="lazy" style="--i:0"><img src="assets/img/doc/cert-fcc.jpg" alt="FCC Supplier's Declaration of Conformity" loading="lazy" style="--i:1"><img src="assets/img/doc/cert-iso9001-en.jpg" alt="ISO 9001:2015 인증서 (영문)" loading="lazy" style="--i:2"><img src="assets/img/doc/cert-iso14001-en.jpg" alt="ISO 14001:2015 인증서 (영문)" loading="lazy" style="--i:3"><img src="assets/img/doc/cert-iso9001-kr.jpg" alt="ISO 9001:2015 품질경영시스템 인증서" loading="lazy" style="--i:4"><img src="assets/img/doc/cert-iso14001-kr.jpg" alt="ISO 14001:2015 환경경영시스템 인증서" loading="lazy" style="--i:5"></div>
+    </div>
   </div>
 </section>
 
@@ -101,7 +110,7 @@
   </div>
 </footer>
 <script src="libs/lenis.min.js"></script>
-<script src="js/led.js?v=261102013549"></script>
-<script src="js/stem.js?v=261102013549"></script>
+<script src="js/led.js?v=261102013714"></script>
+<script src="js/stem.js?v=261102013714"></script>
 </body>
 </html>
