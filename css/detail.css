@@ -555,3 +555,7 @@
 .howto-grid__copy .dp-body{margin-top:clamp(28px,3vw,50px)}
 .howto-grid__vid{margin-top:0}
 @media (max-width:860px){.howto-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* 6 Aging Types 카드 얼굴 (261102) — 유형별로 변화가 먼저 오는 부위 표시 */
+.dp-item__face{margin:18px 0 4px;display:grid;place-items:center;aspect-ratio:1/1;max-width:210px;border-radius:16px;overflow:hidden;background:#FBF8F5}
+.dp-item__face img{display:block;width:100%;height:100%;object-fit:cover}
