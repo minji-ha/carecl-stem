@@ -676,3 +676,19 @@
 .tcta--split .tcta__vis{aspect-ratio:1230/1080;width:min(100%,600px);justify-self:end}
 @media (max-width:860px){.tcta--split .tcta__vis{width:86%;justify-self:center}}
 @media (max-width:860px){.tcta--split{grid-template-columns:minmax(0,1fr)}}
+
+/* 261102 — 사진 오른쪽 끝에 붙여 크게, 글은 왼쪽에 크게 */
+.tcta--split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);padding:clamp(40px,4vw,80px) 0}
+.tcta--split .tcta__vis{order:1;width:100%;justify-self:stretch}
+.tcta--split .tcta__copy{padding:0 0 0 var(--gut)}
+.tcta--split .tcta__t{font-size:clamp(40px,5.2vw,96px);line-height:1.16}
+.tcta--split .tcta__t small{font-size:clamp(12px,.95vw,15px);padding:6px 13px}
+.tcta--split .tcta__sub{font-size:clamp(16px,1.35vw,22px)}
+.tcta--split .tcta__label{font-size:13.5px}
+.tcta--split .tcta__btn{padding:18px 30px;font-size:16px}
+@media (max-width:860px){
+  .tcta--split{grid-template-columns:minmax(0,1fr);padding:40px 0 64px}
+  .tcta--split .tcta__vis{order:-1;width:100%}
+  .tcta--split .tcta__copy{padding:24px var(--gut) 0}
+  .tcta--split .tcta__t{font-size:clamp(32px,9vw,44px)}
+}
