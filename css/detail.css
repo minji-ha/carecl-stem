@@ -509,8 +509,8 @@
 .mpanel__vis img{object-fit:cover;object-position:50% 45%}
 .mpanel__vis figcaption{background:rgba(20,17,16,.55);color:#fff}
 .mpanel__cycle{position:absolute;inset:0}
-.mpanel__cycle img{position:absolute;inset:0;opacity:0;animation:litCycle 6s infinite;animation-delay:calc(var(--k) * 1.5s)}
-@keyframes litCycle{0%{opacity:0}6%,25%{opacity:1}31%,100%{opacity:0}}
+.mpanel__cycle img{position:absolute;inset:0;opacity:0;animation:litCycle 2.4s infinite;animation-delay:calc(var(--k) * .6s)}
+@keyframes litCycle{0%{opacity:0}4%,25%{opacity:1}29%,100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.mpanel__cycle img{animation:none}.mpanel__cycle img:first-child{opacity:1}}
 @media (max-width:860px){.mpanel__vis{aspect-ratio:4/3}}
 
