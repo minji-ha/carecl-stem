@@ -442,3 +442,16 @@
 .vidslot{position:relative;margin:clamp(60px,6vw,120px) var(--gut) 0;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#EEEDEB}
 .vidslot img,.vidslot iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
 @media (max-width:860px){.vidslot{margin-inline:0;border-radius:0}}
+
+/* Why 5 Seconds — 문서 시안처럼 TECH FIT 줄에 사용 컷, 두 줄 차트 폭은 그대로 맞춤 (261102) */
+.why5__head .dp-body p{word-break:keep-all}
+.why5__row{grid-template-columns:minmax(0,.9fr) minmax(0,2.3fr) minmax(0,.85fr) minmax(0,.85fr)}
+.why5__row:not(.why5__row--on) .why5__tag{grid-column:3 / 5}
+.why5__pic{margin:0;align-self:stretch;min-height:150px;border-radius:12px;overflow:hidden;background:#EEEDEB}
+.why5__pic img{display:block;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+@media (max-width:860px){
+  .why5__row{grid-template-columns:1fr}
+  .why5__row:not(.why5__row--on) .why5__tag{grid-column:auto}
+  .why5__pic{aspect-ratio:16/10;min-height:0}
+  .why5__head .dp-body br{display:none}
+}
