@@ -592,3 +592,25 @@
   .tcta__copy{padding:10px var(--gut) 64px}
   .tcta__btn{flex:1 1 100%;justify-content:space-between}
 }
+
+/* 마무리 CTA — 모델 사용 컷 버전 (261102): 사진은 왼쪽, 사진 배경색으로 이어진다 */
+.tcta--model{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);background:#EFE6E3;color:var(--ink)}
+.tcta--model::before{background:radial-gradient(45% 70% at 30% 60%,rgba(196,106,58,.10),transparent 70%)}
+.tcta--model .tcta__vis{order:-1}
+.tcta--model .tcta__vis img{object-position:30% 50%;-webkit-mask-image:linear-gradient(270deg,transparent,#000 28%);mask-image:linear-gradient(270deg,transparent,#000 28%)}
+.tcta--model .tcta__copy{padding:clamp(70px,8vw,150px) var(--gut) clamp(70px,8vw,150px) clamp(30px,4vw,80px)}
+.tcta--model .tcta__label{color:var(--ink-2)}
+.tcta--model .tcta__label::before{background:var(--accent);box-shadow:none}
+.tcta--model .tcta__t{color:var(--ink)}
+.tcta--model .tcta__t small{border-color:color-mix(in srgb,var(--accent) 35%,transparent);background:rgba(255,255,255,.55);color:var(--accent)}
+.tcta--model .tcta__sub{color:var(--ink-2)}
+.tcta--model .tcta__btn{border-color:var(--ink);color:var(--ink)}
+.tcta--model .tcta__btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tcta--model .tcta__btn--fill{background:var(--accent);border-color:var(--accent);color:#fff}
+.tcta--model .tcta__btn--fill:hover{background:var(--ink);border-color:var(--ink)}
+@media (max-width:860px){
+  .tcta--model{grid-template-columns:minmax(0,1fr)}
+  .tcta--model .tcta__vis{aspect-ratio:1/1}
+  .tcta--model .tcta__vis img{-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+  .tcta--model .tcta__copy{padding:10px var(--gut) 64px}
+}
