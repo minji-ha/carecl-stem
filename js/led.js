@@ -143,7 +143,7 @@
     }
 
     /* 헤드 몸체 — 은색 사각 */
-    var pad = W * 0.06, size = W - pad * 2, rad = size * 0.2;
+    var pad = W * (h.panel ? 0.17 : 0.06), size = W - pad * 2, rad = size * 0.2;   // 판 발광형은 빛·그림자가 잘리지 않게 여백을 넉넉히
     var body = c.createLinearGradient(pad, pad, pad + size, pad + size);
     body.addColorStop(0, '#F4F3F1'); body.addColorStop(0.5, '#D9D7D4'); body.addColorStop(1, '#B9B6B2');
     c.save();
