@@ -147,7 +147,7 @@
     var body = c.createLinearGradient(pad, pad, pad + size, pad + size);
     body.addColorStop(0, '#F4F3F1'); body.addColorStop(0.5, '#D9D7D4'); body.addColorStop(1, '#B9B6B2');
     c.save();
-    c.shadowColor = 'rgba(51,27,15,.18)'; c.shadowBlur = W * 0.06; c.shadowOffsetY = W * 0.025;
+    c.shadowColor = h.panel ? 'rgba(90,90,90,.10)' : 'rgba(51,27,15,.18)'; c.shadowBlur = W * 0.06; c.shadowOffsetY = W * 0.025;   // 판 발광형은 아주 연한 회색 그림자
     roundRect(c, pad, pad, size, size, rad); c.fillStyle = body; c.fill();
     c.restore();
     /* 안쪽 검은 패널 */
@@ -223,7 +223,7 @@
     c.save();
     c.globalCompositeOperation = 'destination-over';
     var halo = c.createRadialGradient(W / 2, W / 2, isz * 0.3, W / 2, W / 2, W * 0.62);
-    halo.addColorStop(0, rgb(col, 0.35 * L)); halo.addColorStop(1, rgb(col, 0));
+    halo.addColorStop(0, 'rgba(120,120,120,' + (0.07 * L).toFixed(3) + ')'); halo.addColorStop(1, 'rgba(120,120,120,0)');   // 주변은 아주 연한 회색만
     c.fillStyle = halo; c.fillRect(0, 0, W, W);
     c.restore();
     /* 은색 전극 9개 */

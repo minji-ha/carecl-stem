@@ -692,3 +692,5 @@
   .tcta--split .tcta__copy{padding:24px var(--gut) 0}
   .tcta--split .tcta__t{font-size:clamp(32px,9vw,44px)}
 }
+/* 261102 — LED 헤드 주변은 색 번짐 없이 아주 연한 회색 */
+.mpanel__vis,.mpanel--ems .mpanel__vis{background:#F5F4F2}
