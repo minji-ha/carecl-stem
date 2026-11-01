@@ -32,10 +32,9 @@ HNAV = [
                                ("Contact", "contact.html", "문의")]),
     ("Aging Lab", "aging-types.html", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
                                        ("Aging Map 22", "aging-map.html", "22개 관리 부위")]),
-    ("Technology", "technology.html", [("Beauty Device Technology", "technology.html", "TECH FIT 기술"),
-                                       ("Beauty Device", "products.html", "뷰티 디바이스"),
-                                       ("Cosmetics", "cosmetics.html", "코스메틱")]),
-]   # 수정요청 261030: Contact는 Company 밑, Products는 Technology 밑, 기술 두 페이지는 하나로
+    ("Technology", "technology.html", [("careCL Technology", "technology.html", "TECH FIT 기술"),
+                                       ("Product", "products.html", "디바이스 · 코스메틱")]),
+]   # 수정요청 261030: Contact는 Company 밑, 기술 두 페이지는 하나로 / 261102: Technology 밑은 careCL Technology · Product 둘
 # 오른쪽 — SHOP · LOGIN · KR/EN(작게). 공식몰·로그인 주소는 받는 대로 바꾼다.
 SHOP_HREF = "products.html"
 LOGIN_HREF = "#"
@@ -158,7 +157,7 @@ SOLUTIONS = [
     ("Device", "Device Solution", "정해진 자리에 머무르는 스탬핑 디바이스",
      "문지르지 않고 관리할 부위에 머물러 에너지를 전달합니다.", "c-techfit-case.jpg", "products.html"),
     ("Cosmetics", "Beauty Solution", "디바이스와 함께 쓰는 전용 코스메틱",
-     "그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.", "c-gel-drop.jpg", "cosmetics.html"),
+     "그리드 마스크와 전용 제형으로 관리 위치를 정확히 안내합니다.", "c-gel-drop.jpg", "products.html#cosmetics"),
     ("Aging Map 22", "Care Solution", "얼굴과 목 · 바디를 22개 부위로",
      "나의 노화 방식을 이해하고 먼저 관리할 곳부터 순서대로 제안합니다.", "n-mask-glass-wide.jpg", "aging-map.html"),
 ]
@@ -173,9 +172,9 @@ CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top
 PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크, 마우스를 올리면 보이는 같은 제품의 다른 컷)
     ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html", "n-techfit-stand.jpg"),
     ("Device", "CLB", "고주파 마사지기", "p-clb.jpg", "products.html", "e-clb-v.jpg"),
-    ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "cosmetics.html", "e-gel-blue-v.jpg"),
-    ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "cosmetics.html", "s-mask-glass.jpg"),
-    ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "cosmetics.html", "e-serum-warm-v.jpg"),
+    ("Cosmetic", "Collagen Booster Gel", "콜라겐 부스터 젤", "p-gel.jpg", "products.html#cosmetics", "e-gel-blue-v.jpg"),
+    ("Cosmetic", "Grid Mask", "그리드 마스크", "p-mask.jpg", "products.html#cosmetics", "s-mask-glass.jpg"),
+    ("Cosmetic", "Toning Serum", "라이트 토닝 세럼", "p-serum.jpg", "products.html#cosmetics", "e-serum-warm-v.jpg"),
     ("Accessory", "Firenze Bag", "케어클 피렌체 백 · 디바이스 전용 가죽 케이스", "p-case.jpg", "products.html", "c-techfit-case.jpg"),
 ]
 
@@ -397,9 +396,8 @@ MENU = [
                            ("Contact", "contact.html", "문의")]),
     ("Aging Lab", "green", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
                             ("Aging Map 22", "aging-map.html", "22개 관리 부위")]),
-    ("Technology", "red", [("Beauty Device Technology", "technology.html", "TECH FIT 기술"),
-                           ("Beauty Device", "products.html", "뷰티 디바이스"),
-                           ("Cosmetics", "cosmetics.html", "코스메틱")]),
+    ("Technology", "red", [("careCL Technology", "technology.html", "TECH FIT 기술"),
+                           ("Product", "products.html", "디바이스 · 코스메틱")]),
     ("Contact", "green", [("Global Business", "contact.html", "해외 사업 문의"),
                           ("Distributor / Partnership", "partnership.html", "유통 · 제휴 문의"),
                           ("Media / PR", "press.html", "미디어 문의"),
@@ -411,7 +409,6 @@ TITLE_BREAK = {"careCL Technology": "careCL<br>Technology", "Awards & Certificat
 # 메뉴별 머리말 오른쪽 이미지 (회사 소개는 오렌지 C, 문의는 없음)
 HEAD_VISUAL = {"Company": ("C", "letter"),
                "products.html": ("h-package.jpg", "photo photo--pkg"),   # 제품 탭은 Technology 밑이지만 머리말은 패키지 사진
-               "cosmetics.html": ("h-package.jpg", "photo photo--pkg"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
                "Aging Lab": ("h-model.jpg", "photo")}
 GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "technology.html",
@@ -497,6 +494,10 @@ for _g, _led, _items in MENU:
     for _i, (_, _slug, _) in enumerate(_items):
         PAGES[_slug] = (lambda g=_g, l=_led, it=_items, i=_i: sub_page(g, l, it, i))
 
+# 코스메틱은 Product 페이지 안으로 (261102) — 예전 주소는 그 자리로
+PAGES["cosmetics.html"] = lambda: ('<!doctype html><meta charset="utf-8"><title>Product</title>'
+                                   '<meta http-equiv="refresh" content="0;url=products.html#cosmetics">'
+                                   '<link rel="canonical" href="products.html"><a href="products.html#cosmetics">Product</a>')
 # 예전 careCL Technology 주소 → 하나로 합친 Technology 페이지로 (261030)
 PAGES["carecl-technology.html"] = lambda: ('<!doctype html><meta charset="utf-8"><title>careCL Technology</title>'
                                            '<meta http-equiv="refresh" content="0;url=technology.html">'
