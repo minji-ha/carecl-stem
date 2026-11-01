@@ -628,3 +628,10 @@
   .tcta--stack .tcta__vis{width:100%;border-radius:0}
   .tcta--stack .tcta__copy{padding:36px var(--gut) 64px}
 }
+
+/* 마무리 CTA — 가로 사진 화면 폭 가득 (261102) */
+.tcta--wide{background:#D6D6E1;padding-top:0}
+.tcta--wide::before{display:none}
+.tcta--wide .tcta__vis{width:100%;aspect-ratio:16/9;border-radius:0}
+.tcta--wide .tcta__t small{background:rgba(255,255,255,.6)}
+@media (max-width:860px){.tcta--wide .tcta__vis{aspect-ratio:4/3}.tcta--wide .tcta__vis img{object-position:58% 50%}}
