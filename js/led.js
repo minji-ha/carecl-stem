@@ -117,6 +117,7 @@
     return { el: el, cv: cv, ctx: cv.getContext('2d'), lit: new Array(9).fill(0), hot: new Array(9).fill(0), w: 0, dpr: 1,
              fixed: el.dataset.led9 && LED[el.dataset.led9] ? LED[el.dataset.led9] : null,
              cycle: el.dataset.led9 === 'cycle',   // EMS — 네 색이 차례로 바뀐다
+             panel: el.dataset.led9Style === 'panel',   // 실제 기기처럼 판이 빛나고 점(전극)은 은색
              mode: el.dataset.led9Mode || 'wave', progress: 0 };
   });
   function sizeHead(h) {
@@ -155,6 +156,8 @@
     var panel = c.createLinearGradient(0, ipx, 0, ipx + isz);
     panel.addColorStop(0, '#2A2725'); panel.addColorStop(1, '#141210');
     c.fillStyle = panel; c.fill();
+
+    if (h.panel) return drawPanelHead(h, c, W, now, col, ipx, isz, rad);
 
     /* 점의 밝기 결정 */
     var t = now * 0.001, alive = false;
@@ -200,6 +203,44 @@
       if (Math.abs(base - h.lit[i]) > 0.002 || h.hot[i] > 0.002) alive = true;
     }
     return alive || h.cycle || (!reduce && h.mode !== 'progress');
+  }
+  /* 판 발광형 — 사각 판 전체가 모드 색으로 빛나고, 9개 전극은 은색 금속 */
+  function drawPanelHead(h, c, W, now, col, ipx, isz, rad) {
+    var t = now * 0.001;
+    var pulse = reduce ? 1 : 0.78 + 0.22 * (0.5 + 0.5 * Math.sin(t * 2.2));
+    h.lit[0] += (pulse - h.lit[0]) * 0.2;
+    var L = h.lit[0];
+    c.save();
+    roundRect(c, ipx, ipx, isz, isz, rad * 0.7); c.clip();
+    /* 판 바탕 — 가운데가 더 밝은 발광 */
+    var g = c.createRadialGradient(ipx + isz / 2, ipx + isz / 2, isz * 0.05, ipx + isz / 2, ipx + isz / 2, isz * 0.75);
+    g.addColorStop(0, rgb(mix(col, [255, 255, 255], 0.45 * L), 1));
+    g.addColorStop(0.6, rgb(mix([30, 28, 26], col, 0.55 + 0.45 * L), 1));
+    g.addColorStop(1, rgb(mix([30, 28, 26], col, 0.35 + 0.3 * L), 1));
+    c.fillStyle = g; c.fillRect(ipx, ipx, isz, isz);
+    c.restore();
+    /* 판 바깥으로 번지는 빛 */
+    c.save();
+    c.globalCompositeOperation = 'destination-over';
+    var halo = c.createRadialGradient(W / 2, W / 2, isz * 0.3, W / 2, W / 2, W * 0.62);
+    halo.addColorStop(0, rgb(col, 0.35 * L)); halo.addColorStop(1, rgb(col, 0));
+    c.fillStyle = halo; c.fillRect(0, 0, W, W);
+    c.restore();
+    /* 은색 전극 9개 */
+    var cell = isz / 3, R = cell * 0.24;
+    for (var i = 0; i < 9; i++) {
+      var cx = ipx + cell * (i % 3 + 0.5), cy = ipx + cell * (Math.floor(i / 3) + 0.5);
+      c.save();
+      c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = R * 0.6; c.shadowOffsetY = R * 0.18;
+      var m = c.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+      m.addColorStop(0, '#F7F6F4'); m.addColorStop(0.45, '#C9C6C2'); m.addColorStop(1, '#8E8A86');
+      c.fillStyle = m; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill();
+      c.restore();
+      var hl = c.createRadialGradient(cx - R * 0.35, cy - R * 0.4, 0, cx - R * 0.35, cy - R * 0.4, R * 0.7);
+      hl.addColorStop(0, 'rgba(255,255,255,.85)'); hl.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = hl; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill();
+    }
+    return true;
   }
   function roundRect(c, x, y, w, h, r) {
     c.beginPath();
