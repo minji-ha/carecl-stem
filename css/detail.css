@@ -563,3 +563,4 @@
 /* Our Story 머리 사진 (261102) — 제품 전체 구성이 잘리지 않게 16:9, 아래 기준 */
 .dp-full--set img{aspect-ratio:16/9;object-position:50% 100%}
 @media (max-width:860px){.dp-full--set img{aspect-ratio:4/3;object-position:62% 100%}}
+.dp-item__face{width:min(190px,60%);border-radius:50%;background:#F7F4F0;box-shadow:0 0 0 1px rgba(51,27,15,.06),0 14px 30px -20px rgba(51,27,15,.35)}
