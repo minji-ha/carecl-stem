@@ -9,10 +9,10 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261102014733">
-<link rel="stylesheet" href="css/home261019.css?v=261102014733">
-<link rel="stylesheet" href="css/sub.css?v=261102014733">
-<link rel="stylesheet" href="css/detail.css?v=261102014733">
+<link rel="stylesheet" href="css/stem.css?v=261102014826">
+<link rel="stylesheet" href="css/home261019.css?v=261102014826">
+<link rel="stylesheet" href="css/sub.css?v=261102014826">
+<link rel="stylesheet" href="css/detail.css?v=261102014826">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -38,7 +38,7 @@
 <main class="sub">
   <section class="subhead subhead--vis" data-led="red">
     <div class="subhead__top">
-      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102014733" alt="" decoding="async"></div>
+      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102014826" alt="" decoding="async"></div>
       <div class="wrap">
         <p class="label">Technology</p>
         <h1 class="subhead__title">careCL<br>Technology</h1>
@@ -208,14 +208,14 @@
   </div>
 </section>
 
-<section data-led="red" class="dp dp--tint dp--vidend" id="howto">
+<section data-led="red" class="dp dp--tint" id="howto">
   <div class="dp__in">
-    <div class="dp-head">
-      <div>
+    <!-- 261102: 영상이 화면을 꽉 채우면 스크롤이 영상에 걸려서, 글은 왼쪽(제목 아래) · 영상은 오른쪽 -->
+    <div class="howto-grid">
+      <div class="howto-grid__copy">
         <p class="dp-label rv">04 · How to Use</p>
         <h2 class="dp-title rv">그리드 위에,<br>한 칸씩</h2>
-      </div>
-      <div class="dp-body rv">
+        <div class="dp-body rv">
         <ol class="howto">
           <li><em>①</em><span>그리드 마스크를 붙이고, 한 칸씩 5초 스탬핑</span><b>SHOT</b></li>
           <li><em>②</em><span>마스크를 떼고, 남은 에센스로 부드럽게 마무리</span><b>GLOW</b></li>
@@ -223,10 +223,11 @@
         </ol>
         <p class="howto__plan"><strong>하루 10~20분 · SHOT 주 3회 · GLOW · EMS 매일</strong></p>
         <p>마스크가 없는 날이나 목·바디에는 Collagen Booster Gel을 사용하세요.</p>
+        </div>
       </div>
+      <div class="vid howto-grid__vid rv"><iframe src="https://www.youtube-nocookie.com/embed/CYKixmEv_Q4?rel=0" title="TECH FIT 사용 가이드" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
     </div>
   </div>
-  <div class="vid vid--full rv"><iframe src="https://www.youtube-nocookie.com/embed/CYKixmEv_Q4?rel=0" title="TECH FIT 사용 가이드" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
 </section>
 
 <section data-led="red" class="dp-band dp-band--rev">
@@ -268,7 +269,7 @@
   </div>
 </footer>
 <script src="libs/lenis.min.js"></script>
-<script src="js/led.js?v=261102014733"></script>
-<script src="js/stem.js?v=261102014733"></script>
+<script src="js/led.js?v=261102014826"></script>
+<script src="js/stem.js?v=261102014826"></script>
 </body>
 </html>
