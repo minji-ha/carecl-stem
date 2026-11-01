@@ -1,0 +1,20 @@
+    <!-- 6가지 노화 유형 — 가운데 얼굴은 사진, 글자는 모두 코드 (261102) -->
+    <div class="mt6">
+      <div class="mt6__head rv">
+        <p class="mt6__eyebrow">Aging Morphotypes</p>
+        <p class="mt6__title"><span>6</span>가지 노화 유형</p>
+        <p class="mt6__sub">내 얼굴에 나타나는 노화의 패턴, 어떤 유형인가요?</p>
+      </div>
+      <div class="mt6__body">
+        <ul class="mt6__col mt6__col--l">
+      <li class="mt6__card rv" data-d="0" style="--o:1"><span class="mt6__no">TYPE 1</span><b>초기 노화형</b><em>Early Aging Type</em><p>피부톤이 칙칙해지고<br>기미·잡티가 눈에 띄는<br>노화의 초기 단계</p></li>
+      <li class="mt6__card rv" data-d="1" style="--o:3"><span class="mt6__no">TYPE 3</span><b>잔주름형</b><em>Fine Wrinkled Type</em><p>눈가·입가·목 주변에<br>연하고 촘촘한<br>잔주름이 생기는 유형</p></li>
+      <li class="mt6__card rv" data-d="2" style="--o:5"><span class="mt6__no">TYPE 5</span><b>근육형</b><em>Muscular Type</em><p>이마·미간·눈가에<br>깊고 선명한 주름이 생기고<br>표정 주름이 뚜렷한 유형</p></li>
+        </ul>
+        <figure class="mt6__face rv"><img src="assets/img/g-aging6-face.jpg" alt="6가지 노화 유형이 나타나는 얼굴 부위" loading="lazy"></figure>
+        <ul class="mt6__col mt6__col--r">
+      <li class="mt6__card rv" data-d="0" style="--o:2"><span class="mt6__no">TYPE 2</span><b>피로형</b><em>Tired Type</em><p>피곤해 보이는 인상,<br>눈밑 볼록함과<br>다크써클이 두드러지는<br>노화 유형</p></li>
+      <li class="mt6__card rv" data-d="1" style="--o:4"><span class="mt6__no">TYPE 4</span><b>변형·처짐형</b><em>Deformational / Sagging Type</em><p>피부 탄력이 떨어지고<br>얼굴 라인이 처지며<br>팔자주름·이중턱이 생기는 유형</p></li>
+      <li class="mt6__card rv" data-d="2" style="--o:6"><span class="mt6__no">TYPE 6</span><b>혼합형</b><em>Combined Type</em><p>여러 노화 패턴이<br>동시에 나타나는<br>복합적인 유형<small>(예: 눈가 잔주름 + 볼 처짐)</small></p></li>
+        </ul>
+      </div>

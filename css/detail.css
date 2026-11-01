@@ -529,3 +529,11 @@
 /* How to Use 영상 (261102) — 화면 폭에 꽉 차게, 섹션 끝에 붙여서 */
 .vid--full{margin-top:clamp(50px,5vw,90px);border-radius:0}
 .dp--vidend{padding-bottom:0}
+
+/* Our Story 01 현장 (261102) — 가로 사진이 잘리지 않게 글 아래 전체 폭으로 */
+.dp-tall--stack{grid-template-columns:minmax(0,1fr)}
+.dp-tall--stack .dp-tall__copy{gap:clamp(36px,4vw,70px)}
+.dp-tall--stack .dp-tall__notes p + p{transform:none;align-self:start}
+.dp-tall--stack .dp-tall__notes:has(p + p){padding-bottom:0}
+.dp-tall--stack .dp-tall__img{min-height:0;aspect-ratio:16/9;order:0}
+.dp-tall--stack .dp-tall__img img{object-position:50% 50%}
