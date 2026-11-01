@@ -28,18 +28,14 @@ HNAV = [
     ("Company", "about.html", [("About careCL", "about.html", "회사 소개"),
                                ("Our Story", "greeting.html", "브랜드 스토리"),
                                ("R&amp;D / Patent", "rnd.html", "연구개발 · 특허"),
-                               ("Awards &amp; Certification", "certification.html", "수상 · 인증")]),
+                               ("Awards &amp; Certification", "certification.html", "수상 · 인증"),
+                               ("Contact", "contact.html", "문의")]),
     ("Aging Lab", "aging-types.html", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
                                        ("Aging Map 22", "aging-map.html", "22개 관리 부위")]),
-    ("Technology", "technology.html", [("Beauty Device Technology", "technology.html", "홈뷰티 디바이스 기술"),
-                                       ("careCL Technology", "carecl-technology.html", "케어클 기술")]),
-    ("Products", "products.html", [("Beauty Device", "products.html", "뷰티 디바이스"),
-                                   ("Cosmetics", "cosmetics.html", "코스메틱")]),
-    ("Contact", "contact.html", [("Global Business", "contact.html", "해외 사업 문의"),
-                                 ("Distributor / Partnership", "partnership.html", "유통 · 제휴 문의"),
-                                 ("Media / PR", "press.html", "미디어 문의"),
-                                 ("General Inquiry", "inquiry.html", "일반 문의")]),
-]
+    ("Technology", "technology.html", [("Beauty Device Technology", "technology.html", "TECH FIT 기술"),
+                                       ("Beauty Device", "products.html", "뷰티 디바이스"),
+                                       ("Cosmetics", "cosmetics.html", "코스메틱")]),
+]   # 수정요청 261030: Contact는 Company 밑, Products는 Technology 밑, 기술 두 페이지는 하나로
 # 오른쪽 — SHOP · LOGIN · KR/EN(작게). 공식몰·로그인 주소는 받는 대로 바꾼다.
 SHOP_HREF = "products.html"
 LOGIN_HREF = "#"
@@ -168,11 +164,11 @@ SOLUTIONS = [
 ]
 
 CORE = [  # (번호 EN, 제목, 질문, 링크 문구, 링크, 위치 left%, top%)
-    ("01 Read", "6가지 노화 타입", "나는 어떤 방식으로 나이 들고 있는가", "타입 보기", "aging-types.html", 14, 20),
-    ("02 Map", "22개 관리 부위", "어디를 먼저 관리해야 하는가", "부위 보기", "aging-map.html", 86, 20),
-    ("03 Tech", "5초 스탬핑", "어떻게 전달할 것인가", "기술 보기", "carecl-technology.html", 14, 74),
-    ("04 Product", "디바이스 · 코스메틱", "무엇으로 관리할 것인가", "제품 보기", "products.html", 86, 74),
-]   # 수정요청 261019: 다섯 가지 → 네 가지 기준 (AI 피부 진단은 아래 큰 버튼으로)
+    ("01 Read", "6가지 노화 타입", "나는 어떻게 나이 드는가", "타입 보기", "aging-types.html", 14, 20),
+    ("02 Map", "22개 관리 부위", "어디부터 관리할까", "부위 보기", "aging-map.html", 86, 20),
+    ("03 Tech", "5초 스탬핑샷", "한 칸에 5초", "기술 보기", "technology.html", 14, 74),
+    ("04 Clinic", "17년의 클리닉 경험", "클리닉 노하우를 집으로", "스토리 보기", "greeting.html", 86, 74),
+]   # 수정요청 261030 문구
 
 PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크, 마우스를 올리면 보이는 같은 제품의 다른 컷)
     ("Device", "TechFit", "5초 스탬핑 고주파 디바이스", "p-techfit.jpg", "products.html", "n-techfit-stand.jpg"),
@@ -183,12 +179,12 @@ PRODUCTS = [  # (분류, 이름, 설명, 이미지, 링크, 마우스를 올리�
     ("Accessory", "Firenze Bag", "케어클 피렌체 백 · 디바이스 전용 가죽 케이스", "p-case.jpg", "products.html", "c-techfit-case.jpg"),
 ]
 
-STEPS = [  # (EN, 한글, 설명, 모바일용 사진)
-    ("Cleanse", "잔여물 정리", "잔여물을 정리해 다음 단계가 제대로 전달되도록 준비합니다.", "p-gel.jpg"),
-    ("Read", "오늘의 부위", "오늘 먼저 관리할 부위를 Aging Map 22 기준으로 확인합니다.", "s-mask-glass.jpg"),
-    ("Activate", "집중 전달", "한 부위에 머무르며 수직으로 전달합니다.", "p-techfit.jpg"),
-    ("Recovery", "진정과 보습", "전용 코스메틱으로 전달 직후의 피부를 안정시킵니다.", "p-serum.jpg"),
-    ("Maintain", "반복과 기록", "주 2~3회 같은 자리를 반복해 변화를 기록합니다.", "n-lineup-sq.jpg"),
+STEPS = [  # (EN, 한글, 설명, 모바일용 사진) — 수정요청 261030 문구
+    ("Notice", "알아차림", "어느 날, 거울 속 얼굴이 낯설어집니다.", "p-gel.jpg"),
+    ("Read", "나의 노화 타입", "6가지 중, 내가 나이 드는 방식을 찾습니다.", "s-mask-glass.jpg"),
+    ("Map", "시작된 자리", "노화가 시작된 자리를 22개 부위에서 짚습니다.", "p-techfit.jpg"),
+    ("Care", "맞춤 케어", "내 타입에 맞는 방법으로 관리합니다.", "p-serum.jpg"),
+    ("Check", "다시 읽기", "다시 읽으면, 변화가 보입니다.", "n-lineup-sq.jpg"),
 ]
 
 # 물방울 속에 띄울 누끼 제품 (tools: 흰 배경 제품컷 → 투명 PNG). 순서는 STEPS와 같다
@@ -263,7 +259,6 @@ def page_index():
     <video class="hero__video" src="assets/video/main-film.mp4?v={VER}" poster="assets/img/main-film-poster.jpg?v={VER}"
            autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
     <div class="hero__copy" data-merge>
-      <p class="hero__eyebrow">Anti-Aging Skincare</p>
       <!-- care CLINICAL LEVEL → 화면을 내리면 careCL로 합쳐진다 (stem.js heroMerge) -->
       <h1 class="hero__title hero__title--merge" aria-label="care Clinical Level — careCL">{HERO_MERGE}</h1>
     </div>
@@ -272,9 +267,9 @@ def page_index():
   <!-- 03 철학 -->
   <section class="phil" data-led="purple" aria-labelledby="phil-title">
     <div class="wrap phil__inner">
-      <h2 class="phil__label rv">케어클의 철학</h2>
-      <p class="phil__title rv" id="phil-title" data-d="1">노화는 누구에게나 찾아오지만<br>그 모습은 모두 다릅니다.</p>
-      <p class="phil__sub rv" data-d="2">노화를 이해하고<br>타입에 맞추어 케어합니다.</p>
+      <h2 class="phil__label rv">The Philosophy of careCL</h2>
+      <p class="phil__title rv" id="phil-title" data-d="1">같은 나이, 다른 노화.</p>
+      <p class="phil__sub rv" data-d="2">케어클은 주름보다 먼저<br>나이 드는 방식을 읽습니다.</p>
     </div>
   </section>
 
@@ -309,7 +304,7 @@ def page_index():
     <div class="sys__img">
       <img src="assets/img/m-model.jpg?v={VER}" alt="고개를 돌려 미소 짓는 케어클 모델" loading="lazy" width="2400" height="1405" data-zoom>
       <div class="sys__copy">
-        <p class="sys__title rv" id="sys-title"><span class="sys__en">care Clinic-level</span><span class="sys__kr">집 안의 리추얼로</span></p>
+        <p class="sys__title rv" id="sys-title"><span class="sys__en">Age, your way.</span></p>
       </div>
     </div>
   </section>
@@ -340,9 +335,8 @@ def page_index():
   <section class="steps{"" if (MAIN_BUBBLES or MAIN_STEM_BUBBLE) else " steps--still"}"{" data-sb-steps" if MAIN_STEM_BUBBLE else ""} data-led="purple" aria-labelledby="steps-title">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="label rv">Daily Routine</h2>
-        <p class="sec-title rv" id="steps-title" data-d="1">다섯 단계로 이어지는<br>홈 에이징 케어</p>
-        <p class="sec-lead rv" data-d="2">하루 10분. 같은 자리를 반복하는 동안 피부는 기록을 남깁니다.</p>
+        <h2 class="label rv">Home Aging Care</h2>
+        <p class="sec-title rv" id="steps-title" data-d="1">내 노화 타입에 맞춘<br>홈케어 5단계</p>
       </div>
       <div class="steps__body">
         <div class="steps__stage" data-steps-stage data-final-cut="assets/img/{STEP_FINAL_CUT}">
@@ -399,13 +393,13 @@ MENU = [
     ("Company", "purple", [("About careCL", "about.html", "회사 소개"),
                            ("Our Story", "greeting.html", "브랜드 스토리"),
                            ("R&D / Patent", "rnd.html", "연구개발 · 특허"),
-                           ("Awards & Certification", "certification.html", "수상 · 인증")]),
+                           ("Awards & Certification", "certification.html", "수상 · 인증"),
+                           ("Contact", "contact.html", "문의")]),
     ("Aging Lab", "green", [("6 Aging Types", "aging-types.html", "6가지 노화 타입"),
                             ("Aging Map 22", "aging-map.html", "22개 관리 부위")]),
-    ("Technology", "red", [("Beauty Device Technology", "technology.html", "홈뷰티 디바이스 기술"),
-                           ("careCL Technology", "carecl-technology.html", "케어클 기술")]),
-    ("Products", "yellow", [("Beauty Device", "products.html", "뷰티 디바이스"),
-                            ("Cosmetics", "cosmetics.html", "코스메틱")]),
+    ("Technology", "red", [("Beauty Device Technology", "technology.html", "TECH FIT 기술"),
+                           ("Beauty Device", "products.html", "뷰티 디바이스"),
+                           ("Cosmetics", "cosmetics.html", "코스메틱")]),
     ("Contact", "green", [("Global Business", "contact.html", "해외 사업 문의"),
                           ("Distributor / Partnership", "partnership.html", "유통 · 제휴 문의"),
                           ("Media / PR", "press.html", "미디어 문의"),
@@ -416,7 +410,8 @@ TITLE_BREAK = {"careCL Technology": "careCL<br>Technology", "Awards & Certificat
 
 # 메뉴별 머리말 오른쪽 이미지 (회사 소개는 오렌지 C, 문의는 없음)
 HEAD_VISUAL = {"Company": ("C", "letter"),
-               "Products": ("h-package.jpg", "photo photo--pkg"),
+               "products.html": ("h-package.jpg", "photo photo--pkg"),   # 제품 탭은 Technology 밑이지만 머리말은 패키지 사진
+               "cosmetics.html": ("h-package.jpg", "photo photo--pkg"),
                "Technology": ("h-techfit-lit.webp", "cut cut--tall"),
                "Aging Lab": ("h-model.jpg", "photo")}
 GROUP_HREF = {"Company": "about.html", "Aging Lab": "aging-types.html", "Technology": "technology.html",
@@ -468,7 +463,7 @@ def sub_page(group, led, items, idx):
 
     tabs = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if h == slug else ""}>{t}</a>' for t, h, _ in items)
-    vis = HEAD_VISUAL.get(group)
+    vis = HEAD_VISUAL.get(slug) or HEAD_VISUAL.get(group)
     if vis and vis[0] == "C":
         # 회사 소개 — 화면 오른쪽에 잘려 보이는 크고 두꺼운 오렌지 C
         vis_html = ('<div class="subhead__vis subhead__vis--letter" aria-hidden="true">'
@@ -501,6 +496,11 @@ def sub_page(group, led, items, idx):
 for _g, _led, _items in MENU:
     for _i, (_, _slug, _) in enumerate(_items):
         PAGES[_slug] = (lambda g=_g, l=_led, it=_items, i=_i: sub_page(g, l, it, i))
+
+# 예전 careCL Technology 주소 → 하나로 합친 Technology 페이지로 (261030)
+PAGES["carecl-technology.html"] = lambda: ('<!doctype html><meta charset="utf-8"><title>careCL Technology</title>'
+                                           '<meta http-equiv="refresh" content="0;url=technology.html">'
+                                           '<link rel="canonical" href="technology.html"><a href="technology.html">Technology</a>')
 
 
 

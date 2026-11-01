@@ -297,3 +297,143 @@
   /* 회사 정보 4칸 → 2칸 */
   .dp-facts[style]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* =========================================================
+   수정요청 261030 — 특허·임상 수치·레퍼런스·5초 비교·모드 탭·사용 가이드
+   ========================================================= */
+/* 특허 4건 — 글자로 강조, 증서는 작게 겹쳐서 */
+.patx{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(40px,5vw,110px);align-items:center;margin-top:clamp(56px,5.4vw,100px)}
+.patx__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.patx__list li{padding:clamp(22px,2vw,34px) 0;border-bottom:1px solid var(--hair)}
+.patx__list em{display:block;font-style:normal;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12.5px;letter-spacing:.18em;color:var(--accent)}
+.patx__list b{display:block;margin-top:10px;font-family:var(--f-title);font-weight:500;font-size:clamp(24px,2.6vw,46px);line-height:1.2;letter-spacing:.01em;color:var(--ink)}
+.patx__list b i{font-style:normal;color:var(--ink-2);font-weight:300}
+.patx__list p{margin:10px 0 0;font-size:clamp(14.5px,1vw,16.5px);line-height:1.8;color:var(--ink-2);word-break:keep-all}
+.patx__stack{position:relative;aspect-ratio:1/.92}
+.patx__stack img{position:absolute;top:8%;left:calc(var(--i) * 9%);width:34%;aspect-ratio:1/1.414;object-fit:cover;
+  border-radius:4px;background:#fff;box-shadow:0 18px 40px -18px rgba(51,27,15,.45),0 0 0 1px rgba(51,27,15,.06);
+  transform:rotate(calc((var(--i) - 3) * 4deg));transform-origin:50% 120%}
+.dp-tall__img--doc{display:grid;place-items:center;background:var(--soft)}
+.dp-tall__img--doc img{width:min(62%,460px)!important;height:auto!important;object-fit:contain!important;
+  box-shadow:0 30px 60px -30px rgba(51,27,15,.5);transform:rotate(-3deg)}
+
+/* 임상 수치 — 숫자 + 막대 */
+.tres{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(40px,5vw,110px);align-items:start}
+.tres__head .dp-body{margin-top:clamp(24px,2.4vw,40px);font-size:clamp(15.5px,1.12vw,18.5px);line-height:2;color:var(--ink-2);word-break:keep-all}
+.tres__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.tres__list li{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) auto;gap:clamp(14px,1.6vw,30px);align-items:center;
+  padding:clamp(16px,1.4vw,24px) 0;border-bottom:1px solid var(--hair)}
+.tres__k{font-size:clamp(14.5px,1vw,16.5px);letter-spacing:.01em;color:var(--ink);word-break:keep-all}
+.tres__k sup{color:var(--accent)}
+.tres__bar{height:6px;border-radius:6px;background:rgba(51,27,15,.08);overflow:hidden}
+.tres__bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,#F2B48A,var(--accent))}
+.tres__v{min-width:5.4em;text-align:right;font-family:var(--f-title);font-weight:600;font-size:clamp(24px,2.3vw,40px);letter-spacing:-.01em;color:var(--accent);line-height:1}
+.tres__v small{font-size:.55em;margin-left:2px}
+.tres__note{grid-column:2;margin:-10px 0 0;font-size:13px;line-height:1.7;color:var(--ink-2)}
+
+/* 레퍼런스 박스 (Aging Morphotypes → careCL 6 Aging Types) */
+.refbox{margin-top:clamp(26px,2.4vw,40px);padding:clamp(20px,1.8vw,30px);border:1px solid var(--hair);border-radius:14px;background:rgba(255,255,255,.7);max-width:620px}
+.refbox p.refbox__k{margin:0 0 14px;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:11.5px;letter-spacing:.22em;color:var(--ink-2)}
+.refbox__row b{display:block;font-family:var(--f-title);font-weight:500;font-size:clamp(17px,1.4vw,22px);color:var(--ink)}
+.refbox__row span{display:block;margin-top:4px;font-size:14px;line-height:1.7;color:var(--ink-2)}
+.refbox__row--on b{color:var(--accent)}
+.refbox__arr{display:block;margin:10px 0;font-style:normal;color:var(--accent)}
+
+/* 왜 5초 — 클리닉 1샷(1초 안 펄스 5번) vs TECH FIT 1샷(5초) */
+.why5__head{max-width:980px;margin-inline:auto;text-align:center}
+.why5__head .dp-label{justify-content:center}
+.why5{margin-top:clamp(50px,5vw,90px);display:grid;gap:clamp(14px,1.4vw,22px)}
+.why5__row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,2.6fr) minmax(0,1fr);gap:clamp(18px,2vw,40px);align-items:center;
+  padding:clamp(20px,2vw,34px);border-radius:18px;background:#fff;border:1px solid var(--hair)}
+.why5__row--on{background:#FFF6EF;border-color:#F1C7A8}
+.why5__name b{display:block;font-family:var(--f-title);font-weight:600;font-size:clamp(18px,1.6vw,26px);line-height:1.3;color:var(--ink)}
+.why5__row--on .why5__name b{color:var(--accent)}
+.why5__name small{display:block;margin-top:10px;font-size:13.5px;line-height:1.7;color:var(--ink-2);word-break:keep-all}
+.why5__chart{position:relative;padding-top:28px}
+.why5__cap{position:absolute;top:0;left:0;font-family:var(--f-ui);font-weight:600;font-size:12.5px;letter-spacing:.06em;color:var(--ink-2);
+  border-bottom:1px solid currentColor;padding-bottom:4px;white-space:nowrap}
+.why5__row--on .why5__cap{color:var(--accent);text-align:center}
+.why5__track{position:relative;height:clamp(38px,3.4vw,54px)}
+.why5__pulses{position:absolute;left:0;top:10%;bottom:10%;width:20%;display:flex;gap:6%}
+.why5__pulses i{flex:1;border-radius:3px;background:repeating-linear-gradient(90deg,#8E8580 0 1px,#BDB6B1 1px 3px)}
+.why5__pulses::after{content:"";position:absolute;left:115%;width:385%;top:50%;border-top:1px dashed var(--hair)}
+.why5__wave{position:absolute;inset:8% 0;border-radius:6px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'%3E%3Cpath d='M0 10 3 3 9 17 12 10' fill='none' stroke='%23fff' stroke-width='1.3'/%3E%3C/svg%3E") 0 50%/12px 70% repeat-x,linear-gradient(90deg,#E8763A,var(--accent))}
+.why5__axis{position:relative;height:26px;margin-top:8px;border-top:1px solid var(--hair)}
+.why5__axis span{position:absolute;top:6px;transform:translateX(-50%);font-size:11.5px;color:var(--ink-2)}
+.why5__axis span:first-child{transform:none}
+.why5__axis span:last-child{transform:translateX(-100%)}
+.why5__tag b{display:block;font-family:var(--f-title);font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:var(--ink-2)}
+.why5__row--on .why5__tag b{color:var(--accent)}
+.why5__tag small{display:block;margin-top:10px;font-size:13.5px;line-height:1.7;color:var(--ink-2)}
+.why5__pat{margin:6px 0 0;text-align:center;font-size:13px;letter-spacing:.04em;color:var(--ink-2)}
+
+/* 모드 탭 — 헤드별 LED 빛 (라디오로 동작, JS 없음) */
+.modes{margin-top:clamp(50px,5vw,90px)}
+.modes__r{position:absolute;opacity:0;pointer-events:none}
+.modes__tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.mtab{--c:var(--led-red);display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;padding:14px 16px;border-radius:12px;
+  border:1px solid var(--hair);background:#fff;cursor:pointer;transition:border-color .3s,box-shadow .3s,background .3s}
+.mtab i{grid-row:span 2;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 18%,transparent),0 0 12px var(--c)}
+.mtab b{font-family:var(--f-ui);font-weight:700;font-size:13.5px;letter-spacing:.06em;color:var(--ink)}
+.mtab small{font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
+.mtab:hover{border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.mtab--eye{--c:var(--led-green)}
+.mtab--body{--c:var(--led-yellow)}
+.mtab--glow{--c:var(--led-purple)}
+.mtab--ems{--c:#FF8A3D}
+.mtab--ems i{background:conic-gradient(var(--led-red),var(--led-yellow),var(--led-green),var(--led-purple),var(--led-red))}
+.mpanel{--c:var(--led-red);display:none;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(30px,4vw,90px);align-items:center;margin-top:clamp(20px,2vw,30px)}
+.mpanel--eye{--c:var(--led-green)}
+.mpanel--body{--c:var(--led-yellow)}
+.mpanel--glow{--c:var(--led-purple)}
+.mpanel--ems{--c:#FF8A3D}
+#mode-face:checked ~ .modes__panels .mpanel--face,#mode-eye:checked ~ .modes__panels .mpanel--eye,#mode-body:checked ~ .modes__panels .mpanel--body,
+#mode-glow:checked ~ .modes__panels .mpanel--glow,#mode-ems:checked ~ .modes__panels .mpanel--ems{display:grid;animation:mpIn .6s cubic-bezier(.16,1,.3,1)}
+#mode-face:checked ~ .modes__tabs .mtab--face,#mode-eye:checked ~ .modes__tabs .mtab--eye,#mode-body:checked ~ .modes__tabs .mtab--body,
+#mode-glow:checked ~ .modes__tabs .mtab--glow,#mode-ems:checked ~ .modes__tabs .mtab--ems{border-color:var(--c);background:color-mix(in srgb,var(--c) 7%,#fff);box-shadow:0 10px 26px -14px var(--c)}
+.modes__r:focus-visible ~ .modes__tabs{outline:2px solid var(--accent);outline-offset:4px;border-radius:12px}
+@keyframes mpIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mpanel__vis{position:relative;margin:0;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:#141110}
+.mpanel__vis img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) brightness(.8)}
+.mpanel__glow{position:absolute;inset:0;background:radial-gradient(42% 46% at 50% 58%,color-mix(in srgb,var(--c) 75%,transparent),transparent 72%);mix-blend-mode:screen}
+.mpanel--ems .mpanel__glow{background:radial-gradient(42% 46% at 50% 58%,rgba(255,138,61,.6),transparent 72%),conic-gradient(from 90deg at 50% 58%,rgba(255,70,72,.25),rgba(255,206,56,.25),rgba(56,214,120,.25),rgba(158,104,255,.25),rgba(255,70,72,.25))}
+.mpanel__vis figcaption{position:absolute;left:18px;bottom:16px;display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:30px;
+  background:rgba(20,17,16,.6);backdrop-filter:blur(6px);color:#fff;font-family:var(--f-ui);font-weight:600;font-size:12.5px;letter-spacing:.1em}
+.mpanel__vis figcaption i{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+.mpanel__t{margin:18px 0 0;font-family:var(--f-title);font-weight:500;font-size:clamp(26px,2.6vw,44px);line-height:1.3;color:var(--ink);word-break:keep-all}
+.mpanel__body{margin-top:clamp(18px,1.6vw,26px)}
+.mpanel__body p{margin:0 0 1em;font-size:clamp(14.5px,1.02vw,16.5px);line-height:1.9;letter-spacing:.02em;color:var(--ink-2);word-break:keep-all}
+.mpanel__body p.mpanel__pat{font-weight:600;color:var(--ink)}
+.mpanel__spec{display:grid;grid-template-columns:auto 1fr;margin:clamp(18px,1.6vw,26px) 0;border-top:1px solid var(--ink)}
+.mpanel__spec div{display:contents}
+.mpanel__spec dt,.mpanel__spec dd{margin:0;padding:12px 0;border-bottom:1px solid var(--hair)}
+.mpanel__spec dt{padding-right:24px;font-family:var(--f-ui);font-weight:500;text-transform:uppercase;font-size:12px;letter-spacing:.16em;color:var(--ink-2)}
+.mpanel__spec dd{font-size:15.5px;color:var(--ink);font-weight:500}
+.mpanel__body p.mpanel__note{position:relative;padding-left:16px;color:var(--ink)}
+.mpanel__note::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+
+/* 사용 가이드 */
+.howto{list-style:none;margin:0 0 1.6em;padding:0;border-top:1px solid var(--ink)}
+.howto li{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair);
+  font-size:clamp(15px,1.1vw,18px);color:var(--ink);word-break:keep-all}
+.howto em{font-style:normal;color:var(--accent)}
+.howto b{font-family:var(--f-ui);font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--ink-2)}
+.vid{position:relative;margin-top:clamp(50px,5vw,90px);aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+@media (max-width:860px){
+  .patx,.tres{grid-template-columns:1fr}
+  .patx__stack{max-width:480px;width:100%;margin-inline:auto}
+  .tres__list li{grid-template-columns:1fr auto;row-gap:8px}
+  .tres__bar{grid-column:1/-1;grid-row:2}
+  .tres__note{grid-column:1;margin-top:0}
+  .why5__row{grid-template-columns:1fr;gap:14px}
+  .why5__tag{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .why5__tag b br{display:none}
+  .why5__tag small{margin-top:0}
+  .modes__tabs{display:flex;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut);scroll-snap-type:x mandatory}
+  .modes__tabs::-webkit-scrollbar{display:none}
+  .mtab{flex:none;min-width:132px;scroll-snap-align:start}
+  .mpanel{grid-template-columns:1fr}
+}
