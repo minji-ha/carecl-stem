@@ -635,3 +635,9 @@
 .tcta--wide .tcta__vis{width:100%;aspect-ratio:16/9;border-radius:0}
 .tcta--wide .tcta__t small{background:rgba(255,255,255,.6)}
 @media (max-width:860px){.tcta--wide .tcta__vis{aspect-ratio:4/3}.tcta--wide .tcta__vis img{object-position:58% 50%}}
+/* 261102 — 흰 배경, 글이 위 · 사진이 아래 */
+.tcta--wide{background:#fff}
+.tcta--wide .tcta__vis{order:1}
+.tcta--wide .tcta__copy{padding:clamp(90px,9vw,170px) var(--gut) clamp(50px,5vw,90px)}
+.tcta--wide .tcta__t small{background:color-mix(in srgb,var(--accent) 7%,#fff)}
+@media (max-width:860px){.tcta--wide .tcta__copy{padding:64px var(--gut) 40px}}
