@@ -9,10 +9,10 @@
 <link rel="preload" href="fonts/metropolis-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/urbanist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/stem.css?v=261102022052">
-<link rel="stylesheet" href="css/home261019.css?v=261102022052">
-<link rel="stylesheet" href="css/sub.css?v=261102022052">
-<link rel="stylesheet" href="css/detail.css?v=261102022052">
+<link rel="stylesheet" href="css/stem.css?v=261102022320">
+<link rel="stylesheet" href="css/home261019.css?v=261102022320">
+<link rel="stylesheet" href="css/sub.css?v=261102022320">
+<link rel="stylesheet" href="css/detail.css?v=261102022320">
 <script type="importmap">{"imports":{"three":"./libs/three/three.module.min.js"}}</script>
 </head>
 <body>
@@ -38,7 +38,7 @@
 <main class="sub">
   <section class="subhead subhead--vis" data-led="red">
     <div class="subhead__top">
-      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102022052" alt="" decoding="async"></div>
+      <div class="subhead__vis subhead__vis--cut cut--tall" aria-hidden="true"><img src="assets/img/h-techfit-lit.webp?v=261102022320" alt="" decoding="async"></div>
       <div class="wrap">
         <p class="label">Technology</p>
         <h1 class="subhead__title">careCL<br>Technology</h1>
@@ -139,7 +139,7 @@
     </div>
     <div class="modes__panels">
       <div class="mpanel mpanel--face">
-        <figure class="mpanel__vis"><img src="assets/img/m-lit-face.jpg" alt="빨간 LED가 켜진 FACE SHOT 헤드" loading="lazy"><figcaption><i aria-hidden="true"></i>FACE SHOT</figcaption></figure>
+        <figure class="mpanel__vis"><div class="led9 mpanel__led" data-led9="red" aria-hidden="true"><canvas></canvas></div><figcaption><i aria-hidden="true"></i>FACE SHOT</figcaption></figure>
         <div class="mpanel__copy">
           <p class="dp-label">SHOT · 복합 고주파</p>
           <h3 class="mpanel__t">부위마다 다른 주파수를,<br>특허받은 방식으로</h3>
@@ -153,7 +153,7 @@
         </div>
       </div>
       <div class="mpanel mpanel--eye">
-        <figure class="mpanel__vis"><img src="assets/img/m-lit-eye.jpg" alt="초록 LED가 켜진 EYE SHOT 헤드" loading="lazy"><figcaption><i aria-hidden="true"></i>EYE SHOT</figcaption></figure>
+        <figure class="mpanel__vis"><div class="led9 mpanel__led" data-led9="green" aria-hidden="true"><canvas></canvas></div><figcaption><i aria-hidden="true"></i>EYE SHOT</figcaption></figure>
         <div class="mpanel__copy">
           <p class="dp-label">SHOT · 복합 고주파</p>
           <h3 class="mpanel__t">부위마다 다른 주파수를,<br>특허받은 방식으로</h3>
@@ -167,7 +167,7 @@
         </div>
       </div>
       <div class="mpanel mpanel--body">
-        <figure class="mpanel__vis"><img src="assets/img/m-lit-body.jpg" alt="노란 LED가 켜진 BODY SHOT 헤드" loading="lazy"><figcaption><i aria-hidden="true"></i>BODY SHOT</figcaption></figure>
+        <figure class="mpanel__vis"><div class="led9 mpanel__led" data-led9="yellow" aria-hidden="true"><canvas></canvas></div><figcaption><i aria-hidden="true"></i>BODY SHOT</figcaption></figure>
         <div class="mpanel__copy">
           <p class="dp-label">SHOT · 복합 고주파</p>
           <h3 class="mpanel__t">부위마다 다른 주파수를,<br>특허받은 방식으로</h3>
@@ -181,7 +181,7 @@
         </div>
       </div>
       <div class="mpanel mpanel--glow">
-        <figure class="mpanel__vis"><img src="assets/img/m-lit-glow.jpg" alt="보라 LED가 켜진 GLOW 헤드" loading="lazy"><figcaption><i aria-hidden="true"></i>GLOW</figcaption></figure>
+        <figure class="mpanel__vis"><div class="led9 mpanel__led" data-led9="purple" aria-hidden="true"><canvas></canvas></div><figcaption><i aria-hidden="true"></i>GLOW</figcaption></figure>
         <div class="mpanel__copy">
           <p class="dp-label">GLOW · EP + 갈바닉</p>
           <h3 class="mpanel__t">짧은 전기 리듬으로,<br>스킨케어를 마무리합니다</h3>
@@ -193,7 +193,7 @@
         </div>
       </div>
       <div class="mpanel mpanel--ems">
-        <figure class="mpanel__vis"><span class="mpanel__cycle" role="img" aria-label="EMS 모드 — LED 색이 차례로 바뀌는 헤드"><img src="assets/img/m-lit-face.jpg" alt="" loading="lazy" style="--k:0"><img src="assets/img/m-lit-eye.jpg" alt="" loading="lazy" style="--k:1"><img src="assets/img/m-lit-body.jpg" alt="" loading="lazy" style="--k:2"><img src="assets/img/m-lit-glow.jpg" alt="" loading="lazy" style="--k:3"></span><figcaption><i aria-hidden="true"></i>EMS</figcaption></figure>
+        <figure class="mpanel__vis"><div class="led9 mpanel__led" data-led9="cycle" aria-hidden="true"><canvas></canvas></div><figcaption><i aria-hidden="true"></i>EMS</figcaption></figure>
         <div class="mpanel__copy">
           <p class="dp-label">EMS · 저주파</p>
           <h3 class="mpanel__t">근육에 보내는<br>작은 신호</h3>
@@ -275,7 +275,7 @@
   </div>
 </footer>
 <script src="libs/lenis.min.js"></script>
-<script src="js/led.js?v=261102022052"></script>
-<script src="js/stem.js?v=261102022052"></script>
+<script src="js/led.js?v=261102022320"></script>
+<script src="js/stem.js?v=261102022320"></script>
 </body>
 </html>

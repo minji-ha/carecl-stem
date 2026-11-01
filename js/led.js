@@ -116,6 +116,7 @@
     var cv = el.querySelector('canvas') || el.appendChild(document.createElement('canvas'));
     return { el: el, cv: cv, ctx: cv.getContext('2d'), lit: new Array(9).fill(0), hot: new Array(9).fill(0), w: 0, dpr: 1,
              fixed: el.dataset.led9 && LED[el.dataset.led9] ? LED[el.dataset.led9] : null,
+             cycle: el.dataset.led9 === 'cycle',   // EMS — 네 색이 차례로 바뀐다
              mode: el.dataset.led9Mode || 'wave', progress: 0 };
   });
   function sizeHead(h) {
@@ -134,6 +135,11 @@
     c.setTransform(1, 0, 0, 1, 0, 0);
     c.clearRect(0, 0, W, W);
     var col = h.fixed || current;
+    if (h.cycle) {
+      /* 색마다 0.6초 — 마지막 1/4 동안 다음 색으로 넘어간다 */
+      var seq = [LED.red, LED.green, LED.yellow, LED.purple], ct = (now * 0.001 / 0.6) % 4, ci = Math.floor(ct), f = ct - ci;
+      col = f > 0.75 ? mix(seq[ci], seq[(ci + 1) % 4], (f - 0.75) * 4) : seq[ci];
+    }
 
     /* 헤드 몸체 — 은색 사각 */
     var pad = W * 0.06, size = W - pad * 2, rad = size * 0.2;
@@ -193,7 +199,7 @@
       c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill();
       if (Math.abs(base - h.lit[i]) > 0.002 || h.hot[i] > 0.002) alive = true;
     }
-    return alive || (!reduce && h.mode !== 'progress');
+    return alive || h.cycle || (!reduce && h.mode !== 'progress');
   }
   function roundRect(c, x, y, w, h, r) {
     c.beginPath();

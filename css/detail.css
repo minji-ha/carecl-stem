@@ -641,3 +641,9 @@
 .tcta--wide .tcta__copy{padding:clamp(90px,9vw,170px) var(--gut) clamp(50px,5vw,90px)}
 .tcta--wide .tcta__t small{background:color-mix(in srgb,var(--accent) 7%,#fff)}
 @media (max-width:860px){.tcta--wide .tcta__copy{padding:64px var(--gut) 40px}}
+
+/* 모드 탭 (261102) — 사진 대신 intro의 9구 LED 헤드를 모드 색으로 직접 그린다 */
+.mpanel__vis{display:grid;place-items:center;background:radial-gradient(55% 55% at 50% 50%,color-mix(in srgb,var(--c) 14%,#F6F4F1),#EFEDEA 75%)}
+.mpanel--ems .mpanel__vis{background:radial-gradient(55% 55% at 50% 50%,#F8EFE8,#EFEDEA 75%)}
+.mpanel__led{width:min(58%,360px)}
+.mpanel__vis figcaption{background:rgba(255,255,255,.8);color:var(--ink)}
