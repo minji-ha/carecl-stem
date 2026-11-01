@@ -316,14 +316,15 @@ function createBubble(canvas, initialState = {}, opts = {}) {
       /* 이동 진행도로 판단: 방울이 실제로 흩어지는 한가운데(약 40~60%)에서만 숨기고 그 전후엔 보인다 */
       const midScatter = smoothRange(.26, .42, travel) * (1 - smoothRange(.58, .74, travel)) * smoothRange(.05, .2, flowMag2);
       const fade = travelScatter ? 1 - midScatter * (1 - (state.imageHold || 0)) : 1;
-      const scrub = travelScatter ? (1 - fade) * (opts.imageScrub || .28) : 0;
+      const scrub = travelScatter ? (1 - fade) * (opts.imageScrub ?? .28) : 0;
       imgPlanes.forEach((m, k) => {
         const it = pair[k], asp = imgAspect[it.index] || 1;
         m.material.uniforms.uMap.value = imgTex[it.index]; m.material.uniforms.uAspect.value = asp;
         m.material.uniforms.uAlpha.value = (opts.imageOpacity || .26) * state.alpha * ir * it.alpha * fade * (state.imageAlpha ?? 1);
         const depth = (camera.position.z - m.position.z) / camera.position.z;   // 원근 보정: 방울 중심과 같은 자리에 보이게
-        m.position.x = (state.x + (opts.imageOffsetX || 0) + .08 * relX * hover + fx * scrub) * depth;
-        m.position.y = (state.y + (opts.imageOffsetY || 0) + .05 * relY * hover + fy * scrub) * depth;
+        const ih = opts.imageHover ?? 1;                                       // 0이면 마우스를 따라 사진만 밀리지 않는다
+        m.position.x = (state.x + (opts.imageOffsetX || 0) + .08 * relX * hover * ih + fx * scrub) * depth;
+        m.position.y = (state.y + (opts.imageOffsetY || 0) + .05 * relY * hover * ih + fy * scrub) * depth;
         m.rotation.y = -blob.rotation.y * (opts.imageRotateYFactor ?? .22);
         m.rotation.x = -blob.rotation.x * (opts.imageRotateXFactor ?? .18);
         m.scale.set(is * asp * state.scale, is * state.scale, 1);
@@ -466,7 +467,8 @@ function initSteps() {
 
   const bubble = createBubble(canvas, { reveal: 1, collect: 1, alpha: 1, scale: BASE, x: 0, y: 0, travel: 0, flowX: 0, flowY: 0, flowZ: 0, pulse: 0, rotateX: 0, rotateY: 0 }, {
     desktopResolution: 124, mobileResolution: 76, maxPolyCount: 26e4, pixelRatioLimit: 1.8, travelScatter: true, visibilityMargin: '420px',
-    images, imageScale: .9, imageOpacity: .8, imageOffsetX: 0, imageScrub: .28, imageMaskRadius: .76, imageMaskSoftness: .2,
+    images, imageScale: .9, imageOpacity: .8, imageOffsetX: 0, imageScrub: 0, imageHover: 0,   // 제품은 늘 방울 한가운데 (261101)
+    imageMaskRadius: .76, imageMaskSoftness: .2,
     imageRevealStart: 0, imageZ: -.24, imageRotateYFactor: .04, imageRotateXFactor: .03, pointerTarget: section,
   });
 
